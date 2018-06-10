@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playground version='6.0' target-platform='ios' display-mode='raw' last-migration='0800'>
+    <pages>
+        <page name='00-00_toc'/>
+        <page name='01-01-quick_start'/>
+        <page name='01-02-markdown'/>
+        <page name='01-03-anatomy_of_the_playground'/>
+        <page name='01-04-dependencies'/>
+        <page name='01-05-live_preview'/>
+        <page name='02-01-reference_value_types'/>
+        <page name='02-02_mutation'/>
+        <page name='02-03_basic_types_and_aliases'/>
+        <page name='02-04_late_init_and_optionals'/>
+        <page name='03-01_unicode'/>
+        <page name='03_02_string'/>
+        <page name='04_01_array'/>
+        <page name='04_02_dictionary'/>
+        <page name='04_03_set'/>
+        <page name='04_04_tuple'/>
+        <page name='05_01_operators'/>
+        <page name='06_01_for_for_in'/>
+        <page name='06_02_while_if_else'/>
+        <page name='06_03_switch_if_for_case'/>
+        <page name='06_04_defer'/>
+        <page name='06_05_optional_chaining'/>
+        <page name='07_01_functions'/>
+        <page name='07_02_function_parameters'/>
+        <page name='07_03_currying'/>
+        <page name='07_04_error_handeling'/>
+        <page name='07_05_operatory'/>
+        <page name='07_06_closure'/>
+        <page name='08_01_class_struct_enum'/>
+        <page name='08_02_class'/>
+        <page name='08_03_retain_cycle'/>
+        <page name='08_04_structure'/>
+        <page name='08_05_enumeration'/>
+        <page name='09_01_protocols'/>
+        <page name='10_10_inheritence'/>
+        <page name='10_11_extensions'/>
+        <page name='11_01_generics'/>
+        <page name='12_00_Access_Control'/>
+        <page name='100-02_copy_on_right'/>
+        <page name='100-03_UI_TraitCollection'/>
+        <page name='100-04_Swift_Phantom_Types'/>
+        <page name='900-00-tips_and_tricks'/>
+        <page name='900-01-asyc_playground'/>
+    </pages>
+</playground>
