@@ -1,6 +1,12 @@
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
 //:> ## For "i" For In / Break Continue / Do
 /*:
+ 
+ * [🇵🇱 Swift od zera do bohatera! Instrukcje Sterujące - Pętle - For In](https://www.youtube.com/watch?v=kV2yvP2gVj8&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=18)
+ * [🇵🇱 Swift od zera do bohatera! Pętla - For In - Funkcja Stride - Instrukcje Break oraz Continue](https://www.youtube.com/watch?v=NF2Be3KwVDE&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=19)
+ * [🇵🇱 Swift od zera do bohatera! For In - Przerywania Zagnieżdżonych Pętli - Repeat While i Do Block](https://www.youtube.com/watch?v=_wmHcruq9lM&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=20)
+ 
+ 
 Swift daje kilka **instrukcji**, które służą do kontrolowania jaki kod zostanie wykonany (kolejne instrukcje jakie mają być wykonane). Zaczniemy przygodę od **pętli**. Są to takie instrukcje, które pozwalają wykonywać kod _ileś razy_ i/lub tak długo jak _jakiś warunek jest spełniony_ (predykat jest prawdziwy).
  
  Wiele rzeczy można zaimplementować jako takie pętle. Dwa proste przykłady to gdy pracujemy z kolekcją (np. Array) elementów i z każdym chcemy coś zrobić. Pętle się super do tego nadają.

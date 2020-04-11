@@ -2,7 +2,10 @@
 //:> ## Array
 import UIKit
 //:> ## Tworzenie
-
+/*:
+* [🇵🇱 Swift od zera do bohatera! Swift Array Tablice - Tworzenie](https://www.youtube.com/watch?v=oi4pzTHybUU&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=6)
+ * [🇵🇱 Swift od zera do bohatera! Swift Array Inspekcja i Modyfikacja](https://www.youtube.com/watch?v=Co5DWCGvjMs&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=7)
+*/
 //: Tablice przechowuja elementy jednego typu. Jeżeli typ nie zostanie podany to zostanie wydedukowany przez kompilator.
 var tablica = ["💩", "⚡️", "😎"]
 type(of: tablica)

@@ -1,5 +1,8 @@
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
 //:> ## Markdown
+/*:
+  * [🇵🇱 Swift od zera do bohatera! Poznajemy Swift Playground](https://www.youtube.com/watch?v=SvgsAkPSw5U&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=2&t=0s)
+ */
 //:> [Dokumentacja do dokumentacji](https://developer.apple.com/library/ios/documentation/Xcode/Reference/xcode_markup_formatting_ref/index.html)
 
 //: ## Rozdzielacze

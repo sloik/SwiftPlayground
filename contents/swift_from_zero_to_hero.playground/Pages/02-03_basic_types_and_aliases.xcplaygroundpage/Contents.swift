@@ -1,5 +1,8 @@
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
 //:> ## Basic Types and Aliases
+/*:
+ * [🇵🇱 Swift od zera do bohatera! Typealias / Late Initialisation i Swift Optionals? Maybe ;)](https://www.youtube.com/watch?v=g47gSqtObDY&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=5)
+ */
 
 import Foundation
 

@@ -1,5 +1,14 @@
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
 //:> ## [Operatory](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/AdvancedOperators.html) (arytmetyczne, porównanie, rzutowanie, zakresy)
+/*:
+ * [🇵🇱 Swift od zera do bohatera! Operatory Arytmetyczne oraz Przepełnienia](https://www.youtube.com/watch?v=3psYUMdYNjs&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=14)
+ 
+  * [🇵🇱 Swift od zera do bohatera! Swift Operatory do Porównywania oraz Boolowskie](https://www.youtube.com/watch?v=FRqDiD5uArk&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=15)
+ 
+   * [🇵🇱 Swift od zera do bohatera! Ternary Operator, Range oraz ich wykorzystanie](https://www.youtube.com/watch?v=y0QteeCJ2cI&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=16)
+ 
+  * [🇵🇱 Swift od zera do bohatera! Rzutowanie (Cast) operacje na bitach oraz kolejność działań](https://www.youtube.com/watch?v=jBdWJHHlUIE&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=17)
+ */
 
 import UIKit
 

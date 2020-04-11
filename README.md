@@ -1,5 +1,9 @@
 # SwiftPlayground
 
+The is a YouTube channel that is showing this playground. 
+
+* [🇵🇱 Swift od zera do bohatera!](https://www.youtube.com/playlist?list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu)
+
 # Why
 
 This project started as a attempt to learn and teach others Swift language. 

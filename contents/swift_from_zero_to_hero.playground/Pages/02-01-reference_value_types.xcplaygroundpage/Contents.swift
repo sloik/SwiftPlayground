@@ -1,6 +1,8 @@
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
 //:> ## Reference and Value Types
-
+/*:
+ * [🇵🇱 Swift od zera do bohatera! Swift Value Types & Reference Types (Typy Wartościowe i Referencyjne)](https://www.youtube.com/watch?v=ke7oEf0gLlw&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=3)
+*/
 /*:
 # Typy Wartościowe
 ## Struktury

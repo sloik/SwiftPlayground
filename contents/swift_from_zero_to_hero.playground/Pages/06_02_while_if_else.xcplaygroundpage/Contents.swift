@@ -4,6 +4,13 @@
 import Foundation
 
 /*:
+ * [🇵🇱 Swift od zera do bohatera! Liczby Losowe - Instrukcja While oraz Repeat While](https://www.youtube.com/watch?v=B2HXVLhlmCA&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=21)
+ 
+* [🇵🇱 Swift od zera do bohatera! Instrukcja If Else - Podstawowe zastosowanie oraz if #available](https://www.youtube.com/watch?v=8CV9UZGM8MY&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=22)
+ 
+ * [🇵🇱 Swift od zera do bohatera! If Let oraz Guard Let czyli Instrukcja If na Sterydach](https://www.youtube.com/watch?v=R-NkuEvxmnU&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=23)
+ 
+ 
  # Wstęp
  
  Zanim poznamy następne instrukcje sterujące to poznamy funkcje do _generowania_ liczb pseudo losowych. Tak na prawdę to jest ich więcej ale jest jedna, która w miarę równomiernie z zakresu _losuje_ liczby.

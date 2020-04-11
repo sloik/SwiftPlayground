@@ -2,6 +2,8 @@
 //:> ## Quick start
 /*:
 > Playground - noun: a place where people can play
+ 
+ * [🇵🇱 Swift od zera do bohatera! Poznajemy Swift Playground](https://www.youtube.com/watch?v=SvgsAkPSw5U&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=2&t=0s)
 */
 
 import Foundation

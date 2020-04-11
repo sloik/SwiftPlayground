@@ -1,6 +1,8 @@
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
 //:> ## Live Preview
 /*:
+  * [🇵🇱 Swift od zera do bohatera! Wyświetlamy widoki z UIKit w Xcode Playground](https://www.youtube.com/watch?v=-v0tSzcKtMY&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=2)
+ 
 Czasami chcemy wyświetlić jakiś widok, który będzie pełnił role _sceny_. Ten eksta widok będzie widoczny po włączeniu _assistent editora_.
 */
 

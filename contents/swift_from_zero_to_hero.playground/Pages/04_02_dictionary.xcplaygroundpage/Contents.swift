@@ -1,6 +1,9 @@
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
 //:> ## Dictionary
-
+/*:
+ * [🇵🇱 Swift od zera do bohatera! Swift Dictionary Słownik - Tworzenie i Inspekcja](https://www.youtube.com/watch?v=8PGsSV4W2KY&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=8)
+  * [🇵🇱 Swift od zera do bohatera! Słownik Modyfikacja i Inne Smaczki](https://www.youtube.com/watch?v=0K5EZL_xWwA&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=9)
+ */
 //: ## Tworzenie
 var emojiNaNasze = ["💩" : "kupka",
                     "🍻" : "piwo"]

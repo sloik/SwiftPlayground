@@ -1,6 +1,10 @@
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
 //:> ## Set
-
+/*:
+* [🇵🇱 Swift od zera do bohatera! Set Zbiór - Tworzenie i podstawowe operacje](https://www.youtube.com/watch?v=yg-I0LuEDiI&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=10)
+ 
+ * [🇵🇱 Swift od zera do bohatera! Set Zbiór - Operacje i Modyfikacja](https://www.youtube.com/watch?v=OpobYWEbVJY&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=11)
+*/
 //: ## Tworzenie
 var emoji = ["💩", "⚡️", "😎"]
 type(of: emoji)

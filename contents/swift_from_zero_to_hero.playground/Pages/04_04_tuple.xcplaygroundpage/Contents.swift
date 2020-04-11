@@ -1,5 +1,10 @@
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
 //:> ## Tuple
+/*:
+ * [🇵🇱 Swift od zera do bohatera! Tuple / Krotka - Tworzenie](https://www.youtube.com/watch?v=xfFUHpWEq0s&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=12)
+ 
+  * [🇵🇱 Swift od zera do bohatera! Tuple / Krotka - Modyfikacja](https://www.youtube.com/watch?v=3U7zRKWSQkk&list=PLk_5PV9LrXp-5ImtHWeIsabWhBELxYNsu&index=13)
+ */
 //: "Tuples are useful for temporary groups of related values. (…) If your data structure is likely to persist beyond a temporary scope, model it as a class or structure (…) "
 //:         -- Dokumentacja
 
