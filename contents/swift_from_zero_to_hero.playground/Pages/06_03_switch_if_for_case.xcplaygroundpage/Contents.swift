@@ -3,209 +3,367 @@
 import Foundation
 
 /*:
- Wykorzystamy w dalszej części rozszerzenie na słowniku, które dla danej wartości zwróci listę wszystkich kluczy, które posiadają tą wartość.  Nie będziemy się teraz wgryzać w to jak działa bo nie jesteśmy na to jeszcze gotowi, ale zobaczymy jak możemy tego używać.
+Aby nieco uatrakcyjnić przykłady przygotujemy sobie scenę. Użyjemy do tego wszystkiego czego się nauczyliśmy do tej pory.
+ 
+ Aby łatwiej się rozmawiało zadaniu z jakim się będziemy mierzyć utworzymy aliasy na już istniejące typy. Dzięki temu zamiast mówić o Stringa i Intach (szczegóły implementacyjne) będziemy rozmawiać o Punktach i Kościach.
+ 
+ Od teraz w miarę możliwości wszystkie nazwy będziemy nadawać po angielsku. Jak do szkolnych przykładów to nie uważam, że jest to wielki błąd aby _kod_ był pisany po polsku. Tak w pracy na 99% spotkacie się z wymaganiem, że musi być po angielsku.
  */
-extension Dictionary where Value : Equatable {
-    // to jest brzydki kod aby przykłady były ładniejsze ;)
-    func key(for val : Value) -> Key {
-        filter ({ (_, value) in value == val })
-            .map ({ $0.key })
-            .first!
-    }
+
+typealias Points = Int
+typealias Dice   = String
+
+/*:
+ Potrzebujemy teraz jakoś zasymulować naszą grę. Zaczniemy od określenia tego jak nasze kości wyglądają i ile punktów jest warta każda z nich.
+ */
+let dices: [Dice: Points] = ["⚀": 1, "⚁": 2, "⚂": 3, "⚃": 4, "⚄": 5, "⚅": 6]
+
+
+/*:
+ Od jakiegoś czasu Swift pozwala nam na _wyciągnięcie_ losowego elemntu z kolekcji. Przy pomocy tej metody będziemy symulować **rzut kością**.
+ */
+var rollOne: Dice = dices.randomElement()!.key
+var rollTwo: Dice = dices.randomElement()!.key
+
+
+
+/*:
+ Komputer jeszcze nie potrafi spojrzeć na kostkę i powiedzieć ile punktów należy przyznać za dany rzut. Musimy zrobić to sami.
+ */
+dices[rollOne]
+dices[rollTwo]
+
+run("🎲 wartości kostek") {
+    print("Rzut \(rollOne) jest wart: \(String(describing: dices[rollOne]))")
+    print("Rzut \(rollTwo) jest wart: \(String(describing: dices[rollTwo]))")
 }
 
-let kosci = [1: "⚀", 2: "⚁", 3: "⚂", 4: "⚃", 5: "⚄", 6: "⚅"]
-kosci.count
-
 /*:
-Rzucamy kością...
+ Widać, że potrafimy się dobrać do punktów, ale są one owinięte w Optional. Możemy dodawać `!` przy każdym sprawdzeniu, ale to sprawi że przykłady staną się mniej czytelne. Dlatego zastosuje tu małą _sztuczkę_, która do celów edukacyjnych powinna być ok.
+ 
+Otworzymy sobie Typ Dictionary i dodamy do niego metode która sprawi, że API będzie nam lepiej mówiło o intencji użycia. O samych _extension_-ach (tak się ten mechanizm nazywa) opowiemy osobno.
  */
-var kosc1 = kosci[Int(arc4random_uniform(UInt32(kosci.count)) + 1)]!
+
+extension Dictionary {
+    func points(for key: Key) -> Value { self[key]! }
+}
 
 /*:
- Ponieważ w zmiennej `kosc1` mamy coś co byśmy pokazywali a potrzebujemy informacji o liczbie oczek aby móc liczyć punkty. To wykorzystamy dopiero co stworzone rozszerzenie. O rozszerzeniach opowiemy innym razem.
+Nie było tak strasznie. Zobaczmy w akcji tą metodę.
  */
-kosci
-    .key(for: kosc1)
+
+dices.points(for: rollOne)
+dices.points(for: rollTwo)
 
 /*:
- Więc potrafimy dostać się do informacji ile dana kość jest warta w punktach. Teraz to samo dla drugiej kości...
- */
-var kosc2 = kosci[Int(arc4random_uniform(UInt32(kosci.count)) + 1)]!
-kosci.key(for: kosc2)
-
-/*:
+ Tak więc mamy fajne API z którego możemy korzystać. Oczywiście jak zapytamy o coś czego nie ma w słowniku to nam coś takiego wybuchnie. Po prostu wiemy co robimy gdy biegamy z nożyczkami ✂️🏃🏼‍♀️
+ 
+ ---
+ ## Część właściwa
+ 
+ Poznamy teraz instrukcje `if`, która trafiła do wojska. Spotkała tam _pattern matching_ i ostro przykoksiła. Acha jest coś co w przyszłości się na pewno przyda bo składnia nie jest tak intuicyjna i w pracy dosyć często trzeba ją sobie przypomnieć: [fucking if case let syntax](http://fuckingifcaseletsyntax.com)
+ 
  # Switch
  
- Instrukcja `Switch` w Swift jest bardziej czytelną wersją wielu występujących po sobie instrukcji `if else`. Co więcej pozwala na wykorzystanie _pattern matching_-u aby lepiej wyrazić intencje w kodzie.
+ Instrukcja _switch_ to jest właśnie if na sterydach. Szczególnie gdy wykorzystamy jeszcze w niej _patter matching_. A cóż to takiego? W kilku słowach jest to mechanizm umożliwiający stworzenie szablonu/wzorca do którego potem jest przyrównywana jakaś wartość. Jeżeli szablon i wartość pasują to ta ścieżka w kodzie zostanie wybrana.
  
- W switch-u `case`y są sprawdzane od góry do dołu. Dlatego najlepiej zaczynać od **najbardziej** szczegółowych i przechodzić do mniej szczegółowych. Do tego kompilator wymusza aby **wszystkie** możliwe kombinacje zostały obsłużone. To sprawia, że ta instrukcja jest bezpieczna.
- 
- Jednak kompilator też nie zawsze jest w stanie stwierdzić czego dokładnie brakuje. I jest specjalne słowo kluczowe `default`, które switch wykona jeżeli żaden z innych przypadków nie mógł być dopasowany. Można je pominąć **tylko** gdy kompilator jest w stanie _udowodnić_, że wszystkie ścieżki zostały obsłużone.
- 
- Więc rzuciliśmy kostkami. Warto zobaczyć ile  zdobyliśmy punktów...
+## Switch podstawa
  */
 
-switch (kosc1, kosc2) {
+let meaningOfLife = 51
 
-//default:
-    //    break // 💥
-
-case ("⚀", "⚀"): // (1, 1) dokładny wzorzec
-    fallthrough  // kontynuuj wykonywanie kolejnego case-a
-
+run("🎚 proste przykłady") {
     
- // można zapisać też: case ("⚀", "⚀"), ("⚅", "⚅"):
-case ("⚅", "⚅"):
-    "30 punktow"
+    if meaningOfLife == 10 {
+        print("Było 10")
+    } else if meaningOfLife == 42 {
+        print("Sensem życia jest liczba...")
+    } else if meaningOfLife < 50 {
+        print("Nie tak dużo")
+    } else {
+        print("Nic nie jest w życiu pewne.")
+    }
+}
 
-    
-    // Dzięki pattern matching-owi możemy określić zakresy
-case ("⚀"..."⚁", "⚀"..."⚁"):
-    "16 punktow"
-    
+/*:
+ W zależności od tego co mamy ustawione jako stała `meaningOfLife` taką ścieżką pobiegnie program. Jednak jest bardzo dużo szumu z wieloma instrukcjami `if else`. Switch może coś takiego uprościć
+ */
 
-    // `_` mówi, że nie interesuje nas "wzorzec" ale możemy "filtrować" to
-    // dopasowanie instrukcją `where`. I tak w tym przypadku mówię, że
-    // kod ma się wykonać gdy suma wyrzuconych oczek jest `7`
-case _ where kosci.key(for: kosc1) + kosci.key(for: kosc2) == 7:
-    "5 punktow"
-
-    
-    
-    // Jak wcześniej ale tym razem warunkiem jest to, że liczba
-    // oczek jest taka sama na obu kościach.
-case (_, _) where kosc1 == kosc2:
-    
-    let wartosc = kosci.key(for: kosc2)
-
-    // Jeżeli podwojona wartość oczek to 4 lub 10 to dostaje 8 punktów.
-    // W każdym innym przypadku to 10 punktów.
-    switch wartosc * 2 {
-    case 4, 10:
-        "8 punktow"
+run("🎛 switch") {
+    switch meaningOfLife {
+    case 10:
+        print("Było 10")
+        
+    case 42:
+        print("Sensem życia jest liczba...")
+        
+    case _ where meaningOfLife < 50:
+        print("Nie tak dużo")
+        
     default:
-        "10 punktow"
+        print("Nic nie jest w życiu pewne.")
+    }
+}
+
+/*:
+ Mamy tu wszystko. Krew, romans, łzy. Natomiast też jasno widać jaka ścieżka będzie wybrana. Możemy podać jako wzorzec/szablon/pattern konkretne wartości. Możemy też użyć predykatu (prawda lub fałsz). Do tego kompilator używa swojej wiedzy o typach aby wymusić obsłużenie każdego możliwego przypadku!
+ 
+ Ten wzorzec nie musi się składać z jednej wartości. Może z wielu. My mamy teraz wyrzucone dwie kości. Czas podliczyć punky według następujących zasad:
+ 
+ * ⚀ ⚀   = 30 punktów
+ * ⚅ ⚅   = 30 punktów
+ * ⚀⚁ ⚀⚁ = 16 punktów
+ * suma oczek == 7 to 5 punktów
+ * takie same kości i wartość oczek x2 da 4 lub 10 8 punktów w przeciwnym wypadki 10 punktów
+ * suma oczek = sumie punktów
+ 
+ */
+
+
+switch (rollOne, rollTwo) {
+
+case ("⚀", "⚀"): // (1, 1)
+    fallthrough
+
+case ("⚅", "⚅"): // (6, 6)
+    "30 punktów"
+
+case ("⚀"..."⚁", "⚀"..."⚁"): // (1...2, 1...2)
+    "16 punktów"
+
+    // rollOnePoints + rollTwoPoints == 7
+case _ where dices.points(for: rollOne) + dices.points(for: rollTwo) == 7:
+    "5 punktów"
+
+    // rollOnePoints == rollTwoPoints
+case (_, _) where rollOne == rollTwo:
+    let dicePoints = dices.points(for: rollTwo)
+
+    switch dicePoints * 2 {
+    case 4, 10:
+        "8 punktów"
+    default:
+        "10 punktów"
     }
 
-    
-    // Nie miały zastosowania, żadne inne zasady więc liczba punktów
-    // to suma oczek wyrzuconych kości.
-default:
-    let wartosc1 = kosci.key(for: kosc1)
-    let wartosc2 = kosci.key(for: kosc2)
+default: // musi być ostatnie
+    let rollOnePoints = dices.points(for: rollOne)
+    let rollTwoPoints = dices.points(for: rollTwo)
 
-    "\(wartosc1 + wartosc2) punktow"
+    "\(rollOnePoints + rollTwoPoints) punktów"
 }
 
-//: Można też __switchować__ po klasach
+/*:
+ Wzorce są porównywane od góry do dołu. Tak więc jeżeli jakiś `case` będzie pasować wcześniej od innego to zostanie wykonany jako pierwszy. Jest to identyczne zachowanie jak `if else`. Tak więc warto na samej górze dawać jak najbardziej szczegółowe. A im niżej tym bardziej ogólne.
+ 
+ Przypadek dla `default` można pominąć jeżeli kompilator może wyinferować, że wszystkie ścieżki są obsłużone.
+ 
+ Jest jedna różnica w Swift w porównaniu do innych języków (szczególnie do C a co za tym idzie i do Objective-C). Ścieżka wykonania kodu w instrukcji switch zatrzymuje się na ostatnie linijce `casa` i potem _wychodzi_ z całej instrukcji. W innych językach przeszło by do następnego _przypadku_.
+ 
+ 
+ Można też __switchować__ po klasach. Mając trzy dowolne typy:
+ */
 
-class Pierwsza {}
-class Druga    { var licznik = 42 }
-class Trzecia  { var temperatura = 24 }
+class ClassOne {}
+class ClassTwo { var number = 42 }
+class ClassSix { var index  = 24 }
 
-var jakasInstancja: AnyObject = Trzecia()
 
-switch jakasInstancja {
+var instance: AnyObject = ClassSix()
+
+switch instance {
 
 //: __podłoga__ jeżeli nie potrzebuje odwołać się do zmiennej
-case _ as Pierwsza: 
+case _ as ClassOne:
     "pierwsza"
 
-case let typ as Druga:
+case let typ as ClassTwo:
     type(of: typ)
-    typ.licznik
+    typ.number
 
-case let typ as Trzecia:
-    typ.temperatura
-    typ.temperatura = 69
-    typ.temperatura
+case let typ as ClassSix:
+    typ.index
+    typ.index = 69
+    typ.index
 
 default:
-    break;
-}
-
-jakasInstancja.description
-
-
-//: ### If Case oraz For Case
-enum Opcje {
-    case calkowita(Int)
-    case zmiennoPrzecinkowa(Double)
-    case textowa(String)
-}
-
-let jakasClakowita = Opcje.calkowita(42)
-
-//: W sytuacji gdy chcemy coś zrobic z saną stałą/zmienną możemy wykorzystać __switch__
-
-switch jakasClakowita {
-case .calkowita(let calkowita):
-    "Hura dla całkowitej \(calkowita)"
-case .zmiennoPrzecinkowa:
     break
-case .textowa:
-    break;
 }
 
-// można też nieco to skrócić i zapisać tak:
+instance.description
 
-switch jakasClakowita {
-case .calkowita(let calkowita):
-    "Hura dla całkowitej \(calkowita)"
+/*:
+ ### If Case oraz For Case
+ 
+ Trochę wybiegniemy w przyszłość i przedstawię tu enumerację. Dokładniej nad nimi będziemy się znęcać kiedyś tam. Jednak liczę na to, że za jakiś czas będziesz mieć już tą wiedzą i bardziej Tobie się przyda przykład jak tą pieprzoną składnie if case let opędzić.
+
+ Jeżeli widzisz enumeracje pierwszy raz to... jest to sposób za zapisanie zbioru określonych wartości. Dni tygodnia są znane i jest ich 7 i racze za prędko się to nie zmieni. Dlatego można użyć do tego właśnie enuma gdzie definiujemy możliwe wartości na samym początku. Do tego z tą wartością (case) może być powiązana inna wartość lub krotka wartości. Całość daje bardzo dużo możliwości.
+ 
+ My tu nie będziemy skakać na głęboką wodę ale się zanurzymy po pas. Nasza tajemnicza wartość może _być_ całkowitą liczbą (i mieć w sobie informacje o konkretnej wartości), ułamkiem oraz textem.
+ */
+
+enum Mistery {
+    case whole(Int)
+    case fraction(Double)
+    case text(String)
+}
+
+/*:
+ Tworząc instancje tego typy nie wiem z czym _konkretnie_ pracuje (liczba, ułamek, text).
+ */
+let misteryInstancje: Mistery = Mistery.whole(42)
+
+/*:
+ W sytuacji gdy chcemy coś zrobić z samą stałą/zmienną możemy wykorzystać __switch__
+ */
+
+switch misteryInstancje {
+case .whole(let value):
+    "Hura dla całkowitej \(value)"
+case .fraction:
+    break
+case .text:
+    break
+}
+
+/*:
+ Widać, że reszta przypadków nas nie interesuje. I fajnie by było aby ten kod nie był taki _głośny_. Interesuje nas jeden _case_ a reszta to szum. Można też nieco to skrócić i zapisać tak:
+ */
+
+switch misteryInstancje {
+case .whole(let value):
+    "Hura dla całkowitej \(value)"
 
 default:
-    break;
+    break
 }
 
-//: #### if case
+/*:
+ Lepiej ale w dalszym ciągu bardziej hałaśliwe niż zwykły `if`...
+ 
+### if case
 
-if case .calkowita(let liczbaCalkowita) = jakasClakowita {
-     "Hura dla całkowitej \(liczbaCalkowita)"
+ Całe szczęście jest sposób aby sprawdzić czy to właśnie z ta wartość co nas interesuje. Składnia to taki melanż instrukcji 'if' i ciała 'switch'. Impreza taka, że ciesz się że nie szczekasz.
+ */
+
+if case .whole(let value) = misteryInstancje {
+     "Hura dla całkowitej \(value)"
 }
 
-if case .calkowita(let liczbaCalkowita) = jakasClakowita , liczbaCalkowita > 40 {
-    "Hura dla całkowitej \(liczbaCalkowita)"
+/*:
+Pracujemy z tym jak ze zwykłym if-em, więc wszstkie szczuczki dozwolone:
+ */
+if case .whole(let value) = misteryInstancje , value > 40 {
+    "Hura dla całkowitej \(value)"
 }
 
-//: #### for case
-let jakiesOpcje: [Opcje] = [ .calkowita(42), .zmiennoPrzecinkowa(6.9), .textowa("sto"), .calkowita(69)]
+/*:
+ ### for case
+ 
+ Co w sytuacji gdy do obsłużenia jest cała kolekcja takich typów i chcemy z niej wyciągnąć zawarte rzeczy?
+ */
+let mysteries: [Mistery] = [.whole(42), .fraction(6.9), .text("sto"), .whole(69)]
 
-for opcja in jakiesOpcje {
-    switch opcja {
-    case .calkowita(let liczbaCalkowita):
-        "Hura dla całkowitej \(liczbaCalkowita)"
+/*:
+ Wersja hałaśliwa może wyglądać tak:
+ */
+for mistery in mysteries {
+    switch mistery {
+    case .whole(let value):
+        print("🌶", #line, "Hura dla całkowitej \(value)")
     default:
         break
     }
 }
 
-for case .calkowita(let liczbaCalkowita) in jakiesOpcje {
-    "Hura dla całkowitej \(liczbaCalkowita)"
+/*:
+ lub:
+ */
+
+for mistery in mysteries {
+    if case .whole(let value) = mistery {
+        print("🎯", #line, "Hura dla całkowitej \(value)")
+    }
 }
 
-//: podobnie jak wczesniej możeby dodatkowo zacieśniać zakres ktory nas interesuje przy pomocy słowa kluczowego __where__
-for case .calkowita(let liczbaCalkowita) in jakiesOpcje where liczbaCalkowita < 69 {
-    "Hura dla całkowitej \(liczbaCalkowita)"
+/*:
+ Możemy jednak zrobić jeszcze troszeczkę lepiej i przenieśc `if`-a _do_ `for`-a.
+ */
+
+for case .whole(let value) in mysteries {
+    print("🐕", #line, "Hura dla całkowitej \(value)")
 }
 
-let procentAlko: Int? = 40
-
-//: #### Optional binding
-if let procent = procentAlko , procent >= 34 {
-    "Można pić bez obawień"
+/*:
+Podobnie jak wczesniej możeby dodatkowo zacieśniać zakres ktory nas interesuje przy pomocy słowa kluczowego __where__
+ */
+for case .whole(let value) in mysteries where value < 69 {
+    print("👀", #line, "Hura dla całkowitej \(value)")
 }
 
-//: #### [Optional pattern matching](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Patterns.html#//apple_ref/doc/uid/TP40014097-CH36-ID520)
-if case let procent? = procentAlko , procent >= 34 { // bez '?` będzie Int?
-     "Można pić bez obawień"
-    type(of: procent)
+/*:
+ ### Optional binding
+ 
+ Optional-e już widzieliśmy. Po prostu mówią nam czy jakaś wartość jest obecna czy nie. Co więcej są zaimplementowane jako enum z dwoma `case`-ami `some` oraz `none`. Często chcemy coś zrobić właśnie z tą wartością co jest w środku.
+ */
+let voltage: Int? = 40
+
+/*:
+ Długa droga może wyglądać tak:
+ */
+
+switch voltage {
+case .none:
+    print("🏐", #line, "Z pustego to i Salomon nie naleje")
+    
+case .some:
+    print("🏐", #line, "Coś tu mam. Mogę odpakować bezpiecznie wykrzyknikiem", voltage!)
 }
 
-let procenty: [Int?] = [42, nil, 5, nil, 12]
+/*:
+ Bezpiecznie ale hałaśliwie. Jest składnia, która pozwala dobrać się do wartości wewnątrz Optional-a gdy tam jest. Nadajemy stałej nazwę i ona jest "binowana" do tej wartości. Jak zobaczysz przykład to wyraz **bind** powinien stać się mniej obcy.
+ */
 
-for case let procent? in procenty where procent > 5 {
-    procent
+switch voltage {
+case .none:
+    print("🦋", #line, "Z pustego to i Salomon nie naleje")
+    
+case .some(let bindedValue):
+    print("🦋", #line, "Coś tu mam:", bindedValue)
+}
+
+/*:
+ Zrobimy to samo co wcześniej czyli przejdziemy na zapis z `if`-em. Nazwa **percent** będzie zawierać w sobie _wartość_ jeżeli Optional nie jest `none` lub częściej jak się mówi _nie jest nil-em_.
+ */
+
+if let percent = voltage , percent >= 34 {
+    print("🐝", #line, "Można pić bez obawień")
+}
+
+
+/*:
+
+ Tu możemy się już zatrzymać. Dalsza część jest dla chętnych i raczej ciekawostka niż rzecz z jaką można się spotkać w pracy.
+ 
+ ---
+
+ #### [Optional pattern matching](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Patterns.html#//apple_ref/doc/uid/TP40014097-CH36-ID520)
+ 
+ */
+
+if case let bindedPercent = voltage {
+    print("🐙", #line, bindedPercent as Any, type(of: bindedPercent))
+}
+
+if case let bindedPercent? = voltage , bindedPercent >= 34 { // bez '?` będzie Int?
+    print("🦜", #line, bindedPercent, type(of: bindedPercent))
+    type(of: bindedPercent)
+}
+
+let percents: [Int?] = [42, nil, 5, nil, 12]
+
+for case let bindedPercent? in percents where bindedPercent > 5 {
+    print("☄️", #line, bindedPercent, type(of: bindedPercent))
 }
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
