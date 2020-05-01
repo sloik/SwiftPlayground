@@ -20,7 +20,7 @@ let dices: [Dice: Points] = ["⚀": 1, "⚁": 2, "⚂": 3, "⚃": 4, "⚄": 5, "
 
 
 /*:
- Od jakiegoś czasu Swift pozwala nam na _wyciągnięcie_ losowego elemntu z kolekcji. Przy pomocy tej metody będziemy symulować **rzut kością**.
+ Od jakiegoś czasu Swift pozwala nam na _wyciągnięcie_ losowego elementu z kolekcji. Przy pomocy tej metody będziemy symulować **rzut kością**.
  */
 var rollOne: Dice = dices.randomElement()!.key
 var rollTwo: Dice = dices.randomElement()!.key
@@ -158,7 +158,7 @@ default: // musi być ostatnie
  
  Przypadek dla `default` można pominąć jeżeli kompilator może wyinferować, że wszystkie ścieżki są obsłużone.
  
- Jest jedna różnica w Swift w porównaniu do innych języków (szczególnie do C a co za tym idzie i do Objective-C). Ścieżka wykonania kodu w instrukcji switch zatrzymuje się na ostatnie linijce `casa` i potem _wychodzi_ z całej instrukcji. W innych językach przeszło by do następnego _przypadku_.
+ Jest jedna różnica w Swift w porównaniu do innych języków (szczególnie do C a co za tym idzie i do Objective-C). Ścieżka wykonania kodu w instrukcji switch zatrzymuje się na ostatniej linijce `case`a i potem _wychodzi_ z całej instrukcji. W innych językach przeszło by do następnego _przypadku_.
  
  
  Można też __switchować__ po klasach. Mając trzy dowolne typy:
@@ -195,9 +195,9 @@ instance.description
 /*:
  ### If Case oraz For Case
  
- Trochę wybiegniemy w przyszłość i przedstawię tu enumerację. Dokładniej nad nimi będziemy się znęcać kiedyś tam. Jednak liczę na to, że za jakiś czas będziesz mieć już tą wiedzą i bardziej Tobie się przyda przykład jak tą pieprzoną składnie if case let opędzić.
+ Trochę wybiegniemy w przyszłość i przedstawię tu enumerację. Dokładniej nad nimi będziemy się znęcać kiedyś tam. Jednak liczę na to, że za jakiś czas będziesz mieć już tę wiedzę i bardziej Tobie się przyda przykład jak tą pieprzoną składnie if case let opędzić.
 
- Jeżeli widzisz enumeracje pierwszy raz to... jest to sposób za zapisanie zbioru określonych wartości. Dni tygodnia są znane i jest ich 7 i racze za prędko się to nie zmieni. Dlatego można użyć do tego właśnie enuma gdzie definiujemy możliwe wartości na samym początku. Do tego z tą wartością (case) może być powiązana inna wartość lub krotka wartości. Całość daje bardzo dużo możliwości.
+ Jeżeli widzisz enumeracje pierwszy raz to... jest to sposób za zapisanie zbioru określonych wartości. Dni tygodnia są znane i jest ich 7 i raczej za prędko się to nie zmieni. Dlatego można użyć do tego właśnie enuma gdzie definiujemy możliwe wartości na samym początku. Do tego z tą wartością (case) może być powiązana inna wartość lub tuplet wartości. Całość daje bardzo dużo możliwości.
  
  My tu nie będziemy skakać na głęboką wodę ale się zanurzymy po pas. Nasza tajemnicza wartość może _być_ całkowitą liczbą (i mieć w sobie informacje o konkretnej wartości), ułamkiem oraz textem.
  */
@@ -209,7 +209,7 @@ enum Mistery {
 }
 
 /*:
- Tworząc instancje tego typy nie wiem z czym _konkretnie_ pracuje (liczba, ułamek, text).
+ Tworząc instancje tego typu nie wiem z czym _konkretnie_ pracuje (liczba, ułamek, text).
  */
 let misteryInstancje: Mistery = Mistery.whole(42)
 
@@ -295,7 +295,7 @@ for case .whole(let value) in mysteries {
 }
 
 /*:
-Podobnie jak wczesniej możeby dodatkowo zacieśniać zakres ktory nas interesuje przy pomocy słowa kluczowego __where__
+Podobnie jak wcześniej możemy dodatkowo zacieśniać zakres który nas interesuje przy pomocy słowa kluczowego __where__
  */
 for case .whole(let value) in mysteries where value < 69 {
     print("👀", #line, "Hura dla całkowitej \(value)")
@@ -321,7 +321,7 @@ case .some:
 }
 
 /*:
- Bezpiecznie ale hałaśliwie. Jest składnia, która pozwala dobrać się do wartości wewnątrz Optional-a gdy tam jest. Nadajemy stałej nazwę i ona jest "binowana" do tej wartości. Jak zobaczysz przykład to wyraz **bind** powinien stać się mniej obcy.
+ Bezpiecznie ale hałaśliwie. Jest składnia, która pozwala dobrać się do wartości wewnątrz Optional-a gdy tam jest. Nadajemy stałej nazwę i ona jest "bidowana" do tej wartości. Jak zobaczysz przykład to wyraz **bind** powinien stać się mniej obcy.
  */
 
 switch voltage {
