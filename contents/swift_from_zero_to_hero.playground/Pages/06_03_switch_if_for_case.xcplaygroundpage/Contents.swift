@@ -123,6 +123,7 @@ run("🎛 switch") {
 switch (rollOne, rollTwo) {
 
 case ("⚀", "⚀"): // (1, 1)
+    // wykona następny case nawet jak ma predykat!
     fallthrough
 
 case ("⚅", "⚅"): // (6, 6)
