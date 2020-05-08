@@ -30,7 +30,7 @@ optionalWeatherData =
 ]
 
 /*:
- Jak widać czasem nam brakuje różnych informacji. Teraz gdybyśmy chcieli sprawdzić pogodę w Białymstoku za korzystając z `if let` to kod wyglądałby tak:
+ Jak widać czasem nam brakuje różnych informacji. Teraz gdybyśmy chcieli sprawdzić pogodę w Białymstoku i skorzystać z `if let` to kod wyglądałby tak:
  */
 let city = "Białystok"
 
