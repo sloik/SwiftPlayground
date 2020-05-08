@@ -16,7 +16,7 @@ import Foundation
  */
 
 
-run("🐂 simple block") {
+run("🐂 simple block, no defer") {
     
     print(#line, "before")
     
@@ -29,7 +29,7 @@ run("🐂 simple block") {
 }
 
 /*:
- To damo z `defer`
+ To demo z `defer`
  */
 
 run("⛄️ simple block with defer") {
