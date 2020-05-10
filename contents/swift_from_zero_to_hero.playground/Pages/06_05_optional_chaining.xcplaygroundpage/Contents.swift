@@ -53,7 +53,7 @@ if let weatherData = optionalWeatherData { // we have data
             }
             
             if let humidity = cityEntry.humidity { // we have humidity
-                print("💦", #line, city, "has", humidity, "C")
+                print("💦", #line, city, "has", humidity)
             } else {
                print("🛤", #line, "Missing humidity for:", city)
             }
@@ -90,7 +90,7 @@ if let temperature = optionalWeatherData?[city]??.temperature {
 }
 
 if let humidity = optionalWeatherData?[city]??.humidity {
-    print("💦", #line, city, "has", humidity, "C")
+    print("💦", #line, city, "has", humidity)
 } else {
    print("🛤", #line, "Missing humidity for:", city)
 }
@@ -103,7 +103,7 @@ if
     let temperature = optionalWeatherData?[city]??.temperature,
     let humidity = optionalWeatherData?[city]??.humidity{
     print("🌟", #line, city, "has", temperature, "C")
-     print("💦", #line, city, "has", humidity, "C")
+    print("💦", #line, city, "has", humidity)
 } else {
     print("🛤", #line, "Missing temperature for:", city)
     print("🛤", #line, "Missing humidity for:", city)
