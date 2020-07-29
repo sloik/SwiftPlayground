@@ -3,92 +3,92 @@
 //: __Funkcje__ to niezależne kawałki reużywalnego kodu. __Metody__ to funkcje należące do jakiegoś __typu__ .
 
 //: Funkcje deklarujemy przy użycia słowa kluczowego __func__. Następnie nadajemy jej nazwę (_konwencja_ : notacjaWielbłądzia), parametry w nawiasach okrągłych i w klamerkach __ciało funkcji__ czyli kod jaki ma być wykonywany przy jej wywołaniu.
-func cytujCytat() {
+func justQuote() {
     print("Można pić bez obawień")
 }
 
 //: Funkcja przyjmująca parametr.
-func przywitaj(_ imie: String) {
-    print("Cześć \(imie), będziesz to jeść?\n")
+func sayHi(_ name: String) {
+    print("Cześć \(name), będziesz to jeść?\n")
 }
 
 //: Funkcja przyjmująca więcej parametrów.
-func cytuj(_ cytat: String, autor: String) {
-    print("\"\(cytat)\"\n\t\t-- \(autor)\n")
+func quote(_ quote: String, author: String) {
+    print("\"\(quote)\"\n\t\t-- \(author)\n")
 }
 
 //: Funkcje wywołujemy podając jej nazwę i przekazując w parametrach niezbędne argumenty. Co ciekawe pierwszy argument nie jest nazwany. To co widać przy wywołaniu funkcji to _zewnętrzna nazwa parametru_ . Nazwa parametru użyta wewnątrz to _wewnętrzna nazwa parametru_ . Domyślnie zewnętrzna i wewnętrzna nazwa parametru jest taka sama.
-//cytuj("Można pić bez obawień.", autor: "Wiesław Wszywka")
+quote("Można pić bez obawień.", author: "Wiesław Wszywka")
 
-func cytujZParametrami(_ cytat: String, autorCytatu autor: String) {
-    print("\"\(cytat)\"\n\t\t-- \(autor)\n")
+func quoteWithArguments(quote: String, whoSaidId author: String) {
+    print("\"\(quote)\"\n\t\t-- \(author)\n")
 }
 
-//cytujZParametrami(cytat: "Badziewie do badziewia.", autorCytatu: "Wiesław Wszywka")
+quoteWithArguments(quote: "Badziewie do badziewia.", whoSaidId: "Wiesław Wszywka")
 
 //: Ponieważ są jeszcze pewne naleciałości nazewnicze z __Objective C👑__ to często pierwsza nazwa parametru znajduje się w nazwie metody.
 
-func cytujCytat(_ cytat: String, autorCytatu autor: String) {
-    print("\"\(cytat)\"\n\t\t-- \(autor)\n")
+func quoteAnQuote(_ quote: String, of author: String) {
+    print("\"\(quote)\"\n\t\t-- \(author)\n")
 }
 
-//cytujCytat("Niebo w ziemi.", autorCytatu: "wiesław Wszywka")
+quoteAnQuote("Niebo w ziemi.", of: "Wiesław Wszywka")
 
 //: Jeżeli chcemy pozbyć się zewnętrznych parametrów w wywołaniu funkcji, możemy to zrobić zastepując je "_". Funkcje potrafią też zwracać wynik swojego działania. Oznacza się to przez strzłkę __ -> __ i podanie zwracanego typu.
 
-func dodajDwieLiczby(_ liczba1: Int, _ liczba2: Int) -> Int {
-    return liczba1 + liczba2
+func addTwoNumbers(_ number1: Int, _ number2: Int) -> Int {
+    return number1 + number1
 }
 
-var sumaLiczb = dodajDwieLiczby(40, 2)
+var sumOfNumbers = addTwoNumbers(40, 2)
 
 //: Typy argumentów oraz zwracany typ tworzą razem coś co nazywa się "typem funkcji".
-type(of: dodajDwieLiczby)
+type(of: addTwoNumbers)
 
 //: Możemy też stworzyć zmienną, która będzie nam "przechowywać" funkcje. Kluczowe jest użycie __samej__ nazwy funkcji.
 
-let funkcja = dodajDwieLiczby
+let function = addTwoNumbers
 
-sumaLiczb = funkcja(60, 9)
+sumOfNumbers = function(60, 9)
 
 //: Możemy przypisać domyślne wartości dla parametrów funkcji. Lepiej jest umieszczać takie parametry na końcu listy. Dzięki temu możemy pominąć te parametry przy wywoływaniu funkcji.
 
-func cytujDomyslneParametry(_ cytat: String, autor: String, ileRazy: Int = 1) {
-    for _ in 0..<ileRazy {
-        cytuj(cytat, autor: autor)
+func quoteWithDefaultParameters(_ quote: String, author: String, times: Int = 1) {
+    for _ in 0..<times {
+        quoteAnQuote(quote, of: author)
     }
 }
 
-//cytujDomyslneParametry("Kur zapiał!", autor: "Wiesław Wszywska")
+quoteWithDefaultParameters("Kur zapiał!", author: "Wiesław Wszywska")
 
 //: Funkcje mogą przyjmować też opcjonalne argumenty. Co fajne ponieważ w tym wypadku nadajemu mu domyślną wartość jako __nil__ to przy wywołaniu możemy pominąć ten agrument.
 
-func cytujCytatOpcjonalnyAutor(_ cytat: String, autor: String? = nil) {
-    let autorCytatu = autor ?? "Anonim"
-    cytuj(cytat, autor: autorCytatu)
+func quoteWithOptionalAuthor(_ quote: String, author: String? = nil) {
+    let quoteAuthor = author ?? "Anonim"
+    quoteAnQuote(quote, of: quoteAuthor)
 }
 
-//cytujCytatOpcjonalnyAutor("Gdzie kucharek sześć tam...")
+quoteWithOptionalAuthor("Gdzie kucharek sześć tam...")
 
 //: A co jeżei nie wiemy ile chcemy tych parametrów... na to mamy i takiego wariata ;) Aby określić, że funkcja przyjmuje zmienną ilość argumentów za typem parametru dodajemy "...". Wewnątrz funkcji otrzymamy Swiftową tablicę tego typu. Trzeba przynać, że jest to o wiele przyjemniejsza składnia niż w C/ObjC.
 
-func sumujLiczby(_ liczby:Int...) -> Int {
-    type(of: liczby)
+func sumNumbers(_ numbers: Int...) -> Int {
+    type(of: numbers)
 
-    return liczby.reduce(0, +)
+    return numbers.reduce(0, +)
 }
 
-sumujLiczby(1,2,3,4,5)
+sumNumbers(1,2,3,4,5)
 
 //: ## Przeciążanie Funkcji
 
-func robiCos(_ z: String) { z }
-func robiCos(_ z: Int) { z }
-//robiCos.dynamicType // 💥 biedak nie wie którą zawołać
+func doStuff(_ z: String) { z }
+func doStuff(_ z: Int) { z }
+//type(of: doStuff) // 💥 biedak nie wie którą zawołać
 
 //: W tym wypadku Swift podejmuje decyzję którą funkcje zawołać w czasie kompilacji. Sprawy mają się troszeczkę inaczej jeżeli funkcja/metoda zdefiniowana w klasie i inna klasa ją przeciąża, ale o tym póxniej 🤓
-type(of: (robiCos as (String)->Void))
-type(of: (robiCos as (Int)->Void))
+type(of: (doStuff as (String)->Void))
+type(of: (doStuff as (Int)->Void))
 //func robiCos(zCzymsInnym: Int) {} // 💥
 
 //: Bardzo ciekawym przypadkiem są [__operatory__](07_05_operatory) (+, -, *, / etc.) gdyż są one przeciążonymi funkcjami.
@@ -97,7 +97,7 @@ type(of: (robiCos as (Int)->Void))
 
 //: Możemy nawet taki operator przypisać do zmiennej jednak musimy podać konkretny "wariant przeciążenia" aby kompilator wiedział o którą wersje nam chodzi.
 
-let dodawacz: (Int, Int) -> Int = (+)
-dodawacz(6,9)
+let adder: (Int, Int) -> Int = (+)
+adder(6,9)
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)

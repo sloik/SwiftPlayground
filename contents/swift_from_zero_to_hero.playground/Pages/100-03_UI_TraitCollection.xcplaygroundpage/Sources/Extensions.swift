@@ -31,6 +31,9 @@ extension UITraitCollection {
         case .tv: return "TV"
         case .unspecified: return "Unspecified"
         case .carPlay: return "CarPlay"
+        case .mac: return "Mac"
+        @unknown default:
+            return "Unknown"
         }
     }
 
@@ -39,6 +42,8 @@ extension UITraitCollection {
         case .unspecified: return "Unspecified"
         case .compact: return "Compact"
         case .regular: return "Regular"
+        @unknown default:
+            fatalError()
         }
     }
 
@@ -47,6 +52,8 @@ extension UITraitCollection {
         case .unknown: return "Unknown"
         case .unavailable: return "Unavailable"
         case .available: return "Available"
+        @unknown default:
+            fatalError()
         }
     }
 
@@ -55,6 +62,8 @@ extension UITraitCollection {
         case .P3: return "P3"
         case .SRGB: return "RGB"
         case .unspecified: return "Unspecified"
+        @unknown default:
+            fatalError()
         }
     }
 
