@@ -6,50 +6,71 @@ import Foundation
 //: Rozwijanie Funkcji to technika przy użyciu której jedna metoda zwraca inna ale z mniejszą ilością parametrów. Z czego ta "wewnętrzna metoda" ma dostęp do wszystkich wcześniej podanych.
 
 
-func dodajProduktZwyczajie(_ produkt: String, cena: Double) -> ((Int) -> String) {
+func addToCartNormal(_ product: String, price: Double) -> ((Int) -> String) {
 
-    func znizka(_ iloscSztuk: Int) -> String {
-        let przyznanaZnizka: Double
+    func discountFunction(_ count: Int) -> String {
+        let discountAmount: Double
 
-        switch iloscSztuk {
+        switch count {
         case ...10:
-            przyznanaZnizka = 1.0
+            discountAmount = 1.0
         case 11...20:
-            przyznanaZnizka = 0.9
+            discountAmount = 0.9
         default:
-            przyznanaZnizka = 0.8
+            discountAmount = 0.8
         }
 
-        return String(format: "Kupujesz \(iloscSztuk) razy \"\(produkt)\" każdy po cenie %.2f co daje łaćznie: %.2f", cena * przyznanaZnizka, cena * przyznanaZnizka * Double(iloscSztuk))
+        return String(format: "Kupujesz \(count) razy \"\(product)\" każda po cenie %.2f co daje łącznie: %.2f", price * discountAmount, price * discountAmount * Double(count))
     }
 
-    return znizka
+    return discountFunction
 }
 
-let produktDoKupienia = dodajProduktZwyczajie("Złote Galoty", cena: 100)
-print(produktDoKupienia(5))
+let itemToBuy = addToCartNormal("Złote Galoty", price: 100)
+print(itemToBuy(5))
 
 
-func dodajZwiniety(_ produkt: String, cena: Double) -> ((Int) -> String) {
-    return { (iloscSztuk: Int) -> String in
+/*:
+Wersja rozwinięta wygląda tak. Zwróć uwagę, że mamy to funkcję, która zwraca funkcję, która zwraca funkcję ;) Logika jest ta sama ;)
+ */
+func addCurriedVersion(_ product: String) -> (Double) -> ((Int) -> String) {
 
-        let przyznanaZnizka: Double
+    return { (price: Double) in
 
-        switch iloscSztuk {
-        case ...10:
-            przyznanaZnizka = 1.0
-        case 11...20:
-            przyznanaZnizka = 0.9
-        default:
-            przyznanaZnizka = 0.8
+        return { (count: Int) -> String in
+
+            let discountAmount: Double
+
+            switch count {
+            case ...10:
+                discountAmount = 1.0
+            case 11...20:
+                discountAmount = 0.9
+            default:
+                discountAmount = 0.8
+            }
+
+            return String(format: "Kupujesz \(count) razy \"\(product)\" każda po cenie %.2f co daje łącznie: %.2f", price * discountAmount, price * discountAmount * Double(count))
         }
-
-        return String(format: "Kupujesz \(iloscSztuk) razy \"\(produkt)\" każdy po cenie %.2f co daje łaćznie: %.2f", cena * przyznanaZnizka, cena * przyznanaZnizka * Double(iloscSztuk))
     }
 }
 
-let dodanyZwiniety = dodajZwiniety("Brązowe Galoty", cena: 100)
-print(dodanyZwiniety(5))
+let browPantiesWaitingForPriceInformationFunction = addCurriedVersion("Brązowe Galoty")
+
+/*:
+`browPanties...` ma w sobie zapieczoną informację o produkcie. Jest to bezpiecznie zamknięte wewnątrz bez możliwości podmiany tego produktu. W następnym kroku powiemy tej funkcji jaka jest cena za jedną sztukę produktu i w zamian otrzymamy kolejną funkcje!
+ */
+
+let calculatePriceWithDiscountWaitingForItemsCount = browPantiesWaitingForPriceInformationFunction(100)
+
+print(
+    "-",
+    calculatePriceWithDiscountWaitingForItemsCount(1),
+    calculatePriceWithDiscountWaitingForItemsCount(5),
+    calculatePriceWithDiscountWaitingForItemsCount(15),
+    calculatePriceWithDiscountWaitingForItemsCount(55),
+    separator: "\n"
+)
 
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
