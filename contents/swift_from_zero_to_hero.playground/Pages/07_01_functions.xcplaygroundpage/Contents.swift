@@ -70,8 +70,11 @@ func quoteWithOptionalAuthor(_ quote: String, author: String? = nil) {
 
 quoteWithOptionalAuthor("Gdzie kucharek sześć tam...")
 
-//: A co jeżei nie wiemy ile chcemy tych parametrów... na to mamy i takiego wariata ;) Aby określić, że funkcja przyjmuje zmienną ilość argumentów za typem parametru dodajemy "...". Wewnątrz funkcji otrzymamy Swiftową tablicę tego typu. Trzeba przynać, że jest to o wiele przyjemniejsza składnia niż w C/ObjC.
+/*:
+A co jeżeli nie wiemy ile chcemy tych parametrów... na to mamy i takiego wariata ;) Aby określić, że funkcja przyjmuje zmienną ilość argumentów za typem parametru dodajemy "...". Wewnątrz funkcji otrzymamy Swiftową tablicę tego typu. Trzeba przyznać, że jest to o wiele przyjemniejsza składnia niż w C/ObjC.
 
+Napiszemy funkcję, która zsumuje wszystkie przekazane liczby. Zrobimy to przy użyciu innej funkcji o nazwie `reduce`. Jak ta funkcja działa nie jest ważne w tym momencie. Istotne jest to, że w jednej funkcji możemy wywoływać inne funkcje.d
+ */
 func sumNumbers(_ numbers: Int...) -> Int {
     type(of: numbers)
 
@@ -80,7 +83,12 @@ func sumNumbers(_ numbers: Int...) -> Int {
 
 sumNumbers(1,2,3,4,5)
 
-//: ## Przeciążanie Funkcji
+/*:
+ ## Przeciążanie Funkcji
+
+ Dobra nazwa jest jak złoto. Nie warto jej marnować dlatego istnieje mechanizm w języku pozwalający na ponowne jej użycie. To czym się musi różnić to typy argumentów.
+
+ */
 
 func doStuff(_ z: String) { z }
 func doStuff(_ z: Int) { z }
@@ -89,11 +97,32 @@ func doStuff(_ z: Int) { z }
 //: W tym wypadku Swift podejmuje decyzję którą funkcje zawołać w czasie kompilacji. Sprawy mają się troszeczkę inaczej jeżeli funkcja/metoda zdefiniowana w klasie i inna klasa ją przeciąża, ale o tym póxniej 🤓
 type(of: (doStuff as (String)->Void))
 type(of: (doStuff as (Int)->Void))
-//func robiCos(zCzymsInnym: Int) {} // 💥
 
-//: Bardzo ciekawym przypadkiem są [__operatory__](07_05_operatory) (+, -, *, / etc.) gdyż są one przeciążonymi funkcjami.
+/*:
+## Zwracana Wartość
 
-6 + 9 // klikamy z altem na "+"
+ **Każda funkcja w Swift zwraca wartość!**. Typ zwracanej wartości może być pominięty jeżeli jest to `Void` lub jak wiemy pusta krotka `()`. Nie musimy jego deklarowac i nie musimy jego zwracać. Kompilator zrobi to za nas. Poniższe dwie funkcje maja ten sam typ i _pod spodem_ są identyczne.
+ */
+
+func returnVoidSilent() {}
+func returnVoidExplicit() -> Void { return () }
+
+type(of: returnVoidSilent)
+type(of: returnVoidExplicit)
+
+/*:
+W obu przypadkach typ jest `() -> ()` czyli "funkcja, która nie przyjmuje żadnych argumentów i **nic** nie zwraca". Zaraz, zaraz. Powiedziałem, że nic nie zwraca a jednak zwraca? To jak to jest?
+
+ To cudo _zwracane_ na końcu funkcji to jest taki sprytny _hak_ aby komputer wiedział kiedy funkcja zakończyła działanie. Nazwa `Void` sugerująca _nic_ lub _próżnię_ w tym wypadku jest trochę myląca. Przecież pusta krotka to nie jest nic! Natomiast nie mamy za dużego wyboru i w zależności od kontekstu może znaczyć różne rzeczy. Polecam poszukać "bottom" jeżeli ten wątek wydaje się interesujący.
+
+ */
+
+
+//: Bardzo ciekawym przypadkiem są [__operatory__](07_05_operatory) (+, -, *, / etc.) gdyż są one przeciążonymi funkcjami (ten sam symbol używam do _łączenia_ różnych wartości).
+
+ 6  +  9 // klikamy z altem na "+"
+"a" + "b"
+[1] + [2]
 
 //: Możemy nawet taki operator przypisać do zmiennej jednak musimy podać konkretny "wariant przeciążenia" aby kompilator wiedział o którą wersje nam chodzi.
 
