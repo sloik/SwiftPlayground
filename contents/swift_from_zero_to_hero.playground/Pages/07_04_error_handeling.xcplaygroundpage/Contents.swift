@@ -3,28 +3,28 @@
 
 import Foundation
 
-let wystapilBabol1 =  arc4random_uniform(2) == 1
-let wystapilBabol2 =  arc4random_uniform(2) == 1
+let error1 =  arc4random_uniform(2) == 1
+let error2 =  arc4random_uniform(2) == 1
 
 //: Klasy, struktury oraz enumeracje mogą być użyte do stworzenia _błędu_ .
 
-enum CosWybuchlo: Error {
-    case mialesPecha
-    case zwarcie(kod: Int, nazwaFunkcji: String, linijka: Int)
+enum SomethingWentWrong: Error {
+    case badLuck
+    case ups(code: Int, function: String, line: Int)
 }
 
-func mozeWybuchnac() throws {
+func mayExplode() throws {
     defer {
-        print("🤔 Wystapil babol1: \(wystapilBabol1)\t\tWystapil babol2: \(wystapilBabol2)")
+        print("🤔 Wystapil babol1: \(error1)\t\tWystapil babol2: \(error2)")
     }
 
 
-    guard wystapilBabol1 == false else {
-        throw CosWybuchlo.mialesPecha
+    guard error1 == false else {
+        throw SomethingWentWrong.badLuck
     }
 
-    guard wystapilBabol2 == false else {
-        throw CosWybuchlo.zwarcie(kod: 69, nazwaFunkcji: #function, linijka: #line)
+    guard error2 == false else {
+        throw SomethingWentWrong.ups(code: 69, function: #function, line: #line)
     }
 
     print("😎 jednak nie wybuchło")
@@ -32,14 +32,14 @@ func mozeWybuchnac() throws {
 
 do {
 
-    try mozeWybuchnac()
+    try mayExplode()
     print("🍻 wszystko działa")
 
-} catch CosWybuchlo.mialesPecha {
+} catch SomethingWentWrong.badLuck {
 
     print("💥 jak pech to pech")
 
-} catch let CosWybuchlo.zwarcie(kod, funkcja, linijka) where kod > 42 {
+} catch let SomethingWentWrong.ups(kod, funkcja, linijka) where kod > 42 {
 
     print("💥 Cos wybuchło w funkcji: \"\(funkcja)\" w linijce: \"\(linijka)\"")
 
@@ -54,9 +54,9 @@ do {
 //: * funkcja wołająca łapie błąd "handluje"
 //: * i/lub rzuca błąd dalej
 
-func wolajacaWybuchajaca() {
+func functionCallingMayExplode() {
     do {
-    try mozeWybuchnac()
+    try mayExplode()
     } catch {
         print("😱 wołająca ohandlowała")
     }
@@ -64,33 +64,33 @@ func wolajacaWybuchajaca() {
 
 print("\n.   .   .   .   .   .   .   . \n")
 
-wolajacaWybuchajaca()
+functionCallingMayExplode()
 
 //: Teraz fragment wywołujący tą funkcje musi albo "ohandlować" błąd albo sam "rzucać" go dalej.
-func wolajacaWybuchajacaDalej() throws {
-        try mozeWybuchnac()
+func functionThatItSelfMayExplode() throws {
+        try mayExplode()
 }
 
 print("\n-   -   -   -   -   -   -   - \n")
 do {
-    try wolajacaWybuchajacaDalej()
+    try functionThatItSelfMayExplode()
 } catch {
     print("💥 handlujemy error: \(error)")
 }
 
 //: Funkcja która może "rzucić błąd" również może zwracać wartość.
 
-func sensZyciaKtoryMozeZawiesc() throws -> Int {
-//    throw CosWybuchlo.MialesPecha
+func meaningOfLifeThatMayExplode() throws -> Int {
+    throw SomethingWentWrong.badLuck
     return 42
 }
 
-var jakiJestSensZycia = try? sensZyciaKtoryMozeZawiesc()
-type(of: jakiJestSensZycia)
-jakiJestSensZycia
+var whatsTheMeaningOfLife = try? meaningOfLifeThatMayExplode()
+type(of: whatsTheMeaningOfLife)
+whatsTheMeaningOfLife
 
-jakiJestSensZycia = try! sensZyciaKtoryMozeZawiesc()
-type(of: jakiJestSensZycia)
-jakiJestSensZycia
+whatsTheMeaningOfLife = try! meaningOfLifeThatMayExplode()
+type(of: whatsTheMeaningOfLife)
+whatsTheMeaningOfLife
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)

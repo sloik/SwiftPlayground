@@ -7,8 +7,8 @@ import UIKit
 
 //: Możemy nawet taki operator przypisać do zmiennej jednak musimy podać konkretny "wariant przeciążenia" aby kompilator wiedział o którą wersje nam chodzi.
 
-let dodawacz: (Int, Int) -> Int = (+)
-dodawacz(6,9)
+let adder: (Int, Int) -> Int = (+)
+adder(6,9)
 
 /*:
 ## [Własne Operatory](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/AdvancedOperators.html#//apple_ref/doc/uid/TP40014097-CH27-ID46)
@@ -17,8 +17,8 @@ Operatory mogą się zaczynać od znaków: .., /, =, -, +, !, *, %, <, >, &, |, 
 [Dokumentacja](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/LexicalStructure.html#//apple_ref/doc/uid/TP40014097-CH30-ID418)
 */
 
-let punktA = CGPoint(x: 6, y: 9)
-let punktB = CGPoint(x: 4, y: 2)
+let pointA = CGPoint(x: 6, y: 9)
+let pointB = CGPoint(x: 4, y: 2)
 
 /*:
 [Dokumentacja](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/AdvancedOperators.html#//apple_ref/doc/uid/TP40014097-CH27-ID41)
@@ -29,21 +29,21 @@ Operator __associativity__ defines how operators of the same precedence are grou
 */
 
 //: [Mechanizm zastępujący numeryczne wartości](https://github.com/apple/swift-evolution/blob/master/proposals/0077-operator-precedence.md)
-precedencegroup Wymyslona {
+precedencegroup MadeUpName {
     higherThan: AdditionPrecedence
     lowerThan: BitwiseShiftPrecedence
     associativity: left
 }
 
-infix operator -<==>- : Wymyslona
+infix operator -<==>- : MadeUpName
 extension CGPoint {
-    static func -<==>- (lewa: CGPoint, prawa: CGPoint) -> Bool {
-        return (lewa.x == prawa.x) && (lewa.y == prawa.y)
+    static func -<==>- (left: CGPoint, right: CGPoint) -> Bool {
+        return (left.x == right.x) && (left.y == right.y)
     }
 }
 
-punktA -<==>- punktB
-punktA -<==>- punktA
+pointA -<==>- pointB
+pointA -<==>- pointA
 
 //: ## Operator Wyrażeń / [Pattern-Matching Operator](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Patterns.html#//apple_ref/doc/uid/TP40014097-CH36-ID426)
 
@@ -51,8 +51,8 @@ punktA -<==>- punktA
 
 //42 ~= "42"
 
-//func ~=(liczba: Int, text: String) -> Bool {
-//   return "\(liczba)" == text
+//func ~=(number: Int, text: String) -> Bool {
+//   return "\(number)" == text
 //}
 
 for i in 0...10 {

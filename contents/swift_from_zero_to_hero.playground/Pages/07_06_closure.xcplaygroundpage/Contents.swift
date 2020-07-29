@@ -7,113 +7,111 @@ import Foundation
 
 let ipsum = "Drogi Marszałku, Wysoka Izbo. PKB rośnie. Różnorakie i określenia modelu rozwoju. W związku z powodu kolejnych kroków w kształtowaniu odpowiednich warunków administracyjno-finansowych. Już nie trzeba udowadniać, ponieważ zakup nowego sprzętu pomaga w tym zakresie zabezpiecza udział szerokiej grupie w restrukturyzacji przedsiębiorstwa."
 
-let poWyrazie =
+let byWord =
     ipsum
         .split { $0 == " " }
         .map { String($0) }
 
 
-var wielkieWyrazy = poWyrazie.filter({ (wyraz: String) -> Bool in
-    return wyraz.first == wyraz.uppercased().first
+var uppercasedWords = byWord.filter({ (word: String) -> Bool in
+    return word.first == word.uppercased().first
 })
 
-print(wielkieWyrazy)
+print(uppercasedWords)
 
 //: Jeżeli blok jest ostatnim parametrem do funkcji to może sotać napisany za nawiasami ()
 
-wielkieWyrazy = poWyrazie.filter() { (wyraz: String) -> Bool in
-    return wyraz.first == wyraz.uppercased().first
+uppercasedWords = byWord.filter() { (word: String) -> Bool in
+    return word.first == word.uppercased().first
 }
 
-print(wielkieWyrazy)
+print(uppercasedWords)
 
 //: Dodatkowo jeżeli funkcja nie przyjmuje żadnych wymaganych argumentów to i same nawiasny można pominąć.
 
-wielkieWyrazy = poWyrazie.filter { (wyraz: String) -> Bool in
-    return wyraz.first == wyraz.uppercased().first
+uppercasedWords = byWord.filter { (word: String) -> Bool in
+    return word.first == word.uppercased().first
 }
 
-print(wielkieWyrazy)
+print(uppercasedWords)
 
 //: Jeżeli kompilator jest w stanie wywnioskować typ przekazywanych agumentów to go również można pominąć.
 
-wielkieWyrazy = poWyrazie.filter() { wyraz -> Bool in
-    return wyraz.first == wyraz.uppercased().first
+uppercasedWords = byWord.filter() { word -> Bool in
+    return word.first == word.uppercased().first
 
 }
 
-print(wielkieWyrazy)
+print(uppercasedWords)
 
 //: Idąc dalej jeżeli kompilator jest w stanie wywnioskować zwracany typ z bloku to go też możemy pominąć.
 
-wielkieWyrazy = poWyrazie.filter() { wyraz in
-    return wyraz.first == wyraz.uppercased().first
+uppercasedWords = byWord.filter() { word in
+    return word.first == word.uppercased().first
 
 }
 
-print(wielkieWyrazy)
+print(uppercasedWords)
 
 //: Jeżeli blok zawiera tylko jedną linijkę kodu to można pominąć słowo kluczowe _return_ .
 
-wielkieWyrazy = poWyrazie.filter() { wyraz in
-    wyraz.first == wyraz.uppercased().first
+uppercasedWords = byWord.filter() { word in
+    word.first == word.uppercased().first
 }
 
-print(wielkieWyrazy)
+print(uppercasedWords)
 
 //: Jeżeli nie chcemy to nie musimy nawet nazywać parametrów w bloku.
 
-wielkieWyrazy = poWyrazie.filter() {
+uppercasedWords = byWord.filter() {
     $0.first == $0.uppercased().first
 }
 
-print("\(wielkieWyrazy)")
+print("\(uppercasedWords)")
 
 //: Jeżeli funkcja nie przyjmuje innych argumentów lub mają one domyślne wartości to można się też pozbyć nawiasów () za nazwą funkcji.
 
-wielkieWyrazy = poWyrazie.filter {
+uppercasedWords = byWord.filter {
     $0.first == $0.uppercased().first
 }
 
-print("\(wielkieWyrazy)" + "\n")
+print("\(uppercasedWords)" + "\n")
 
 //: ## Użycie Bloku Inline
 //: Bloków można użyc do przypisania wartości do zmiennej np.
 
-let losowyWyraz: String = {
-    let losowyIndex = Int(arc4random_uniform(UInt32(wielkieWyrazy.count)))
-    return wielkieWyrazy[losowyIndex]
+let randomWord: String = {
+    byWord.randomElement()!
 }() // <-- ()
 
 //: Przypisanie Bloku do Zmiennej
 
-let krasomowca = { print("Można pić bez obawień") }
-type(of: krasomowca)
-krasomowca()
+let prettyTalker = { print("Można pić bez obawień") }
+type(of: prettyTalker)
+prettyTalker()
 
-let losowyWielkiWyraz: () -> String = {
-    let losowyIndex = Int(arc4random_uniform(UInt32(wielkieWyrazy.count)))
-    return wielkieWyrazy[losowyIndex]
+let randomUppercasedWords: () -> String = {
+    uppercasedWords.randomElement()!
 }
 
-print(losowyWielkiWyraz())
+print(randomUppercasedWords())
 
 //: Inny przykład
 
 let t1 = 40
 let t2 = 2
 
-func dodajDwieLiczby(_ liczba1: Int, liczba2: Int) -> Int {
-    return liczba1 + liczba2
+func addTwoNumbers(_ number1: Int, number2: Int) -> Int {
+    return number1 + number2
 }
-let sumaLiczb = dodajDwieLiczby(t1, liczba2: t2)
+let sumOfNumbers = addTwoNumbers(t1, number2: t2)
 
-let dodawacz: (_ a: Int, _ b: Int) -> Int = { (liczba1: Int, liczba2: Int) -> Int in
-    liczba1 + liczba2
+let adder: (_ a: Int, _ b: Int) -> Int = { (number1: Int, number2: Int) -> Int in
+    number1 + number2
 }
 
-type(of: dodajDwieLiczby) == type(of: dodawacz)
+type(of: addTwoNumbers) == type(of: adder)
 
-dodawacz(t1, t2) == sumaLiczb
+adder(t1, t2) == sumOfNumbers
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
