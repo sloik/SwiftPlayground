@@ -5,132 +5,145 @@ import UIKit
 
 //: Parametry przekazywane są jako stałe.
 
-var liczba = 42
+var number = 42
 
 //: [Wiecej atrybutów do @available](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Attributes.html)
 @available(*, introduced: 1.2, deprecated: 2.0, message: "ta metoda wybucha, użyj lepiej bierzeIntaJakoZmienna")
-func bierzeInta(_ parametr:Int) {
-    //    parametr -= 2 // 💥
+func takesInt(_ parametr: Int) {
+//        parametr -= 2 // 💥
 }
 
-bierzeInta(liczba)
+takesInt(number)
+number
 
-liczba
-
-func bierzeIntaJakoZmienna(_ liczba:Int) {
-    var liczba = liczba
-    liczba -= 2
+/*:
+W funkcji `takesInt` nazwany argument jest przekazany jako stała. A co za tym idzie nie możemy go mutować. Gdy zachodzi taka potrzeba możemy stworzyć lokalną (dla funkcji) zmienna i ją mutować. Uwaga nazwa jest ta sama ale używamy tutaj mechanizmu przysłzniania.
+*/
+func takesIntAndMutatesIt(_ number: Int) {
+    var number = number
+    number -= 2
 }
 
-bierzeIntaJakoZmienna(liczba) // przkazna jest kopia
-liczba
+takesIntAndMutatesIt(number) // przekazana jest kopia
+number
 
-//: ### In - Out
-//: Aby móc zmienić przekazny parametr musimy użyć słowa kluczowego __inout__ .
+/*:
+Aby móc zmienić przekazywany parametr musimy użyć słowa kluczowego __inout__ .
 
-func bierzeIntOrazGoZmienia(_ liczba: inout Int) {
-    guard liczba >= 2 else {
+ ### In - Out
+ */
+
+func takeAnIntAndMutatesIt(_ number: inout Int) {
+    guard number >= 2 else {
         return
     }
 
-    liczba -= 2
+    number -= 2
 }
 
-liczba = 42
-bierzeIntOrazGoZmienia(&liczba)
-liczba
+number = 42
+takeAnIntAndMutatesIt(&number)
+number
 
-//: Przydatną praktyką jest komentowanie metod. Dzieki temu w __Quick help__ będziemy mogli zobaczyć bardzo użyteczny opis.
+/*:
+Jak widać zmienna z poza funkcji ma wartość ustaloną wewnątrz funkcji. Co jest bardzo fajne język wymusza specjalną adnotacje przy pomocy symbolu `&`. Dzięki temu jasno widać, że dana wartość może zostać zamieniona.
+
+ Co jest jeszcze ciekawsze nie dzieje się to jak by można było przypuszczać za sprawą przekazania referencji do mutowanego obiektu. Nawet taka funkcja dostaje swoją lokalną kopie. Jedyne co się różni to w momencie _zwracania_ wartości (kończenia funkcji) po oryginalny adres w pamięci komputera jest wpisywana zmutowana instancja.
+
+ Można by się zastanowić po co tyle zachodu. I odpowiedzią jest wielowątkowość. Gdyby ta funkcja była uruchomiona na wielu wątkach to zachodziłoby ryzyko, że różne wątki w różnych momentach mutowałyby różne części obiektu. Jeżeli brzmi to zagmatwanie to dlatego, że trochę jest. Natomiast ponieważ w tym wypadku każde wywołanie otrzymuje swoją własną kopie to nie ma problemu ze współdzielonymi zasobami.
+ */
+
+//: Przydatną praktyką jest komentowanie metod. Dzięki temu w __Quick help__ będziemy mogli zobaczyć bardzo użyteczny opis.
 
 /**
 Przykładowa metoda służąca do pokazania w jaki sposób dodany komentarz pojawia się w podręcznej pomocy. Dobrą praktyką jest dokumentowanie co robi dana funkcja i czego się po niej można spodziewać.
 
-- parameter wejsciowy: Przykładowy parametr wejściowy, zostanie zwrócony jako pierwszy w tuplecie.
-- parameter liczba:    Przykładowy parametr wejściowy, zostanie zwrócony jako drugi w tuplecie.
+- parameter input: Przykładowy parametr wejściowy, zostanie zwrócony jako pierwszy w tuplecie.
+- parameter output:    Przykładowy parametr wejściowy, zostanie zwrócony jako drugi w tuplecie.
 
 - returns: Zwraca krotkę składającą się z przekazanych parametrów.
 */
-func metodaDoUdokumentowania(_ wejsciowy: String, liczba: Int) -> (wej: String, licz: Int) {
-    return (wejsciowy, liczba)
+func functionToDocument(_ input: String, output: Int) -> (in: String, out: Int) {
+    return (input, output)
 }
 
-let czyToDziała = metodaDoUdokumentowania("sprawdzam", liczba: 69)
-czyToDziała.wej
-czyToDziała.1
+let willThisWork = functionToDocument("sprawdzam", output: 69)
+willThisWork.in
+willThisWork.1
 
 //: ## Przekazywanie Typów Referencyjnych
 //: W tym wypadku w argumencie funkcji dostaniemy referencje ("wskazanie") do obiektu a nie jego kopie.
 
 let frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-let widok = UIView(frame: frame)
-widok.backgroundColor = UIColor.red
-Unmanaged.passUnretained(widok).toOpaque()
-widok
+let view = UIView(frame: frame)
+view.backgroundColor = UIColor.red
+Unmanaged.passUnretained(view).toOpaque()
+view
 
-func przyjmujeWidok(_ parametrWidok: UIView) {
-    Unmanaged.passUnretained(parametrWidok).toOpaque()
-    widok.backgroundColor = UIColor.green
+func takeInAView(_ view: UIView) {
+    Unmanaged.passUnretained(view).toOpaque()
+    view.backgroundColor = UIColor.green
 
-    //    parametrWidok = UIView() // 💥
+//    view = UIView() // 💥
 }
 
-przyjmujeWidok(widok)
+takeInAView(view)
 
-widok
+view
 
 //: Mimo, że __widok__ jest zdefiniowany jako stała (__let__) to ponieważ jest przekazany przez referencję wewnątrz funkcji można zmienić jego __nie stałe__ atrybuty.
 //: > Natomiast gdy przekażemy do funkcji referencje (typ referencyjny) i dodatkowo ten parametr jest __inout__ to wtedy wewnątrz funkcji będziemy mogli całkowicie podmienić obiekt na zupełnie nowy.
 
-func przyjmujeWidokInOut(_ widok: inout UIView) {
+func takeInAInOutView(_ view: inout UIView) {
 
-    widok = UIView(frame: CGRect(x: 0,y: 0, width: 50, height: 50))
-    widok.backgroundColor = UIColor.lightGray
+    view = UIView(frame: CGRect(x: 0,y: 0, width: 50, height: 50))
+    view.backgroundColor = UIColor.lightGray
 }
 
-var testowyWidok = UIView(frame: frame)
-testowyWidok.backgroundColor = UIColor.yellow
-testowyWidok
+var testView = UIView(frame: frame)
+testView.backgroundColor = UIColor.yellow
+testView
 
-let referencjaPrzed = Unmanaged.passUnretained(testowyWidok).toOpaque()
+let referenceBefore = Unmanaged.passUnretained(testView).toOpaque()
 
-przyjmujeWidokInOut(&testowyWidok)
+takeInAInOutView(&testView)
 
-let referencjaPo = Unmanaged.passUnretained(testowyWidok).toOpaque()
+let referenceAfter = Unmanaged.passUnretained(testView).toOpaque()
 
-testowyWidok
+testView
 
-referencjaPrzed == referencjaPo
+referenceBefore == referenceAfter
 
 //: ## Przekazywanie Funkcji Jako Argumentu Do Funkcji
 
-func dodajLiczby(_ a: Int, _ b:Int) -> Int {
+func addNumbers(_ a: Int, _ b:Int) -> Int {
     return a + b
 }
-type(of: dodajLiczby)
+type(of: addNumbers)
 
-func wykonajOperacje(_ operacja: (Int, Int) -> Int, l1: Int, l2: Int) -> Int {
-    return operacja(l1, l2)
+func doOperation(_ operation: (Int, Int) -> Int, l1: Int, l2: Int) -> Int {
+    operation(l1, l2)
 }
 
-let wynik = wykonajOperacje(dodajLiczby, l1: 40, l2: 2)
-wynik
+let result = doOperation(addNumbers, l1: 40, l2: 2)
+result
 
 //: ## Zwracanie Funkcji i Zagnieżdżanie Funkcji
-//: Funkcje mogą zwracać funkcje. Wtedy ich zwracany typ to typ zwracanej funkcji. Jeden przykład jest wart tysiąca słów...
+//: Funkcje mogą zwracać funkcje. Wtedy ich zwracany typ to typ zwracanej funkcji. Jeden przykład jest wart tysiąca słów... a na kanale mamy osobne odcinki, które zagłębiają się w temat żonglowania funkcjami.
 
-func zapodajCytat() -> (() -> String) { // ... -> () -> String
+func returnAnotherFunction() -> ( () -> String ) { // ... -> () -> String
 
-    func zwracaCytat() -> String {
-        return "Można pić bez obawień"
+    func quoteFunction() -> String {
+        "Można pić bez obawień"
     }
-    type(of: zwracaCytat)
+    type(of: quoteFunction)
 
-    return zwracaCytat
+    return quoteFunction
 }
 
-let jakasFunkcja = zapodajCytat()
-type(of: jakasFunkcja)
+let someFunction = returnAnotherFunction()
+type(of: someFunction)
 
-jakasFunkcja()
+someFunction()
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
