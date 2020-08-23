@@ -121,7 +121,7 @@ class Pogoda: MojaKlasa {
     convenience init?(miasto: String?, temperatura: Int) { // 💡: init!(...
         self.init(maxTemperatura: 1000)
 
-        guard let miasto = miasto , miasto.characters.count > 0 else {
+        guard let miasto = miasto , miasto.count > 0 else {
             return nil // Jedyny moment kiedy możemy zwrócić coś w "inicie"
         }
 
