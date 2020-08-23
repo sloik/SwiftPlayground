@@ -3,8 +3,8 @@
 
 import Foundation
 
-let error1 =  arc4random_uniform(2) == 1
-let error2 =  arc4random_uniform(2) == 1
+let error1 =  Bool.random()
+let error2 =  Bool.random()
 
 //: Klasy, struktury oraz enumeracje mogą być użyte do stworzenia _błędu_ .
 
