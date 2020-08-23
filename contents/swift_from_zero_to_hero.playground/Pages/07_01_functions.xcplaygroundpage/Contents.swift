@@ -45,7 +45,7 @@ var sumOfNumbers = addTwoNumbers(40, 2)
 //: Typy argumentów oraz zwracany typ tworzą razem coś co nazywa się "typem funkcji".
 type(of: addTwoNumbers)
 
-//: Możemy też stworzyć zmienną, która będzie nam "przechowywać" funkcje. Kluczowe jest użycie __samej__ nazwy funkcji.
+//: Możemy też stworzyć referencje (wskazanie), która będzie "przechowywać" funkcje. Kluczowe jest użycie __samej__ nazwy funkcji.
 
 let function = addTwoNumbers
 
