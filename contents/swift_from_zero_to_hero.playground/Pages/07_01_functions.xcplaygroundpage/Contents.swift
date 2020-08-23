@@ -23,6 +23,10 @@ func quoteWithArguments(quote: String, whoSaidId author: String) {
     print("\"\(quote)\"\n\t\t-- \(author)\n")
 }
 
+/*:
+ Warto zauważyć, że `whoSaidId` jest widoczna _na zewnątrz_ funkcji. W momencie gdy jest wywoływana. Wewnątrz ciała funkcji (pomiędzy klamrami `{}`) jest już użyta, krótsza nazwa `author`. Dzięki temu kod może być bardziej zwięzły a wywołanie lepiej oddawać _intencję_.
+ */
+
 quoteWithArguments(quote: "Badziewie do badziewia.", whoSaidId: "Wiesław Wszywka")
 
 //: Ponieważ są jeszcze pewne naleciałości nazewnicze z __Objective C👑__ to często pierwsza nazwa parametru znajduje się w nazwie metody.
