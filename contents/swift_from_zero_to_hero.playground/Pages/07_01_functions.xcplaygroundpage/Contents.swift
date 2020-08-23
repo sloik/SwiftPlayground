@@ -42,7 +42,11 @@ func addTwoNumbers(_ number1: Int, _ number2: Int) -> Int {
 
 var sumOfNumbers = addTwoNumbers(40, 2)
 
-//: Typy argumentów oraz zwracany typ tworzą razem coś co nazywa się "typem funkcji".
+/*:
+ Typy argumentów oraz zwracany typ tworzą razem coś co nazywa się "typem funkcji".
+ 
+ Natomiast gdy mówimy, że _coś jest jakiegoś typu_ to mamy na myśli, że może przyjąć wartość z góry ustalonego zbioru. Banalnym przykładem jest typ `Int`. Gdy jakaś zmienna/stała przechowuje wartość tego typu to wiemy, że może to być jakaś liczba całkowita np. -1, 42, etc.
+ */
 type(of: addTwoNumbers)
 
 //: Możemy też stworzyć referencje (wskazanie), która będzie "przechowywać" funkcje. Kluczowe jest użycie __samej__ nazwy funkcji.
