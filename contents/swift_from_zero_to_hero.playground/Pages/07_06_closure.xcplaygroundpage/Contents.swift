@@ -12,14 +12,30 @@ let byWord =
         .split { $0 == " " }
         .map { String($0) }
 
+/*:
+ Funkcja `split` oczekuje bloku/closure/domknięcia który będzie mówić _kiedy_ dany string ma być podzielony.
+ */
+
+run("🐭 by word") {
+    print(byWord)
+}
+
+/*:
+ Pełna składnia przekazania takiego bloku jako argumentu wgląda tak:
+ */
 
 var uppercasedWords = byWord.filter({ (word: String) -> Bool in
     return word.first == word.uppercased().first
 })
 
+/*:
+ Jest to troszeczkę hałaśliwe. Dużo nawiasów, paciorków, słów kluczowych. Zobaczmy wynik działania tej operacji i dalej zobaczymy kiedy można pominąć pewne fragmenty.
+ */
+
 print(uppercasedWords)
 
-//: Jeżeli blok jest ostatnim parametrem do funkcji to może sotać napisany za nawiasami ()
+
+//: Jeżeli blok jest ostatnim parametrem do funkcji to może zostać napisany za nawiasami ()
 
 uppercasedWords = byWord.filter() { (word: String) -> Bool in
     return word.first == word.uppercased().first
@@ -27,7 +43,7 @@ uppercasedWords = byWord.filter() { (word: String) -> Bool in
 
 print(uppercasedWords)
 
-//: Dodatkowo jeżeli funkcja nie przyjmuje żadnych wymaganych argumentów to i same nawiasny można pominąć.
+//: Dodatkowo jeżeli funkcja nie przyjmuje żadnych wymaganych argumentów to i same nawiasy można pominąć.
 
 uppercasedWords = byWord.filter { (word: String) -> Bool in
     return word.first == word.uppercased().first
@@ -35,9 +51,9 @@ uppercasedWords = byWord.filter { (word: String) -> Bool in
 
 print(uppercasedWords)
 
-//: Jeżeli kompilator jest w stanie wywnioskować typ przekazywanych agumentów to go również można pominąć.
+//: Jeżeli kompilator jest w stanie wywnioskować typ przekazywanych argumentów to go również można pominąć.
 
-uppercasedWords = byWord.filter() { word -> Bool in
+uppercasedWords = byWord.filter { word -> Bool in
     return word.first == word.uppercased().first
 
 }
@@ -46,39 +62,31 @@ print(uppercasedWords)
 
 //: Idąc dalej jeżeli kompilator jest w stanie wywnioskować zwracany typ z bloku to go też możemy pominąć.
 
-uppercasedWords = byWord.filter() { word in
+uppercasedWords = byWord.filter { word in
     return word.first == word.uppercased().first
 
 }
 
 print(uppercasedWords)
 
-//: Jeżeli blok zawiera tylko jedną linijkę kodu to można pominąć słowo kluczowe _return_ .
+//: Jeżeli blok zawiera tylko jedną linijkę kodu to można pominąć słowo kluczowe _return_.
 
-uppercasedWords = byWord.filter() { word in
+uppercasedWords = byWord.filter { word in
     word.first == word.uppercased().first
 }
 
 print(uppercasedWords)
 
-//: Jeżeli nie chcemy to nie musimy nawet nazywać parametrów w bloku.
-
-uppercasedWords = byWord.filter() {
-    $0.first == $0.uppercased().first
-}
-
-print("\(uppercasedWords)")
-
-//: Jeżeli funkcja nie przyjmuje innych argumentów lub mają one domyślne wartości to można się też pozbyć nawiasów () za nazwą funkcji.
+//: Jeżeli nie chcemy to nie musimy nawet nazywać parametrów w bloku. Odwołujemy się do nich przy pomocy notacji z `$`.
 
 uppercasedWords = byWord.filter {
     $0.first == $0.uppercased().first
 }
 
-print("\(uppercasedWords)" + "\n")
+print("\(uppercasedWords)")
 
 //: ## Użycie Bloku Inline
-//: Bloków można użyc do przypisania wartości do zmiennej np.
+//: Bloków można użyć do przypisania wartości początkowej do zmiennej lub stałej np.
 
 let randomWord: String = {
     byWord.randomElement()!
@@ -86,9 +94,19 @@ let randomWord: String = {
 
 //: Przypisanie Bloku do Zmiennej
 
-let prettyTalker = { print("Można pić bez obawień") }
+var prettyTalker = { print("Można pić bez obawień") }
 type(of: prettyTalker)
 prettyTalker()
+
+/*:
+ `prettyTalker` jest zmienna jak każda inna. Ale to co przechowuje to wskazanie/referencje na funkcję. Patrząc na typ funkcji `() -> ()` wiemy, że funkcja nie przyjmuje żadnych argumentów. Oraz, że nie zwraca żadnej wartości.
+ 
+ Technicznie to ostatnie zdanie to nie jest prawda. Ponieważ pusta krotka `()` jest _zawsze_ zwracana (dla funkcji, które jawnie nie zwracają wartości).
+ 
+ Coś na co warto zwrócić uwagę to często funkcje, które nie zwracają żadnej wartości (mające typ: `-> ()` lub `-> Void`) są wywołane po to aby **wykonać jakiś efekt uboczny**. To może być strzał do sieci, zapisanie czegoś w bazie, wypisanie do konsoli etc. Coś co sprawia, że świat zewnętrzny się zmienia. Resztę życia programiści poświęcają na poszukiwanie błędów związanych z niekontrolowanymi efektami ubocznymi.
+ 
+ Poniżej jeszcze jednak funkcja. Tym razem przypisana do stałej o nazwie `randomUppercasedWords`. Jak widać wewnątrz tego bloku kodu mamy dostęp do wszystkich stałych i zmiennych widocznych na tym poziomie w programie. Możemy więc je _domknąć_ w tych nawiasach i od tego momentu trzymać do nich referencje i w dowolnym momencie korzystać.
+ */
 
 let randomUppercasedWords: () -> String = {
     uppercasedWords.randomElement()!
@@ -101,17 +119,28 @@ print(randomUppercasedWords())
 let t1 = 40
 let t2 = 2
 
-func addTwoNumbers(_ number1: Int, number2: Int) -> Int {
+/*:
+ Definicja funkcji jak zwykle:
+ */
+func addTwoNumbers(_ number1: Int, _ number2: Int) -> Int {
     return number1 + number2
 }
-let sumOfNumbers = addTwoNumbers(t1, number2: t2)
+let sumOfNumbers = addTwoNumbers(t1, t2)
 
+/*:
+ To samo możemy zapisać inaczej. Wykorzystując stałą i nadać odpowiednie typy. Warto rzucić okiem gdzie jakie wartości wylądowały.
+ */
 let adder: (_ a: Int, _ b: Int) -> Int = { (number1: Int, number2: Int) -> Int in
     number1 + number2
 }
 
 type(of: addTwoNumbers) == type(of: adder)
 
-adder(t1, t2) == sumOfNumbers
+/*:
+ Wywołanie funkcji w jednym i drugim przypadku jest identyczne. Bez patrzenia w implementację nie można stwierdzić czy coś jest zdefiniowane jako _symbol_ funkcja gdzieś w programie czy jest to stała/zmienna przetrzymująca blok.
+ 
+ Tak na prawdę nie ma to większego znaczenia. Patrzymy na to samo ale pod innym kątem.
+ */
+adder(t1, t2) == addTwoNumbers(t1, t2)
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
