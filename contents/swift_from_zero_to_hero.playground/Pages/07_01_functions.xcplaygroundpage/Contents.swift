@@ -7,17 +7,17 @@ func justQuote() {
 }
 
 //: Funkcja przyjmująca parametr.
-func sayHi(_ name: String) {
+func sayHi(name: String) {
     print("Cześć \(name), będziesz to jeść?\n")
 }
 
 //: Funkcja przyjmująca więcej parametrów.
-func quote(_ quote: String, author: String) {
+func quote(quote: String, author: String) {
     print("\"\(quote)\"\n\t\t-- \(author)\n")
 }
 
 //: Funkcje wywołujemy podając jej nazwę i przekazując w parametrach niezbędne argumenty. Co ciekawe pierwszy argument nie jest nazwany. To co widać przy wywołaniu funkcji to _zewnętrzna nazwa parametru_ . Nazwa parametru użyta wewnątrz to _wewnętrzna nazwa parametru_ . Domyślnie zewnętrzna i wewnętrzna nazwa parametru jest taka sama.
-quote("Można pić bez obawień.", author: "Wiesław Wszywka")
+quote(quote: "Można pić bez obawień.", author: "Wiesław Wszywka")
 
 func quoteWithArguments(quote: String, whoSaidId author: String) {
     print("\"\(quote)\"\n\t\t-- \(author)\n")
