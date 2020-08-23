@@ -37,7 +37,7 @@ quoteAnQuote("Niebo w ziemi.", of: "Wiesław Wszywka")
 //: Jeżeli chcemy pozbyć się zewnętrznych parametrów w wywołaniu funkcji, możemy to zrobić zastepując je "_". Funkcje potrafią też zwracać wynik swojego działania. Oznacza się to przez strzłkę __ -> __ i podanie zwracanego typu.
 
 func addTwoNumbers(_ number1: Int, _ number2: Int) -> Int {
-    return number1 + number1
+    return number1 + number2
 }
 
 var sumOfNumbers = addTwoNumbers(40, 2)
