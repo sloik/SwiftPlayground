@@ -15,7 +15,7 @@ enum SomethingWentWrong: Error {
 
 func mayExplode() throws {
     defer {
-        print("🤔 Wystapil babol1: \(error1)\t\tWystapil babol2: \(error2)")
+        print("🤔 Wystąpił babol1: \(error1)\t\tWystąpił babol2: \(error2)")
     }
 
 
