@@ -17,7 +17,7 @@ takesInt(number)
 number
 
 /*:
-W funkcji `takesInt` nazwany argument jest przekazany jako stała. A co za tym idzie nie możemy go mutować. Gdy zachodzi taka potrzeba możemy stworzyć lokalną (dla funkcji) zmienna i ją mutować. Uwaga nazwa jest ta sama ale używamy tutaj mechanizmu przysłzniania.
+W funkcji `takesInt` nazwany argument jest przekazany jako stała. A co za tym idzie nie możemy go mutować. Gdy zachodzi taka potrzeba możemy stworzyć lokalną (dla funkcji) zmienna i ją mutować. Uwaga nazwa jest ta sama ale używamy tutaj mechanizmu przysłaniania (ang. shadowing).
 */
 func takesIntAndMutatesIt(_ number: Int) {
     var number = number
