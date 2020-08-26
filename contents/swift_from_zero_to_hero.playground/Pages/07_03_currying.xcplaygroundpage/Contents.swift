@@ -31,7 +31,7 @@ print(itemToBuy(5))
 
 
 /*:
-Wersja rozwinięta wygląda tak. Zwróć uwagę, że mamy to funkcję, która zwraca funkcję, która zwraca funkcję ;) Logika jest ta sama ;)
+Wersja rozwinięta wygląda tak. Zwróć uwagę, że mamy tu funkcję, która zwraca funkcję, która zwraca funkcję ;) Logika jest ta sama ;)
  */
 func addCurriedVersion(_ product: String) -> (Double) -> (Int) -> String {
 
