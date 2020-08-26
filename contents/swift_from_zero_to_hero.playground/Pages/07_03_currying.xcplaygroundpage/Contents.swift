@@ -3,7 +3,7 @@
 
 import Foundation
 
-//: Rozwijanie Funkcji to technika przy użyciu której jedna metoda zwraca inna ale z mniejszą ilością parametrów. Z czego ta "wewnętrzna metoda" ma dostęp do wszystkich wcześniej podanych.
+//: Rozwijanie Funkcji to technika przy użyciu której jedna metoda zwraca inną ale z mniejszą ilością parametrów. Z czego ta "wewnętrzna metoda" ma dostęp do wszystkich wcześniej podanych.
 
 
 func addToCartNormal(_ product: String, price: Double) -> ((Int) -> String) {
