@@ -3,7 +3,11 @@
 
 import Foundation
 
-//: Funkcje w Swift to tak naprawdę specjalne przypadki bloków. Same w sobie są _blokiem_ kodu który możemy użyć bezpośrednio, przekazać jako parametr lub przechować w zmiennej aby wywołać w bardziej odpowiednim czasie (lub dla czytelności kodu). 
+/*:
+ Funkcje w Swift to tak naprawdę specjalne przypadki bloków. Same w sobie są _blokiem_ kodu który możemy użyć bezpośrednio, przekazać jako parametr lub przechować w zmiennej aby wywołać w bardziej odpowiednim czasie (lub dla czytelności kodu).
+ 
+ > Inna nazwa jaką można spotka to: domknięcia (ang. closure) oraz lambda (λ taka grecka litera). Domknięcie odnosi się do tego jak blok _łapie_ (domyka) jakąś zmienną. Natomiast lambda to referencja do rachunku lambda wprowadzonego między innymi przez Alonzo Churcha (_Church encoding_).
+ */
 
 let ipsum = "Drogi Marszałku, Wysoka Izbo. PKB rośnie. Różnorakie i określenia modelu rozwoju. W związku z powodu kolejnych kroków w kształtowaniu odpowiednich warunków administracyjno-finansowych. Już nie trzeba udowadniać, ponieważ zakup nowego sprzętu pomaga w tym zakresie zabezpiecza udział szerokiej grupie w restrukturyzacji przedsiębiorstwa."
 
