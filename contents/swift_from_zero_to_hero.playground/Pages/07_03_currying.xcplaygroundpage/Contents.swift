@@ -55,13 +55,13 @@ func addCurriedVersion(_ product: String) -> (Double) -> (Int) -> String {
     }
 }
 
-let browPantiesWaitingForPriceInformationFunction = addCurriedVersion("Brązowe Galoty")
+let brownPantiesWaitingForPriceInformationFunction = addCurriedVersion("Brązowe Galoty")
 
 /*:
-`browPanties...` ma w sobie zapieczoną informację o produkcie. Jest to bezpiecznie zamknięte wewnątrz bez możliwości podmiany tego produktu. W następnym kroku powiemy tej funkcji jaka jest cena za jedną sztukę produktu i w zamian otrzymamy kolejną funkcje!
+`brownPanties...` ma w sobie zapieczoną informację o produkcie. Jest to bezpiecznie zamknięte wewnątrz bez możliwości podmiany tego produktu. W następnym kroku powiemy tej funkcji jaka jest cena za jedną sztukę produktu i w zamian otrzymamy kolejną funkcje!
  */
 
-let calculatePriceWithDiscountWaitingForItemsCount = browPantiesWaitingForPriceInformationFunction(100)
+let calculatePriceWithDiscountWaitingForItemsCount = brownPantiesWaitingForPriceInformationFunction(100)
 
 print(
     "-",
