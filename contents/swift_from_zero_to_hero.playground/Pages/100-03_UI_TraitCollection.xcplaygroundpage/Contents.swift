@@ -7,7 +7,7 @@ import UIKit
  A trait collection describes the iOS interface environment for your app, including traits such as horizontal and vertical size class, display scale, and user interface idiom. **To create an adaptive interface, write code to adjust your app’s layout according to changes in these traits.**
  
  ## Krótka Historia Czasu... tak jakby
- Na początku świat był bardzo prosty. Posiadał jeden wymiar, jedeną rozdzielczość a kciuk sięgał tam gdzie trzeba było bez potrzeby małpiej zręczności. Wyglądało to mniej więcej tak:
+ Na początku świat był bardzo prosty. Posiadał jeden wymiar, jedną rozdzielczość a kciuk sięgał tam gdzie trzeba było bez potrzeby małpiej zręczności. Wyglądało to mniej więcej tak:
  
  ![Pierwszy iPhone](1st_iphone.jpg)
  
@@ -17,7 +17,7 @@ import UIKit
  
  Tragedii jeszcze nie było. Przecież to jest tylko dodatkowe urządzenie ekstra z jedną rozdzielczością. Doliczając różne orientacje to i tak daje **tylko 4** kombinacje. W dalszym ciągu można było się śmiać z Androida, że ma tyle ekranów. I to było dobre 🍰
  
- Jednak jak wiemy taki stan rzeczy nie mógł pozostać na długo. Na skutek GMO i hormonów wzrostu dodawnych do pożywienia u ludzkości wykształciły się dłuższe kciuki. To pociągneło za sobą falę kolejnych urządzeń z różnymi rozmiarami a nawet z różną gęstością pikseli na ektanie! Do tego ktoś wpadł na pomysł, żeby uruchomić na urządzeniu mobilnym więcej jak jedną aplikację na raz. Piekło po prostu zamarzło 😵 No i nie można już było się śmiać z Androida 😢
+ Jednak jak wiemy taki stan rzeczy nie mógł pozostać na długo. Na skutek GMO i hormonów wzrostu dodawanych do pożywienia u ludzkości wykształciły się dłuższe kciuki. To pociągneło za sobą falę kolejnych urządzeń z różnymi rozmiarami a nawet z różną gęstością pikseli na ekranie! Do tego ktoś wpadł na pomysł, żeby uruchomić na urządzeniu mobilnym więcej jak jedną aplikację na raz. Piekło po prostu zamarzło 😵 No i nie można już było się śmiać z Androida 😢
  
  Dziś ten świat wygląda mniej więcej tak:
  
@@ -31,7 +31,7 @@ import UIKit
  
  ---
  ## Czego można się dowiedzieć z takiej kolekcji cech?
- W raz z powiekszaniem się ekosystemu urządzeń i ich cech klasa zyskiwała dodatkowe pola. Najświeże informacje jak zwykle w dokumentacji natomiast w dniu dzisiejszym kolekcja posiada informacje o następujących cechach:
+ W raz z powiększaniem się ekosystemu urządzeń i ich cech klasa zyskiwała dodatkowe pola. Najświeże informacje jak zwykle w dokumentacji natomiast w dniu dzisiejszym kolekcja posiada informacje o następujących cechach:
  * display scale (gęstość pikseli urządzenia)
  * horizontal size class
  * vertical size class
