@@ -20,7 +20,7 @@ func addToCartNormal(_ product: String, price: Double) -> ((Int) -> String) {
             discountAmount = 0.8
         }
 
-        return String(format: "Kupujesz \(count) razy \"\(product)\" każda po cenie %.2f co daje łącznie: %.2f", price * discountAmount, price * discountAmount * Double(count))
+        return String(format: "Kupujesz \(count) razy \"\(product)\" każde po cenie %.2f co daje łącznie: %.2f", price * discountAmount, price * discountAmount * Double(count))
     }
 
     return discountFunction
@@ -50,7 +50,7 @@ func addCurriedVersion(_ product: String) -> (Double) -> (Int) -> String {
                 discountAmount = 0.8
             }
 
-            return String(format: "Kupujesz \(count) razy \"\(product)\" każda po cenie %.2f co daje łącznie: %.2f", price * discountAmount, price * discountAmount * Double(count))
+            return String(format: "Kupujesz \(count) razy \"\(product)\" każde po cenie %.2f co daje łącznie: %.2f", price * discountAmount, price * discountAmount * Double(count))
         }
     }
 }
