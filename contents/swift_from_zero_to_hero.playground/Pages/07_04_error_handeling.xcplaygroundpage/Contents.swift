@@ -10,7 +10,7 @@ let error2 =  Bool.random()
 
 enum SomethingWentWrong: Error {
     case badLuck
-    case ups(code: Int, function: String, line: Int)
+    case ups(code: Int, function: StaticString = #function, line: Int = #line)
 }
 
 /*:
@@ -30,7 +30,7 @@ func mayExplode() throws {
     }
 
     guard error2 == false else {
-        throw SomethingWentWrong.ups(code: 69, function: #function, line: #line)
+        throw SomethingWentWrong.ups(code: 69)
     }
 
     print("😎 jednak nie wybuchło")
