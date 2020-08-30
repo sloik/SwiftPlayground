@@ -33,13 +33,13 @@
 * ## [Defer](06_04_defer)
 * ## [Optional Chaining](06_05_optional_chaining)
 
-> # Chapter 7 - Function / Closure / Anonnymouse Function
+> # Chapter 7 - Function / Closure / Anonymous Function
 * ## [Functions](07_01_functions)
 * ## [Passing Values / Inout](07_02_function_parameters)
 * ## [Currying](07_03_currying)
-* ## [Error handeling](07_04_error_handeling)
+* ## [Error handling](07_04_error_handling)
 * ## [Operatory](07_05_operatory)
-* ## [Closure / Anonymouse Function](07_06_closure)
+* ## [Closure / Anonymous Function](07_06_closure)
 
 > # Chapter 8 - Class, Structure, Enumeration
 * ## [What's a Class, Struct, Enumeration](08_01_class_struct_enum)
@@ -51,8 +51,8 @@
 > # Chapter 9 - Protocols
 * ## [Protocols](09_01_protocols)
 
-> # Chapter 10 - Inheritence / Extensions
-* ## [Inheritence](10_10_inheritence)
+> # Chapter 10 - Inheritance / Extensions
+* ## [Inheritance](10_10_inheritence)
 * ## [Extensions](10_11_extensions)
 
 > # Chapter 11 - Generics
