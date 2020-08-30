@@ -45,7 +45,7 @@ precedencegroup PointComperatorPrecedence {
 }
 
 /*:
- To co musimy zrobić to nadać jakąś nazwę tej grupie. Dzięki temu zawsze można _wepchnąć_ kolejną grupę po między już istniejące.
+ To co musimy zrobić to nadać jakąś nazwę tej grupie. Dzięki temu zawsze można _wepchnąć_ kolejną grupę pomiędzy już istniejące.
  
  Następnie określamy czy ma być wykonywana przed `higherThan` innym operatorem czy po `lowerThan`. Nie zawsze podawanie górnej i dolnej granicy jest potrzebne. I tak wyrażenie `2 + 2 * 2` powinno dać `6` ponieważ `*` jest _higherThan_ `+`. W bardziej skomplikowanych przypadkach polecam pisać nawiasy `2 + (2 * 2)`. Może i trochę więcej znaczków ale nie ma żadnych niedomówień.
  
