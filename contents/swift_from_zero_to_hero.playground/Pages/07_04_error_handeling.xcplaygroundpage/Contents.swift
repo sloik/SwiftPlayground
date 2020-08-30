@@ -3,9 +3,6 @@
 
 import Foundation
 
-let error1 =  Bool.random()
-let error2 =  Bool.random()
-
 //: Klasy, struktury oraz enumeracje mogą być użyte do stworzenia _błędu_. Aby to zrobić musimy je oznaczyć jako _konformujące do protokołu `Error`_. Jest to _marker protocol_ (nie zawiera żadnych wymagań).
 
 enum SomethingWentWrong: Error {
@@ -20,6 +17,8 @@ enum SomethingWentWrong: Error {
  */
 
 func mayExplode() throws {
+    let error1 =  Bool.random()
+    let error2 =  Bool.random()
     defer {
         print("🤔 Wystąpił babol1: \(error1)\t\tWystąpił babol2: \(error2)")
     }
