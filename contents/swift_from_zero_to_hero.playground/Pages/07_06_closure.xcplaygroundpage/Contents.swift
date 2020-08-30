@@ -81,7 +81,9 @@ uppercasedWords = byWord.filter { word in
 
 print(uppercasedWords)
 
-//: Jeżeli nie chcemy to nie musimy nawet nazywać parametrów w bloku. Odwołujemy się do nich przy pomocy notacji z `$`.
+/*:
+ Jeżeli nie chcemy to nie musimy nawet nazywać parametrów w bloku. Odwołujemy się do nich przy pomocy notacji z `$`. Do pierwszego argumentu można odwołać się korzystając z `$0`, do drugiego `$1` itd.
+ */
 
 uppercasedWords = byWord.filter {
     $0.first == $0.uppercased().first
