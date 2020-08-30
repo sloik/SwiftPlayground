@@ -116,6 +116,10 @@ default: print("🙈")
  # Podsumowanie
  
  Operatory to **zwykłe funkcje** które można wywołać w niezwykły sposób. Trzeba na nie nieco uważać gdyż jak jest ich za dużo to mogą sprawić, że kod jest trudny do zrozumienia. Jednak użyte odpowiednio sprawiają, że kod staje się bardziej ekspresyjny i zrozumiały.
+ 
+ ## Linki
+ 
+ * [Ray Wenderlich - Custom operators in Swift](https://www.raywenderlich.com/4018226-overloading-custom-operators-in-swift)
  */
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
