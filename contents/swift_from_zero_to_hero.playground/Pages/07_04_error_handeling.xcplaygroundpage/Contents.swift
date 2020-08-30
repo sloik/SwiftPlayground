@@ -45,26 +45,29 @@ func mayExplode() throws {
  Zobaczmy to w akcji:
  */
 
-do {
-
-    try mayExplode()
-    print("🍻 wszystko działa")
-
-} catch SomethingWentWrong.badLuck {
-
-    print("💥 jak pech to pech")
-
-} catch let SomethingWentWrong.ups(kod, funkcja, linijka) where kod > 42 {
-
-    print("💥 Cos wybuchło w funkcji: \"\(funkcja)\" w linijce: \"\(linijka)\"")
-
-} catch {
-    
+run("☄️☄️☄️ calling exploding function") {
+    do {
+        
+        try mayExplode()
+        print("🍻 wszystko działa")
+        
+    } catch SomethingWentWrong.badLuck {
+        
+        print("💥 jak pech to pech")
+        
+    } catch let SomethingWentWrong.ups(kod, funkcja, linijka) where kod > 42 {
+        
+        print("💥 Cos wybuchło w funkcji: \"\(funkcja)\" w linijce: \"\(linijka)\"")
+        
+    } catch {
+        
 //: nie jawnie jest tworzona lokalna zmienna __error__ do której możemy się odwoływać.
-    type(of: error)
-    print("💥 handlujemy error: \(error)")
+        type(of: error)
+        print("💥 handlujemy error: \(error)")
+    }
+    
 }
-
+    
 //: Jeżeli jakaś funkcja wywołuje funkcję, która może rzucić błąd to mamy dwie opcje:
 //: * funkcja wołająca łapie błąd "handluje"
 //: * i/lub rzuca błąd dalej
@@ -77,20 +80,21 @@ func functionCallingMayExplode() {
     }
 }
 
-print("\n.   .   .   .   .   .   .   . \n")
-
-functionCallingMayExplode()
+run("👘👘👘 calling function handles error") {
+    functionCallingMayExplode()
+}
 
 //: Teraz fragment wywołujący tą funkcje musi albo "ohandlować" błąd albo sam "rzucać" go dalej.
 func functionThatItSelfMayExplode() throws {
         try mayExplode()
 }
 
-print("\n-   -   -   -   -   -   -   - \n")
-do {
-    try functionThatItSelfMayExplode()
-} catch {
-    print("💥 handlujemy error: \(error)")
+run("🔥🔥🔥 calling function rethrows error") {
+    do {
+        try functionThatItSelfMayExplode()
+    } catch {
+        print("💥 handlujemy error: \(error)")
+    }
 }
 
 /*:

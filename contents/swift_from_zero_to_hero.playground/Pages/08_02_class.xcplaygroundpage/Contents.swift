@@ -3,33 +3,33 @@
 
 import Foundation
 
-protocol Pogodynka {}
+protocol Weatherable {}
 
-var opoznienie: UInt32 = 5
+var delay: UInt32 = 5
 //: Klasę definiujemy przy pomocy uzycia słowa kluczowego __class__ następnie nadajemy nazwę i {} w których znajduje się kod klasy.
-class MojaKlasa {
+class MyClass {
 
 }
 
 //: Klasa dziedzicząca po _MojaKlasa_ i implementujaca protokół _Pogodynka_ . Aby określić, że klasa dziedziczy po innej klasie należy po jej nazwie umieścić " __:__ " a następnie podać nazwę klasy po której dziecziny (_SuperKlasy_). Dalej po przecinku moża wymienić protokoły jakie implementuje klasa.
-class MojaPodklasa: MojaKlasa, Pogodynka {
+class MySubclass: MyClass, Weatherable {
 
 }
 
 
-class Pogoda: MojaKlasa {
+class Weather: MyClass {
 
 //: ### Właściwości Instancji
-    var temperatura: Int?       // nie musi mieć wartości
-    var wilgotnosc = 78         // przypisana domyśna wartość
-    let maxTemperatura:Int      // musi mieć wartość ale zostanie nadana w init
-    var miasto: String?
+    var temperature: Int?     // nie musi mieć wartości
+    var humidity = 78         // przypisana domyślna wartość
+    let maxTemperature:Int    // musi mieć wartość ale zostanie nadana w init
+    var city: String?
 
 //: ### Właściwości Klasy
-    static fileprivate(set) var liczbaStacjiPogodowych = 0
+    static fileprivate(set) var numberOfWeatherStations = 0
 
 //: ### [Obserwatory Właściwości](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Properties.html#//apple_ref/doc/uid/TP40014097-CH14-ID262) (nie KVO!).
-    var zachmurzenie: String {
+    var overcast: String {
 
         // Wywołane przed ustawieniem wartości.
         willSet {
@@ -37,30 +37,30 @@ class Pogoda: MojaKlasa {
         }
 
         // Wywołane po ustawieniu wartości.        
-        didSet(staraPogoda) {
-            print("Stara pogoda była: \(staraPogoda)")
+        didSet(oldOvercast) {
+            print("Stara pogoda była: \(oldOvercast)")
         }
     }
 
 //: ### Settery i Gettery
-    var tempOrazZach: (temp: Int?, zach: String) {
+    var tempWithOvercast: (temp: Int?, zach: String) {
         get {
-            return (temperatura, zachmurzenie)
+            return (temperature, overcast)
         }
 
 //: Mamy dostęp do przypisywanej pod stałą o nazwie **newValue**. Możemy też ją sami nazwać podająć jej nazwę w nawiasach za słowem kluczowym **set**.
         set { // 💡: set(nowaTemperaturaOrazNoweZachmurzenie) {
             type(of: newValue)
-            temperatura  = newValue.temp
-            zachmurzenie = newValue.1
+            temperature  = newValue.temp
+            overcast = newValue.1
         }
     }
 
 //: Jeżeli mamy tylko getter to można pominąć słowo kluczowe get.
 
-    var temperaturaF : Double? {
-        if let temperatura = temperatura {
-            return Double(temperatura) * 1.8 + Double(32)
+    var tempFarneheight : Double? {
+        if let temperature = temperature {
+            return Double(temperature) * 1.8 + Double(32)
         }
         else {
             return nil
@@ -70,11 +70,13 @@ class Pogoda: MojaKlasa {
 //: ### ["Lenive" właściwości.](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Properties.html#//apple_ref/doc/uid/TP40014097-CH14-ID257)
 //: W życiu czasem tak się zdaża, że pewne zasoby są dostępne dopiero po tym jak w pełni będzimy pełnoletni. Może też się tak wydarzyć, że nie chcemy płacić kosztu z tworzeniem lub rozpoczynaiem jakiegoś procesu gdy jest on rzadko używany. Korzystając z oznaczenia _właściwości_ jako _leniwej_ (**lazy**) możeby opóźnić wykonanie kodu inicjalizującego do momentu aż ktoś faktycznie z tego nie skorzysta. Blok, który jest użyty do inicjalizacji będzie wywołany tylko raz. Możemy też przypisać takiej zmiennej wartość póżnej (w przeciwieństwie do _wyliczonych właściwości_ ).
 
-    lazy var temperaturaOstatni30Dni: [Int] = {
+    lazy var tempLast30Days: [Int] = {
         var temp: [Int] = []
 
         print("🍴 Leniwe raz!")
-        sleep(opoznienie)
+        
+        sleep(delay)
+        
         for _ in 0..<30 {
             temp += [Int(arc4random_uniform(30))]
         }
@@ -85,68 +87,73 @@ class Pogoda: MojaKlasa {
 
 //: ## Nil Resetable
 
-    lazy var prowadzaca: String!  = {
+    lazy var weatherHost: String!  = {
         return "Mariana"
     }()
 
 //: ### [iniciajlizacja](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html)
 //: W Swift każda klasa musi posiadać __desygnowany initilizer__ jeżeli wszystkie nie opcjonalne właściwości/properties nie mają domyslnie przypisanej wartości. Jeżeli natomiast mają to jest automatycznie generowany pusty initilizer.
 
-    init(maxTemperatura: Int, rodzajDeszczu: String) { // brak 'func'
-        self.maxTemperatura = maxTemperatura
-        zachmurzenie  = rodzajDeszczu           // można pominąć 'self'
+    init(maxTemperature: Int, currentOvercast: String) { // brak 'func'
+        self.maxTemperature = maxTemperature
+        overcast  = currentOvercast           // można pominąć 'self'
 
-        Pogoda.liczbaStacjiPogodowych += 1
-        print(#function + "\tliczbaInstancji: \(Pogoda.liczbaStacjiPogodowych)")
+        Weather.numberOfWeatherStations += 1
+        print(#function + "\tliczbaInstancji: \(Weather.numberOfWeatherStations)")
         // 💡 brak zwrwacanej wartosci
     }
 
 //: Pomicnicze initilizery muszą być oznaczone słowem kluczowym __convenience__. Mogą wołać inne pomocnicze "inity" ale nie mogą wołać "initów" z superklasy.
-    convenience init(maxTemperatura: Int) {
-        self.init(maxTemperatura: maxTemperatura, rodzajDeszczu: "🌧")
+    convenience init(maxTemperature: Int) {
+        self.init(maxTemperature: maxTemperature, currentOvercast: "🌧")
 //        super.init() // 💥
     }
 
 //: Zanim kompilator zezwoli na odwolanie się do _self_ to instancja musi być w pełni zainicjalizowana. To znaczy wszystkie nie opcjonalne właściwości muszą mieć przypisaną wartość.
-    convenience init(maxTemperatura: Int, temperatura: Int) {
-//        self.temperatura = temperatura; // 💥
+    convenience init(maxTemperature: Int, temperature: Int) {
+//        self.temperature = temperature // 💥
 
-        self.init(maxTemperatura: maxTemperatura)
+        self.init(maxTemperature: maxTemperature)
 
-        self.temperatura = temperatura; // 👍🏻
+        self.temperature = temperature // 👍🏻
     }
 
 //: Nie zawsze inicjalizacja obiektu może się udać. Zabraknie pamięciu lub dane wprowadzone do "init"-a nie mają sensu. W takiej sytuacji chcemy pokazać, że jednak coś się nie udało. Służą do tego _fejlujące initializery_ ([dokumentacja](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html#//apple_ref/doc/uid/TP40014097-CH18-ID224)). Deklaruje je sie dodając **?** za **init**. Dość ciekawym kuriozum jest sytuacja w której jesteśmy pewni, że fejlujący init nigdy nie z fejluje. Wtedy możemy "?" zastąpić **!** i nie otrzymamy wtedy oprionala.
 
-    convenience init?(miasto: String?, temperatura: Int) { // 💡: init!(...
-        self.init(maxTemperatura: 1000)
+    convenience init?(city: String?, temperature: Int) { // 💡: init!(...
+        self.init(maxTemperature: 1000)
 
-        guard let miasto = miasto , miasto.count > 0 else {
+        city.map {
+            self.city = $0
+        }
+        guard let city = city , city.count > 0 else {
             return nil // Jedyny moment kiedy możemy zwrócić coś w "inicie"
         }
+        
+        
 
-        self.miasto = miasto
+        self.city = city
     }
 
     deinit {
-        Pogoda.liczbaStacjiPogodowych -= 1
-        print(#function + "\tliczbaInstancji: \(Pogoda.liczbaStacjiPogodowych)")
+        Weather.numberOfWeatherStations -= 1
+        print(#function + "\tliczbaInstancji: \(Weather.numberOfWeatherStations)")
     }
 
 //: ### Metody Instancji
-    func raportPogody() -> String {
+    func weatherReport() -> String {
         var raport = ""
 
-        if let miasto = miasto {
-            raport += "Pogoda dla miasta: \(miasto.uppercased())\n"
+        if let city = city {
+            raport += "Pogoda dla miasta: \(city.uppercased())\n"
         }
 
-        if let temperatura = temperatura {
-            raport += "\t Temperatura: \(temperatura)\n"
+        if let temperature = temperature {
+            raport += "\t Temperatura: \(temperature)\n"
         }
 
-        raport += "\tZachmurzenie: \(zachmurzenie)\n"
-        raport += "\t  Wilgotnosc: \(wilgotnosc)\n"
+        raport += "\tZachmurzenie: \(overcast)\n"
+        raport += "\t  Wilgotnosc: \(humidity)\n"
 
         print(raport)
 
@@ -154,155 +161,155 @@ class Pogoda: MojaKlasa {
     }
 
 //: Metody Klasowe / Metody Typu
-    static func nowaPogoda(_ miasto: String, temperatura: Int, maxTemperatura: Int, wilgotnosc: Int, rodzajDeszczu: String ) -> Pogoda {
+    static func newWeather(_ city: String, temperature: Int, maxTemperature: Int, humidity: Int, currentOvercast: String ) -> Weather {
 
-        let pogoda = Pogoda.init(maxTemperatura: maxTemperatura, rodzajDeszczu: rodzajDeszczu)
-        pogoda.wilgotnosc = wilgotnosc
-        pogoda.temperatura = temperatura
-        pogoda.miasto = miasto
+        let pogoda = Weather(maxTemperature: maxTemperature, currentOvercast: currentOvercast)
+        pogoda.humidity = humidity
+        pogoda.temperature = temperature
+        pogoda.city = city
 
         return pogoda
     }
 
-} // class Pogoda: MojaKlasa
+} // class Weather: MyClass
 
 //: Inaczej jak przy zwykłych funkcjach pierwszy podany argument jest widoczny przy wywołaniu. Jeżeli chcemy aby nie był widoczny w inicie możemy użyć "_" aby sie go pozbyć.
-let instancjaPogody = Pogoda(maxTemperatura: 10000)
-instancjaPogody.temperatura = 12
+let weatherInstance = Weather(maxTemperature: 10000)
+weatherInstance.temperature = 12
 
-let pogodaWMiescie = Pogoda(miasto: "Białystok", temperatura: 42) // 💡: !
-type(of: pogodaWMiescie)
-pogodaWMiescie
+let weatherInCity = Weather(city: "Białystok", temperature: 42) // 💡: !
+type(of: weatherInCity)
+weatherInCity
 
-pogodaWMiescie?.temperatura = 24
-pogodaWMiescie?.temperatura
+weatherInCity?.temperature = 24
+weatherInCity?.temperature
 
-instancjaPogody.tempOrazZach = (18, "🌥")
-instancjaPogody.tempOrazZach
-instancjaPogody.temperaturaF // google: 18 degrees Celsius = 64.4 degrees Fahrenheit
+weatherInstance.tempWithOvercast = (18, "🌥")
+weatherInstance.tempWithOvercast
+weatherInstance.tempFarneheight // google: 18 degrees Celsius = 64.4 degrees Fahrenheit
 
 //: ## Test Leniwych
 
 //instancjaPogody.temperaturaOstatni30Dni = [5,10,15] // 💡: zobacz co się stanie pod odkomentowaniu
 
-for temp in instancjaPogody.temperaturaOstatni30Dni {
+for temp in weatherInstance.tempLast30Days {
     temp
 }
 
 //: Co się stanie jak zawołam jeszcze raz?
-for temp in instancjaPogody.temperaturaOstatni30Dni {
+for temp in weatherInstance.tempLast30Days {
     temp
 }
 
-instancjaPogody.temperaturaOstatni30Dni = [5,10,15]
+weatherInstance.tempLast30Days = [5,10,15]
 //: Co się stanie jak zawołam jeszcze raz?
-for temp in instancjaPogody.temperaturaOstatni30Dni {
+for temp in weatherInstance.tempLast30Days {
     temp
 }
 
-instancjaPogody.raportPogody()
+weatherInstance.weatherReport()
 
 do {
-    let zFabrykiPogody = Pogoda.nowaPogoda("Zakopane", temperatura: 16, maxTemperatura: 100, wilgotnosc: 66, rodzajDeszczu: "☀️")
-    zFabrykiPogody.raportPogody()
+    let zFabrykiPogody = Weather.newWeather("Zakopane", temperature: 16, maxTemperature: 100, humidity: 66, currentOvercast: "☀️")
+    zFabrykiPogody.weatherReport()
 }
 
 //: Nil Resetable
 
-instancjaPogody.prowadzaca
-instancjaPogody.prowadzaca = nil
-instancjaPogody.prowadzaca = "Marta"
-instancjaPogody.prowadzaca
-instancjaPogody.prowadzaca = nil
-instancjaPogody.prowadzaca
+weatherInstance.weatherHost
+weatherInstance.weatherHost = nil
+weatherInstance.weatherHost = "Marta"
+weatherInstance.weatherHost
+weatherInstance.weatherHost = nil
+weatherInstance.weatherHost
 
 print("")
 //: ## Klasy Zagnieżdżone
 //: Klasy mozemy definiować wewnątrz innej klasy.
-opoznienie
+delay
 
-class Zewnetrzna {
+class OuterClass {
 
-    class Wewnetrzna {
+    class InnerClass {
         init () { print("Wewnetrzna -> 😋 init")}
         deinit { print("Wewnetrzna -> 😵 deinit") }
 
-        func metodaW() {
+        func innerMethod() {
             print("Wewnetrzna -> 👑 metodaW")
         }
     }
 
-    var wewnetrzna = Wewnetrzna()
+    var inner = InnerClass()
 
     init () { print("Zewnetrzna -> 😋 init")}
     deinit { print("Zewnetrzna -> 😵 deinit") }
 
-    func metodaZ() {
+    func justOuterMethod() {
         print("Zewnetrzna -> 💍 metodaZ")
     }
 
-    func metodaZW() {
-        wewnetrzna.metodaW()
+    func outherMethodCallingOnInnerInstance() {
+        inner.innerMethod()
     }
 }
 
 
 do {
-    let z = Zewnetrzna()
-    type(of: z)
-    z.metodaZ()
+    let outerInstance = OuterClass()
+    type(of: outerInstance)
+    outerInstance.justOuterMethod()
 
 //: 💡 Type klasy wewnetrznej jest zwiazany z typem klasy zewnetrznej
-    type(of: z.wewnetrzna)
+    type(of: outerInstance.inner)
 
-    z.metodaZW()
-    z.wewnetrzna.metodaW()
+    outerInstance.outherMethodCallingOnInnerInstance()
+    outerInstance.inner.innerMethod()
 }
 print("")
 
 do {
     print("Tworze instancje klasy wewnetrznej:".uppercased())
-    let zw = Zewnetrzna.Wewnetrzna()
-    type(of: zw)
+    let innerInstance = OuterClass.InnerClass()
+    type(of: innerInstance)
 }
 
 //: A co jeżeli klasa wewnątrz będzie prywatna?
 
 print("\nWewnetrzna Klasa Prywatna".uppercased())
-class Zew {
+class OtherOuter {
 
-    fileprivate class Wewnetrzna {
+    fileprivate class InnerClass {
         init () { print("Wewnetrzna -> 😋 init")}
         deinit { print("Wewnetrzna -> 😵 deinit") }
 
-        func metodaW() {
+        func innerMethod() {
             print("Wewnetrzna -> 👑 metodaW")
         }
     }
 
-    fileprivate var wewnetrzna = Wewnetrzna()
+    fileprivate var inner = InnerClass()
 
-//    var wyciagacz: Zew.Wewnetrzna { // 💥
-//        return wewnetrzna
+//    var returner: OtherOuter.InnerClass { // 💥
+//        inner
 //    }
 
     init () { print("Zew -> 😋 init")}
     deinit { print("Zew -> 😵 deinit") }
 
-    func metodaZ() {
+    func justOtherOuterMethod() {
         print("Zew -> 💍 metodaZ")
     }
 
-    func metodaZW() {
-        wewnetrzna.metodaW()
+    func outherMethodCallingOnInnerInstance() {
+        inner.innerMethod()
     }
 }
 
 do {
-    let z = Zew()
+    let z = OtherOuter()
     type(of: z)
-    z.metodaZ()
-    z.metodaZW()
+    z.justOtherOuterMethod()
+    z.outherMethodCallingOnInnerInstance()
 }
 
 print("\n")
