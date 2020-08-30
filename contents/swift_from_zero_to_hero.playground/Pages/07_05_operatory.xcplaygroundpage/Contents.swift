@@ -112,6 +112,7 @@ case 33: print("😎")
 default: print("🙈")
 }
 
+
 /*:
  # Podsumowanie
  
@@ -121,5 +122,4 @@ default: print("🙈")
  
  * [Ray Wenderlich - Custom operators in Swift](https://www.raywenderlich.com/4018226-overloading-custom-operators-in-swift)
  */
-
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
