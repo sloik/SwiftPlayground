@@ -25,7 +25,7 @@ run("🐭 by word") {
 }
 
 /*:
- Pełna składnia przekazania takiego bloku jako argumentu wgląda tak:
+ Pełna składnia przekazania takiego bloku jako argumentu wygląda tak:
  */
 
 var uppercasedWords = byWord.filter({ (word: String) -> Bool in
