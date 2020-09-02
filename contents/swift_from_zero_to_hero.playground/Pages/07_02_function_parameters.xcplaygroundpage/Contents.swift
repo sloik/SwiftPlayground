@@ -126,7 +126,12 @@ testView
 
 referenceBefore == referenceAfter
 
-//: ## Przekazywanie Funkcji Jako Argumentu Do Funkcji
+/*:
+ `referenceBefore` przechowuje adres testowego widoku w pamięci komputera. Widać, że po wywołaniu funkcji `takeInAInOutView` referencja `testView` wskazuje na inne miejsce w pamięci. Czyli na inny obiekt!
+ 
+## Przekazywanie Funkcji Jako Argumentu Do Funkcji
+ */
+
 
 func addNumbers(_ a: Int, _ b:Int) -> Int {
     return a + b
