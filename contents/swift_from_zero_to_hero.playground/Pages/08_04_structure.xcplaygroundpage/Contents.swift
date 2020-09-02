@@ -21,7 +21,7 @@ import Foundation
 Kod jest w 99% identyczny jak na stronie z Klasami.
 */
 
-struct PogodaKlasa {
+struct WeatherStructure {
 
     var temperatura: Int?
     var wilgotnosc = 78
@@ -73,8 +73,8 @@ struct PogodaKlasa {
         self.maxTemperatura = maxTemperatura
         zachmurzenie        = rodzajDeszczu       
 
-        PogodaKlasa.liczbaStacjiPogodowych += 1
-        print(#function + "\tliczbaInstancji: \(PogodaKlasa.liczbaStacjiPogodowych)")
+        WeatherStructure.liczbaStacjiPogodowych += 1
+        print(#function + "\tliczbaInstancji: \(WeatherStructure.liczbaStacjiPogodowych)")
     }
 
     init(maxTemperatura: Int) { // 💡 brak convenience
@@ -90,7 +90,7 @@ struct PogodaKlasa {
      init?(miasto: String?, temperatura: Int) { // 💡 brak convenience
         self.init(maxTemperatura: 1000)
 
-        guard let miasto = miasto , miasto.characters.count > 0 else {
+        guard let miasto = miasto , miasto.count > 0 else {
             return nil // Jedyny moment kiedy możemy zwrócić coś w "inicie"
         }
 
@@ -118,9 +118,9 @@ struct PogodaKlasa {
         return raport
     }
 
-    static func nowaPogoda(_ miasto: String, temperatura: Int, maxTemperatura: Int, wilgotnosc: Int, rodzajDeszczu: String ) -> PogodaKlasa {
+    static func nowaPogoda(_ miasto: String, temperatura: Int, maxTemperatura: Int, wilgotnosc: Int, rodzajDeszczu: String ) -> WeatherStructure {
         
-        var pogoda = PogodaKlasa.init(maxTemperatura: maxTemperatura, rodzajDeszczu: rodzajDeszczu)
+        var pogoda = WeatherStructure(maxTemperatura: maxTemperatura, rodzajDeszczu: rodzajDeszczu)
         pogoda.wilgotnosc = wilgotnosc
         pogoda.temperatura = temperatura
         pogoda.miasto = miasto
