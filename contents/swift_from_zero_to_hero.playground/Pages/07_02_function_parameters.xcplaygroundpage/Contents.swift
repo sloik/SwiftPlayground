@@ -20,7 +20,7 @@ var number = 42
 @available(*, introduced: 1.2, deprecated: 2.0, message: "This method explodes please use: takesIntAndMutatesIt")
 func takesInt(_ parametr: Int) {
     // 💥 Left side of mutating operator isn't mutable: 'parametr' is a 'let' constant
-//    parametr -= 2
+//    parametr -= 2 // uncomment to see compiler error
 }
 
 takesInt(number)
