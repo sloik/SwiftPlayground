@@ -3,14 +3,24 @@
 
 import UIKit
 
-//: Parametry przekazywane są jako stałe.
+/*:
+ Niżej zmienna `number` umożliwia przypisanie innej wartości:
+ */
 
 var number = 42
 
-//: [Wiecej atrybutów do @available](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Attributes.html)
-@available(*, introduced: 1.2, deprecated: 2.0, message: "ta metoda wybucha, użyj lepiej bierzeIntaJakoZmienna")
+/*:
+ Napiszemy funkcję do której dodamy adnotacje `@available`. Można jej użyć np. do poinformowania innych developerów kiedy jakaś funkcjonalność została wprowadzona, będzie wycofana lub dać wskazówkę czego można użyć zamiast.
+ 
+ [Więcej atrybutów do @available można zobaczyć tu: Attributes](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Attributes.html)
+ 
+ Funkcje definiują pewien kontrakt i czasem wymagają przekazania dodatkowych argumentów. Co ważne argumenty do funkcji są przekazywane jako stałe.
+ */
+
+@available(*, introduced: 1.2, deprecated: 2.0, message: "This method explodes please use: takesIntAndMutatesIt")
 func takesInt(_ parametr: Int) {
-//        parametr -= 2 // 💥
+    // 💥 Left side of mutating operator isn't mutable: 'parametr' is a 'let' constant
+//    parametr -= 2
 }
 
 takesInt(number)
@@ -28,9 +38,11 @@ takesIntAndMutatesIt(number) // przekazana jest kopia
 number
 
 /*:
-Aby móc zmienić przekazywany parametr musimy użyć słowa kluczowego __inout__ .
+ W placu zabaw widać, że lokalnie funkcja faktycznie utworzyła kopie i wykonała operacje. Natomiast zmienna, która posłużyła jako argument do funkcji ma taką samą wartość jak przed wywołaniem funkcji.
 
  ### In - Out
+ 
+ Aby móc zmienić przekazywany parametr musimy użyć słowa kluczowego __inout__ .
  */
 
 func takeAnIntAndMutatesIt(_ number: inout Int) {
