@@ -70,8 +70,8 @@ Jak widać zmienna z poza funkcji ma wartość ustaloną wewnątrz funkcji. Co j
 /**
 Przykładowa metoda służąca do pokazania w jaki sposób dodany komentarz pojawia się w podręcznej pomocy. Dobrą praktyką jest dokumentowanie co robi dana funkcja i czego się po niej można spodziewać.
 
-- parameter input: Przykładowy parametr wejściowy, zostanie zwrócony jako pierwszy w tuplecie.
-- parameter output:    Przykładowy parametr wejściowy, zostanie zwrócony jako drugi w tuplecie.
+- parameter input:  Przykładowy parametr wejściowy, zostanie zwrócony jako pierwszy w tuplecie.
+- parameter output: Przykładowy parametr wyjściowy, zostanie zwrócony jako drugi w tuplecie.
 
 - returns: Zwraca krotkę składającą się z przekazanych parametrów.
 */
