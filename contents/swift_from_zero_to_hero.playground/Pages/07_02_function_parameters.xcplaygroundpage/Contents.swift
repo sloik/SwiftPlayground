@@ -86,29 +86,48 @@ willThisWork.1
 //: ## Przekazywanie Typów Referencyjnych
 //: W tym wypadku w argumencie funkcji dostaniemy referencje ("wskazanie") do obiektu a nie jego kopie.
 
+// Tworze widok o wymiarach 50x50
 let frame = CGRect(x: 0, y: 0, width: 50, height: 50)
 let view = UIView(frame: frame)
+                  
+// Ustawiam kolor tła na czerwony
 view.backgroundColor = UIColor.red
+
+// Po prawej w placu zabaw widzę adres w pamięci komputera
 Unmanaged.passUnretained(view).toOpaque()
+
+// Mogę sobie podejrzeć jak ten widok wygląda
 view
 
 func takeInAView(_ view: UIView) {
+    // Sprawdzam adres przekazanego widoku
     Unmanaged.passUnretained(view).toOpaque()
+    
+    // _Przez_ referencje zmieniam kolor tła na zielony
     view.backgroundColor = UIColor.green
 
-//    view = UIView() // 💥
+    // 💥 Cannot assign to value: 'view' is a 'let' constant
+//    view = UIView() // uncomment this line to see the error
 }
 
 takeInAView(view)
 
+/*:
+ Mimo, że __widok__ jest zdefiniowany jako stała (__let__) to ponieważ jest przekazany przez referencję wewnątrz funkcji można zmienić jego __nie stałe__ atrybuty.
+ 
+ Teraz gdy podejrzymy `view` to okaże się, że tło jest zielone! To co trzeba pamiętać przy pracy z `let` to, że **sama referencja się nie zmienia więc to ona jest stała a nie obiekt na który wskazuje**.
+ */
+
 view
 
-//: Mimo, że __widok__ jest zdefiniowany jako stała (__let__) to ponieważ jest przekazany przez referencję wewnątrz funkcji można zmienić jego __nie stałe__ atrybuty.
 //: > Natomiast gdy przekażemy do funkcji referencje (typ referencyjny) i dodatkowo ten parametr jest __inout__ to wtedy wewnątrz funkcji będziemy mogli całkowicie podmienić obiekt na zupełnie nowy.
 
 func takeInAInOutView(_ view: inout UIView) {
 
+    // Bez parametru `inout` ta linijka się nie skompluje
     view = UIView(frame: CGRect(x: 0,y: 0, width: 50, height: 50))
+    
+    // Ustawiam kolor tła na szary
     view.backgroundColor = UIColor.lightGray
 }
 
@@ -116,6 +135,11 @@ var testView = UIView(frame: frame)
 testView.backgroundColor = UIColor.yellow
 testView
 
+/*:
+ Po stworzeniu widoku i ustawieniu mu koloru tła na żółty chcę _zapisać_ adres na który wskazuje `testView`.
+ 
+ > Dla przypomnienia. Referencja wskazuje na jakiś obiekt a nie jest tym obiektem. Tak jak adres mieszkania nie jest tym mieszkaniem.
+ */
 let referenceBefore = Unmanaged.passUnretained(testView).toOpaque()
 
 takeInAInOutView(&testView)
@@ -127,11 +151,10 @@ testView
 referenceBefore == referenceAfter
 
 /*:
- `referenceBefore` przechowuje adres testowego widoku w pamięci komputera. Widać, że po wywołaniu funkcji `takeInAInOutView` referencja `testView` wskazuje na inne miejsce w pamięci. Czyli na inny obiekt!
+Widać, że po wywołaniu funkcji `takeInAInOutView` referencja `testView` wskazuje na inne miejsce w pamięci. Czyli na inny obiekt!
  
 ## Przekazywanie Funkcji Jako Argumentu Do Funkcji
  */
-
 
 func addNumbers(_ a: Int, _ b:Int) -> Int {
     return a + b
