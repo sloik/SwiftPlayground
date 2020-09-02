@@ -5,7 +5,7 @@
 ## Uwaga na typy referencyjne 💥
 Bardzo często w trakcie pisania kodu musimy wewnątrz jednej klasy umieścić wskazania (referencje) na obiekty z innej klasy. Samo w sobie nie jest to groźne, natomiast z racji tego w jaki sposób w Swift zarządza pamięcią może doprowadzić do wycieku pamięci.
 
-## Zarządzanie pamięcią kurs bardzo przyśoieszony.
+## Zarządzanie pamięcią kurs bardzo przyśpieszony.
 Każdy obiekt gdzieś pod spodem ma przypisany ukryty licznik, który mówi ile innych obiektów trzyma do niego wskazanie (referencje). Ta _ukryta_ właściwość każdego obiektu, który powstał nazywa się __retain count__.
 
 Zasady są bardzo proste:
@@ -92,7 +92,15 @@ run("👗 No leaking memory") {
     )
 }
 
-//: **Bloki**, ponieważ "łapią" obiekty w dostepnym zakresie (scope), **również mogą spowodować retain cycle**. W miejscu gdzie w bloku uzywamy jakiejś zmiennej z poza bloku kompilator tworzy i "dowiązuje" specjalny obiekt, który jest używany do "złapania" referencji lub użytych wartości.
+/*:
+ ## Bloki
+ 
+ Ponieważ "łapią" obiekty w dostępnym zakresie (scope), **również mogą spowodować retain cycle**. W miejscu gdzie w bloku używamy jakiejś zmiennej z poza bloku kompilator tworzy i "dowiązuje" specjalny obiekt, który jest używany do "złapania" referencji lub użytych wartości.
+ 
+ > Działa to tak, że kompilator w miejscu użycia bloku generuje _ukrytą_ klasę i tworzy jej instancje. Wszystkie obiekty, jakie są użyte wewnątrz stają się _property_ tej klasy. To też mam nadzieje _wyjaśnia_ dlaczego można się spotkać ze stwierdzeniem, że _bloki to obiekty_. [Stack: how are nsblocks objects created](https://stackoverflow.com/questions/20134616/how-are-nsblock-objects-created) i [Implementacja NSBlock w ObjC](https://github.com/nst/iOS-Runtime-Headers/blob/master/Frameworks/CoreFoundation.framework/NSBlock.h)
+ 
+ Aby stworzyć `retain cycle` blok musi się odwoływać (mieć referencję) do `self` oraz instancja `self` musi mieć referencję do tego bloku. Dość łatwo stworzyć taką sytuację. Wystarczy, że klasa posiada property na blok i w tym bloku jest odwołanie do tej instancji np. przez wołanie metody lub property.
+ */
 
 class LeakingMemory {
 
@@ -114,7 +122,7 @@ run("🍄 Leaking") {
     leakingInstance.blok()
 }
 
-//: Podobnie jak wcześniej na ratunek przychodza nam słowa weak ora unowned. Podając je mówimy kompilatorowi w jaki sposób ten obiekt ma trzymać referencje do użytych zmiennych. [Dokumentacja](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/AutomaticReferenceCounting.html#//apple_ref/doc/uid/TP40014097-CH20-ID56)
+//: Podobnie jak wcześniej na ratunek przychodzą nam słowa weak ora unowned. Podając je mówimy kompilatorowi w jaki sposób ten obiekt ma trzymać referencje do użytych zmiennych. To znaczy, że ma nie zwiększać licznika referencji. [Dokumentacja](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/AutomaticReferenceCounting.html#//apple_ref/doc/uid/TP40014097-CH20-ID56)
 
 class NotLeaking {
     var counter = 0
@@ -134,6 +142,6 @@ run("🦄 Not leaking") {
     instance.blok()
 }
 
-//: Podane tutaj przykłady są relatwynie proste! I raczej są łatwe do zauważenia wiekszy problem jest w momencie kiedy _łańcuszek_ obiektów jest dłuższy. Nie możemy też polegać na statycznej analizie kodu gdyż ta nie zawsze jest w stanie wykryć tego typu zależności (chociaż czasem radzi sobie zaskakująco dobrze).
+//: Podane tutaj przykłady są proste! I raczej są łatwe do zauważenia. Większy problem jest w momencie kiedy _łańcuszek_ obiektów jest dłuższy. Nie możemy też polegać na statycznej analizie kodu gdyż ta nie zawsze jest w stanie wykryć tego typu zależności (chociaż czasem radzi sobie zaskakująco dobrze).
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
