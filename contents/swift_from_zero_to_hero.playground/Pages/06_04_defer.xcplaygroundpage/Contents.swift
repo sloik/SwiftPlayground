@@ -176,7 +176,7 @@ xrun("👎🏻🍀 example") {  // change to `run` to run
  Na próżno szukać miotełek w konsoli. Tu właśnie z pomocą przychodzi defer.
  */
 
-xrun("😎🍀 example") { // change to `run` to run
+xrun("😎🍀 example") { // change to `run` to run example
     
     func usingExploding() throws {
         print(#line, "getting a resource")
