@@ -25,40 +25,43 @@ Jak widać każdy z nich w takiej sytuacji ma retain count równy +1.
 
 */
 
-protocol JakiesDziecko {
-    var rodzic: Rodzic? { get set }
+protocol MustHaveParent {
+    var parent: Parent? { get set }
 }
 
-class Rodzic {
-    let dzieci: [JakiesDziecko]
+class Parent {
+    let children: [MustHaveParent]
 
-    init(dzieci: [JakiesDziecko]) {
-        self.dzieci = dzieci
+    @discardableResult
+    init(children: [MustHaveParent]) {
+        print(type(of: self), #function)
+        
+        self.children = children
 
-        for var dziecko in dzieci {
-            dziecko.rodzic = self
+        for var child in children {
+            child.parent = self
         }
     }
 
-    deinit { print("Rodzic Deinit") }
+    deinit { print(type(of: self), #function) }
 }
 
-class Dziecko: JakiesDziecko {
-    var rodzic: Rodzic?
+class Child: MustHaveParent {
+    var parent: Parent?
 
-    init(){}
+    init(){ print(type(of: self), #function) }
 
-    deinit { print("Dziecko Deinit") }
+    deinit { print(type(of: self), #function) }
 }
 
 
-do {
-    print("")
 
-    let dziecko = Dziecko()
-    let rodzic  = Rodzic.init(dzieci: [dziecko])
-
-    print("Brak Deinit !")
+run("🧑‍🔬 No deinit!") {
+    Parent(
+        children: [
+            Child()
+        ]
+    )
 }
 
 /*:
@@ -73,66 +76,62 @@ Aby zaradzić tej sytuacji mamy do dyspozycji dwa mechanizmy które sprawiają, 
 * **unowned** gdy referencja zawsze musi mieć wartość
 */
 
-class GrzeczneDziecko: JakiesDziecko {
-    weak var rodzic: Rodzic?
+class MemorySafeChild: MustHaveParent {
+    weak var parent: Parent?
 
-    init(){}
+    init(){ print(type(of: self), #function) }
 
-    deinit { print("GrzeczneDziecko Deinit") }
+    deinit { print(type(of: self), #function) }
 }
 
-do {
-    print("")
-
-    let dziecko = GrzeczneDziecko()
-    let rodzic  = Rodzic.init(dzieci: [dziecko])
-
-    print("Wszystko Ładnie zostnie posprzątane 😎")
+run("👗 No leaking memory") {
+    Parent(
+        children: [
+            MemorySafeChild()
+        ]
+    )
 }
 
 //: **Bloki**, ponieważ "łapią" obiekty w dostepnym zakresie (scope), **również mogą spowodować retain cycle**. W miejscu gdzie w bloku uzywamy jakiejś zmiennej z poza bloku kompilator tworzy i "dowiązuje" specjalny obiekt, który jest używany do "złapania" referencji lub użytych wartości.
-print("")
 
-class Wyciekajaca {
+class LeakingMemory {
 
-    var licznik = 0
+    var counter = 0
 
     lazy var blok: () -> () = {
         // Instancja trzyma blok a blok przez użycie self instancje!
-        self.licznik += 1
-        print("Wyciekajaca Blok 💩")
+        self.counter += 1
+        print(type(of: self), #function)
     }
 
-    init() {}
+    init() { print(type(of: self), #function) }
 
-    deinit { print("Deinit Wyciekajaca 🐷 Prok!") }
+    deinit { print(type(of: self), #function) }
 }
 
-do {
-    let wyciek = Wyciekajaca()
-    wyciek.blok()
+run("🍄 Leaking") {
+    let leakingInstance = LeakingMemory()
+    leakingInstance.blok()
 }
 
 //: Podobnie jak wcześniej na ratunek przychodza nam słowa weak ora unowned. Podając je mówimy kompilatorowi w jaki sposób ten obiekt ma trzymać referencje do użytych zmiennych. [Dokumentacja](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/AutomaticReferenceCounting.html#//apple_ref/doc/uid/TP40014097-CH20-ID56)
 
-print("")
+class NotLeaking {
+    var counter = 0
 
-class NieWyciekajaca {
-    var licznik = 0
-
-    lazy var blok: () -> () = { [unowned self] in // self nie zwieksza już retain count
-        self.licznik += 1
-        print("NieWyciekająca Blok")
+    lazy var blok: () -> () = { [unowned self] in // self nie zwiększa już retain count
+        self.counter += 1
+        print(type(of: self), #function)
     }
 
-    init() {}
+    init() { print(type(of: self), #function) }
 
-    deinit { print("Deinit NieWyciekająca 😎") }
+    deinit { print(type(of: self), #function) }
 }
 
-do {
-    let wyciek = NieWyciekajaca()
-    wyciek.blok()
+run("🦄 Not leaking") {
+    let instance = NotLeaking()
+    instance.blok()
 }
 
 //: Podane tutaj przykłady są relatwynie proste! I raczej są łatwe do zauważenia wiekszy problem jest w momencie kiedy _łańcuszek_ obiektów jest dłuższy. Nie możemy też polegać na statycznej analizie kodu gdyż ta nie zawsze jest w stanie wykryć tego typu zależności (chociaż czasem radzi sobie zaskakująco dobrze).
