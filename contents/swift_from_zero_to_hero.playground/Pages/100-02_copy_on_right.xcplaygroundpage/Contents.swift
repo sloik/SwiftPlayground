@@ -129,7 +129,7 @@ xtb("smarter reference but value") {
     print(psy)
     print(cori)
     
-    xtimed("\t Test Mutowania") { // t: .69, .90, .71, .65, .67 ~0.724 ~36% szybciej
+    xtb("\t Test Mutowania") { // t: .69, .90, .71, .65, .67 ~0.724 ~36% szybciej
         for _ in 0...700 {
             cori.wiek += 1
         }
