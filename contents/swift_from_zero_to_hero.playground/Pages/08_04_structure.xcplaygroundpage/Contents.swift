@@ -23,14 +23,14 @@ Kod jest w 99% identyczny jak na stronie z Klasami.
 
 struct WeatherStructure {
 
-    var temperatura: Int?
-    var wilgotnosc = 78
-    let maxTemperatura:Int
-    var miasto: String?
+    var temperature: Int?
+    var humidity = 78
+    let maxTemperature:Int
+    var city: String?
 
-    static fileprivate(set) var liczbaStacjiPogodowych = 0
+    static fileprivate(set) var numberOfWeatherStations = 0
 
-    var zachmurzenie: String {
+    var overcast: String {
 
         willSet {
             print("Nowa pogoda będzie: \(newValue)")
@@ -41,22 +41,22 @@ struct WeatherStructure {
         }
     }
 
-    var tempOrazZach: (temp: Int?, zach: String) {
-        get { return (temperatura, zachmurzenie) }
+    var tempAndOvercast: (temp: Int?, overcast: String) {
+        get { return (temperature, overcast) }
 
         set {
             type(of: newValue)
-            temperatura  = newValue.temp
-            zachmurzenie = newValue.1
+            temperature  = newValue.temp
+            overcast = newValue.1
         }
     }
 
-    var temperaturaF : Double? {
-        if let temperatura = temperatura { return Double(temperatura) * 1.8 + Double(32) }
-        return nil
+    var temperatureF : Double? {
+        if let temperature = temperature { return Double(temperature) * 1.8 + Double(32) }
+        return .none
     }
 
-    lazy var temperaturaOstatni30Dni: [Int] = {
+    lazy var temperatureLast30Days: [Int] = {
         var temp: [Int] = []
 
         print("🍴 Leniwe raz!")
@@ -69,61 +69,61 @@ struct WeatherStructure {
         return temp
     }()
 
-    init(maxTemperatura: Int, rodzajDeszczu: String) { 
-        self.maxTemperatura = maxTemperatura
-        zachmurzenie        = rodzajDeszczu       
+    init(maxTemperature: Int, rainType: String) {
+        self.maxTemperature = maxTemperature
+        overcast        = rainType
 
-        WeatherStructure.liczbaStacjiPogodowych += 1
-        print(#function + "\tliczbaInstancji: \(WeatherStructure.liczbaStacjiPogodowych)")
+        WeatherStructure.numberOfWeatherStations += 1
+        print(#function + "\tliczbaInstancji: \(WeatherStructure.numberOfWeatherStations)")
     }
 
-    init(maxTemperatura: Int) { // 💡 brak convenience
-        self.init(maxTemperatura: maxTemperatura, rodzajDeszczu: "🌧")
+    init(maxTemperature: Int) { // 💡 brak convenience
+        self.init(maxTemperature: maxTemperature, rainType: "🌧")
     }
 
 
-    init(maxTemperatura: Int, temperatura: Int) { // 💡 brak convenience
-        self.init(maxTemperatura: maxTemperatura)
-        self.temperatura = temperatura;
+    init(maxTemperature: Int, temperature: Int) { // 💡 brak convenience
+        self.init(maxTemperature: maxTemperature)
+        self.temperature = temperature;
     }
 
-     init?(miasto: String?, temperatura: Int) { // 💡 brak convenience
-        self.init(maxTemperatura: 1000)
+     init?(city: String?, temperature: Int) { // 💡 brak convenience
+        self.init(maxTemperature: 1000)
 
-        guard let miasto = miasto , miasto.count > 0 else {
+        guard let city = city, city.count > 0 else {
             return nil // Jedyny moment kiedy możemy zwrócić coś w "inicie"
         }
 
-        self.miasto = miasto
+        self.city = city
     }
 
 //    deinit {} // 💥
 
-    func raportPogody() -> String {
-        var raport = ""
+    func weatherReport() -> String {
+        var report = ""
 
-        if let miasto = miasto {
-            raport += "Pogoda dla miasta: \(miasto.uppercased())\n"
+        if let city = city {
+            report += "Pogoda dla miasta: \(city.uppercased())\n"
         }
 
-        if let temperatura = temperatura {
-            raport += "\t Temperatura: \(temperatura)\n"
+        if let temperature = temperature {
+            report += "\t Temperatura: \(temperature)\n"
         }
 
-        raport += "\tZachmurzenie: \(zachmurzenie)\n"
-        raport += "\t  Wilgotnosc: \(wilgotnosc)\n"
+        report += "\tZachmurzenie: \(overcast)\n"
+        report += "\t  Wilgotnosc: \(humidity)\n"
 
-        print(raport)
+        print(report)
 
-        return raport
+        return report
     }
 
-    static func nowaPogoda(_ miasto: String, temperatura: Int, maxTemperatura: Int, wilgotnosc: Int, rodzajDeszczu: String ) -> WeatherStructure {
+    static func newWeather(_ city: String, temperature: Int, maxTemperature: Int, humidity: Int, rainType: String ) -> WeatherStructure {
         
-        var pogoda = WeatherStructure(maxTemperatura: maxTemperatura, rodzajDeszczu: rodzajDeszczu)
-        pogoda.wilgotnosc = wilgotnosc
-        pogoda.temperatura = temperatura
-        pogoda.miasto = miasto
+        var pogoda = WeatherStructure(maxTemperature: maxTemperature, rainType: rainType)
+        pogoda.humidity = humidity
+        pogoda.temperature = temperature
+        pogoda.city = city
         
         return pogoda
     }
