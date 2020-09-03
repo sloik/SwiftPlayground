@@ -5,7 +5,7 @@ import Foundation
 
 //: Wiemy, że kolekcje/tablice w swifcie są kopiowane w momencie modyfikacji dowolnej referencji. Dzięki temu możemy mieć wiele nie mutujących referencji które odwołują się do tego samego miejsca w pamięci.
 
-xtimed("value semantics on arrays") {
+xtb("value semantics on arrays") { // to execute change `xtb` to `tb`
     let startowa = ["a", "b"]
     getBufferAddress(startowa)
 
@@ -18,7 +18,7 @@ xtimed("value semantics on arrays") {
     getBufferAddress(druga)
 }
 
-xtimed("reference semantics") {
+xtb("reference semantics") {
     let cori = ObjcWorld(rasa: "Boston Terier", wiek: 8)
     String(unsafeBitCast(cori, to: Int.self), radix: 16)
     cori.wiek
@@ -32,7 +32,7 @@ xtimed("reference semantics") {
 
 //: Zobaczmy co możemy zrobić aby nasze typy referencyjne zachowywały się bardziej jak typy wartościowe przy modyfikacji.
 
-xtimed("reference but value") {
+xtb("reference but value") {
     struct World: CustomStringConvertible {
         private var _objcWorl: ObjcWorld
         private var _mutatingObjcWorld: ObjcWorld {
@@ -73,14 +73,14 @@ xtimed("reference but value") {
     
     //: Jak widać udało nam się osiągnąc taki efekt, że obie instancje żyją sobie osobno. Gdyby tylko nie to ciągłe kopiowanie...
     
-    xtimed("\t Mały problem z kopiowaniem") { // t: 1.1, 1.21, 1.00, 1.12, 1.16 ~1.118
+    xtb("\t Mały problem z kopiowaniem") { // t: 1.1, 1.21, 1.00, 1.12, 1.16 ~1.118
         for _ in 0...700 {
             cori.wiek += 1
         }
     }
 }
 
-xtimed("smarter reference but value") {
+xtb("smarter reference but value") {
     final class SwiftRef<T> {
         var object: T
         init(_ o: T) {
