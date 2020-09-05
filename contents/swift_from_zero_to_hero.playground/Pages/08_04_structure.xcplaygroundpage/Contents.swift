@@ -62,7 +62,7 @@ struct WeatherStructure {
         print("🍴 Leniwe raz!")
         sleep(5)
         for _ in 0..<30 {
-            temp += [Int(arc4random_uniform(30))]
+            temp += [ Int.random(in: 0...30)]
         }
         print("😱 Matko jak długo!")
 
@@ -120,56 +120,61 @@ struct WeatherStructure {
 
     static func newWeather(_ city: String, temperature: Int, maxTemperature: Int, humidity: Int, rainType: String ) -> WeatherStructure {
         
-        var pogoda = WeatherStructure(maxTemperature: maxTemperature, rainType: rainType)
-        pogoda.humidity = humidity
-        pogoda.temperature = temperature
-        pogoda.city = city
+        var weather = WeatherStructure(maxTemperature: maxTemperature, rainType: rainType)
+        weather.humidity = humidity
+        weather.temperature = temperature
+        weather.city = city
         
-        return pogoda
+        return weather
     }
 }
 
 //: ---
 
-protocol Pogodynka {}
+protocol WeatherAnchor {}
 
-struct MojaStruktura: Pogodynka {
+struct MyStructure: WeatherAnchor {
     var klaatu: String
     var barada: Int
     var nikto : Double
 }
 
-let strukturkaMoja = MojaStruktura(klaatu: "klaatu", barada: 42, nikto: 6.9)
-//strukturkaMoja.klaatu = "Klaatu" // 💥
+let structureInstance = MyStructure(klaatu: "klaatu", barada: 42, nikto: 6.9)
+
+// 💥 Cannot assign to property: 'structureInstance' is a 'let' constant
+// Change 'let' to 'var' to make it mutable
+//structureInstance.klaatu = "Klaatu"
 
 //: Domyślne metody struktury nie mogą jej zmienić ani żadnej innej właściwości.
 
-struct Pogoda {
-    var temperatura: Int
-    var wilgotnosc: Int
+struct Weather {
+    var temperature: Int
+    var humidity: Int
 
-    func ustawWilgotnosc(_ nowaWilgotnosc: Int) {
-//        wilgotnosc = nowaWilgotnosc // 💥
+    func setHumidity(_ newHumidity: Int) {
+        // 💥 Cannot assign to property: 'self' is immutable
+//        humidity = newHumidity
     }
 
-    func domyslnaPogoda() {
-//        self = Pogoda() // 💥
+    func defaultWeather() {
+        // 💥 Cannot assign to value: 'self' is immutable
+//        self = Weather(temperature: 21, humidity: 69)
     }
 
-    mutating func mutujWilgotnosc(_ zmutowanaWilgotnosc: Int) {
-        wilgotnosc = zmutowanaWilgotnosc // 👍🏻
+    mutating func mutateHumidity(_ newHumidity: Int) {
+        humidity = newHumidity // 👍🏻
     }
 }
 
 
-let stalaPogoda = Pogoda(temperatura: 42, wilgotnosc: 69)
+let constantWeather = Weather(temperature: 42, humidity: 69)
 //stalaPogoda.mutujWilgotnosc(96) // 💥
 
-var zmiennaPogoda = stalaPogoda
-zmiennaPogoda.mutujWilgotnosc(96) // 👍🏻
+var variableWeather = constantWeather
+variableWeather.mutateHumidity(96) // 👍🏻
 
-stalaPogoda.wilgotnosc
-zmiennaPogoda.wilgotnosc
+constantWeather.humidity
+variableWeather.humidity
 
 //: Struktury mogą być użyte do tworzenia "błędów". W rozdziale o [obsłudze błędów](07_04_obsluga_bledow) był do tego celu użyty enum.
 
@@ -201,3 +206,5 @@ catch let error as Zwarcie { // Castowanie jest wymagane
 }
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
+
+print("🦄")
