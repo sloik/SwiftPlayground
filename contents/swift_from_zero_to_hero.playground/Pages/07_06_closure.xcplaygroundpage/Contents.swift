@@ -105,7 +105,7 @@ type(of: prettyTalker)
 prettyTalker()
 
 /*:
- `prettyTalker` jest zmienna jak każda inna. Ale to co przechowuje to wskazanie/referencje na funkcję. Patrząc na typ funkcji `() -> ()` wiemy, że funkcja nie przyjmuje żadnych argumentów. Oraz, że nie zwraca żadnej wartości.
+ `prettyTalker` to zmienna jak każda inna. Ale to co przechowuje to wskazanie/referencje na funkcję. Patrząc na typ funkcji `() -> ()` wiemy, że funkcja nie przyjmuje żadnych argumentów. Oraz, że nie zwraca żadnej wartości.
  
  Technicznie to ostatnie zdanie to nie jest prawda. Ponieważ pusta krotka `()` jest _zawsze_ zwracana (dla funkcji, które jawnie nie zwracają wartości).
  
