@@ -97,7 +97,8 @@ struct WeatherStructure {
         self.city = city
     }
 
-//    deinit {} // 💥
+    // 💥 Deinitializers may only be declared within a class
+//    deinit {}
 
     func weatherReport() -> String {
         var report = ""
@@ -168,7 +169,8 @@ struct Weather {
 
 
 let constantWeather = Weather(temperature: 42, humidity: 69)
-//stalaPogoda.mutujWilgotnosc(96) // 💥
+// 💥 Cannot use mutating member on immutable value: 'constantWeather' is a 'let' constant
+//constantWeather.mutateHumidity(96)
 
 var variableWeather = constantWeather
 variableWeather.mutateHumidity(96) // 👍🏻
@@ -178,31 +180,26 @@ variableWeather.humidity
 
 //: Struktury mogą być użyte do tworzenia "błędów". W rozdziale o [obsłudze błędów](07_04_obsluga_bledow) był do tego celu użyty enum.
 
-enum CosWybuchlo: Error {
-    case mialesPecha
-    case zwarcie(kod: Int, nazwaFunkcji: String, linijka: Int)
+struct ShortCircuit: Error  {
+    let code: Int
+    let functionName: String
+    let line: Int
 }
 
-struct Zwarcie: Error  {
-    let kod: Int
-    let nazwaFunkcji: String
-    let linijka: Int
-}
-
-func mozeWybuchnac() throws {
-    throw Zwarcie(kod: 69, nazwaFunkcji: #function, linijka: #line)
+func mayExplode() throws {
+    throw ShortCircuit(code: 69, functionName: #function, line: #line)
 }
 
 do {
-    try mozeWybuchnac()
+    try mayExplode()
 }
 //catch {
 //    error.dynamicType
 //}
-catch let error as Zwarcie { // Castowanie jest wymagane
-    error.kod
-    error.nazwaFunkcji
-    error.linijka
+catch let error as ShortCircuit { // Castowanie jest wymagane
+    error.code
+    error.functionName
+    error.line
 }
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
