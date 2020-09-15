@@ -159,7 +159,7 @@ if case .unit(let instanceOfClassA) = instanceOfCustomEnumeration {
 
 //: Dokładnie taka "magia" dzieje się gdy korzystamy z Optionali.
 
-var maybeQuote: Optional<String> // 💡 Przytrzymaj "ctrl" i naduś w "Optional"
+var maybeQuote: Optional<String> // 💡 Przytrzymaj "ctrl" i naduś w "Optional" -> Jump to definition
 type(of: maybeQuote)
 
 maybeQuote = "Bedziesz to jesc?"
