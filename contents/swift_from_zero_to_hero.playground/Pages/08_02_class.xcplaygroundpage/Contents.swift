@@ -72,7 +72,7 @@ class Weather: MyClass {
     }
 
 //: ### ["Lenive" właściwości.](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Properties.html#//apple_ref/doc/uid/TP40014097-CH14-ID257)
-//: W życiu czasem tak się zdaża, że pewne zasoby są dostępne dopiero po tym jak w pełni będzimy pełnoletni. Może też się tak wydarzyć, że nie chcemy płacić kosztu z tworzeniem lub rozpoczynaiem jakiegoś procesu gdy jest on rzadko używany. Korzystając z oznaczenia _właściwości_ jako _leniwej_ (**lazy**) możeby opóźnić wykonanie kodu inicjalizującego do momentu aż ktoś faktycznie z tego nie skorzysta. Blok, który jest użyty do inicjalizacji będzie wywołany tylko raz. Możemy też przypisać takiej zmiennej wartość póżnej (w przeciwieństwie do _wyliczonych właściwości_ ).
+//: W życiu czasem tak się przytrafia, że pewne zasoby są dostępne dopiero po tym jak w pełni będziemy pełnoletni. Może też się tak wydarzyć, że nie chcemy płacić kosztu związanego z tworzeniem lub rozpoczynaniem jakiegoś procesu gdy jest on rzadko używany. Korzystając z oznaczenia _właściwości_ jako _leniwej_ (**lazy**) możemy opóźnić wykonanie kodu inicjalizującego do momentu aż ktoś faktycznie z tego nie skorzysta. Blok, który jest użyty do inicjalizacji będzie wywołany tylko raz. Możemy też przypisać takiej zmiennej wartość później (w przeciwieństwie do _wyliczonych właściwości_ ).
 
     lazy var tempLast30Days: [Int] = {
         var temp: [Int] = []
