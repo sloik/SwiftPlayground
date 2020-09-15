@@ -4,7 +4,7 @@
 W Swift **enumeracje** to dużo bardziej uzyteczny i funkcjonalny typ niż w innych językach (C/ObjC). Dzięki nim możemy grupować powiązane ze sobą wartości (kierunki świata, zestawy kolorów, błędy HTTP etc.). Każda z tych wewnętrznych nazwanych wartości nosi nazwę "członek" (ang. member) 😎. Ponieważ **są typem** wartościowym to są przekazywane przez kopie.
 
 Enumeracje **mają**:
-* wyliczeniowe właściwowści na instancji
+* wyliczeniowe właściwości na instancji
 * "normalne" i wyliczeniowe właściwości na Typie Enumeracji
 * initializery
 * metody
@@ -32,9 +32,11 @@ func whatsTheColor(_ input: Color) {
 
 whatsTheColor(prettyColor)
 
-
-//: Można zdefiniować enumeracje konkretnego typu. Możemy się też odwołać do wartości przechowywanej przed dany case korzystając z właściwości **rawValue**.
-
+/*:
+ Można zdefiniować enumeracje konkretnego typu. Możemy się też odwołać do wartości przechowywanej przez dany case korzystając z właściwości **rawValue**.
+ 
+ W przypadku gdy enumeracja posiada _rawValue_ oraz jej typ to `Int`, kompilator zacznie przypisywać wartości od `0`. Jeżeli gdzieś w trakcie _przeskoczy_ się te wartości to kompilator będzie numerować _dalej_.
+ */
 
 enum CountingOut: Int {
     case eney // 0
