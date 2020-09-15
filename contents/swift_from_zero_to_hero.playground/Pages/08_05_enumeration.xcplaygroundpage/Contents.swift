@@ -59,7 +59,7 @@ let whatCountedOut = CountingOut.moe
 type(of: whatCountedOut)
 whatCountedOut.rawValue
 
-//: Możemy stworzyć instancje enumeracje korzystając z jej "surowej wartości" (jeżeli ją znamy) ;)
+//: Możemy stworzyć instancję enumeracji korzystając z jej "surowej wartości" (jeżeli ją znamy) ;)
 
 var whatCountedOutRawValue = CountingOut(rawValue: 21) // 💡 rawValue: 42
 type(of: whatCountedOutRawValue)
@@ -80,7 +80,7 @@ if let _ = overcastRawValue {
 //: "Casy" mogą być użyte jako klucze w słownikach.
 
 let whatToWear: [Overcast: String] = [
-    .storm      : "Siedz w domu i bój się gromu!",
+    .storm      : "Siedź w domu i bój się gromu!",
     .shitStorm  : "Kalosze, parasole i trzeźwiące sole!",
     .rain       : "Na deszcz nie da rady!",
     .clearSky   : "Leż na plaży i opalaj się na wznak!"
