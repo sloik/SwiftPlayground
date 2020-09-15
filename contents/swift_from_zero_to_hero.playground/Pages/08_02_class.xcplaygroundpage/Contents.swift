@@ -6,12 +6,16 @@ import Foundation
 protocol Weatherable {}
 
 var delay: UInt32 = 5
-//: Klasę definiujemy przy pomocy uzycia słowa kluczowego __class__ następnie nadajemy nazwę i {} w których znajduje się kod klasy.
+//: Klasę definiujemy przy pomocy użycia słowa kluczowego __class__ następnie nadajemy nazwę i {} w których znajduje się kod klasy.
 class MyClass {
 
 }
 
-//: Klasa dziedzicząca po _MojaKlasa_ i implementujaca protokół _Pogodynka_ . Aby określić, że klasa dziedziczy po innej klasie należy po jej nazwie umieścić " __:__ " a następnie podać nazwę klasy po której dziecziny (_SuperKlasy_). Dalej po przecinku moża wymienić protokoły jakie implementuje klasa.
+/*:
+ Klasa dziedzicząca po _MojaKlasa_ i implementująca protokół _Pogodynka_ . Aby określić, że klasa dziedziczy po innej klasie należy po jej nazwie umieścić " __:__ " a następnie podać nazwę klasy po której dziedziczy (_SuperKlasy_). Dalej po przecinku można wymienić protokoły jakie implementuje klasa.
+ 
+ W Swift klasy mogą dziedziczyć tylko po jednej klasie. Mogą natomiast implementować do wielu protokołów.
+ */
 class MySubclass: MyClass, Weatherable {
 
 }
