@@ -175,10 +175,18 @@ maybeQuote = .none
 maybeQuote
 
 
-//: ## [Rekurencyjne Enumeracje](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Enumerations.html#//apple_ref/doc/uid/TP40014097-CH12-ID536)
-//: Aby zrozumieć rekurencje... 
 
-enum Part { // indirect enum Czesc
+
+/*:
+ ## [Rekurencyjne Enumeracje](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Enumerations.html#//apple_ref/doc/uid/TP40014097-CH12-ID536)
+ Aby zrozumieć rekurencje... trzeba zrozumieć rekurencje... a czasami ta sama struktura jest w sobie samej. W życiu jest to częściej spotykane niż może się wydawać.
+ 
+ Weźmy np. takie auto. Możemy na nie spojrzeć na kilka sposobów. Jako całość lub jako _grupę części_, które tworzą to auto. Teraz każdą z tych części też możemy potraktować jako _całość_. Jednak przy bliższym spojrzeniu można sobaczyć, że i ta część ma swoje _podczęści_.
+ 
+ Taka relacja może być zamodelowana przy pomocy enumeracji i słowa kluczowego `indirect`. _Normalnie_ kompilator optymalizuje enumeracje, jednak przy tego typu strukturach trzeba jawnie mu powiedzieć, że _tak zrobiłem to specjalnie_.
+ */
+
+enum Part { // indirect enum Part
     indirect case some(name: String, uid: Int, subpart: Part?) // indirect
 }
 
