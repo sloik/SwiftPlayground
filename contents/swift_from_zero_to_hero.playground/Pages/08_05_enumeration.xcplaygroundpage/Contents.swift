@@ -162,13 +162,13 @@ if case .unit(let instanceOfClassA) = instanceOfCustomEnumeration {
 var maybeQuote: Optional<String> // 💡 Przytrzymaj "ctrl" i naduś w "Optional" -> Jump to definition
 type(of: maybeQuote)
 
-maybeQuote = "Bedziesz to jesc?"
+maybeQuote = "Będziesz to jeść?"
 maybeQuote
 
 maybeQuote = nil
 maybeQuote
 
-maybeQuote = .some("Bedziesz to jesc?")
+maybeQuote = .some("Będziesz to jeść?")
 maybeQuote
 
 maybeQuote = .none
