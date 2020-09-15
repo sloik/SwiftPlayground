@@ -92,7 +92,13 @@ run("🐸 what to wear") {
     }
 }
 
-//: ## Initializery Oraz Metody
+/*:
+ ## Initializery Oraz Metody na Enumie
+ 
+ Enumeracje nie różnią się za dużo od _zwykłych_ klas czy struktur. Co za tym idzie można na nich definiować metody oraz property. Dzięki temu można tworzyć bardziej ergonomiczne API do ich konsumowania.
+ 
+ Przy okazji konsumpcji enumeracji. Często zachodzi potrzeba przejścia _po każdym case_ lub po prostu odpowiedzenia na pytanie _ile ich jest?_. W tym momencie przychodzi z pomocą protokół `CaseIterable`. Wystarczy go dodać do enumeracji i kompilator wygeneruje metodę statyczną (na typie), która zwraca tablicę z każdym case-em.
+ */
 
 enum QuoteWszywka: String, CaseIterable {
     case Niebo     = "Niebo w ziemi."
