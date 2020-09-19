@@ -106,19 +106,24 @@ func meaningOfLifeThatMayExplode() throws -> Int {
     return 42
 }
 
+run ("🧲 typo of exploding function") {
+    print(
+        type(of: meaningOfLifeThatMayExplode)
+    )
+}
+
 /*:
  Jeżeli nie chcemy bawić się w `do catch` to można użyć słowa kluczowego `try` razem ze znakiem zapytania. To sprawi, że będziemy musieli obsłużyć w kodzie wartość opcjonalną.
  */
-var whatsTheMeaningOfLife = try? meaningOfLifeThatMayExplode()
-type(of: whatsTheMeaningOfLife)
+let whatsTheMeaningOfLife: Int? = try? meaningOfLifeThatMayExplode()
 whatsTheMeaningOfLife
 
 /*:
  Gdy mamy pewność (damy Szwagru uciąć), że wszystko jest ok i funkcja nie rzuci w nas żadnym wyjątkiem to możemy skorzystać z wersji `try` udekorowanej wykrzyknikiem. Jednak należy pamiętać, że jeżeli coś pójdzie nie tak to program się wyłoży i dalsze linijki kodu nie będą wykonane.
  */
-whatsTheMeaningOfLife = try! meaningOfLifeThatMayExplode()
-type(of: whatsTheMeaningOfLife)
-whatsTheMeaningOfLife
+
+let whatsTheMeaningOfLifeThatMayExplode: Int = try! meaningOfLifeThatMayExplode()
+whatsTheMeaningOfLifeThatMayExplode
 
 print("🐲 this line will never be printed")
 
