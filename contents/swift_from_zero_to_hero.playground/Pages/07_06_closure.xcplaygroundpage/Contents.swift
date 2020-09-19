@@ -12,9 +12,9 @@ import Foundation
 let ipsum = "Drogi Marszałku, Wysoka Izbo. PKB rośnie. Różnorakie i określenia modelu rozwoju. W związku z powodu kolejnych kroków w kształtowaniu odpowiednich warunków administracyjno-finansowych. Już nie trzeba udowadniać, ponieważ zakup nowego sprzętu pomaga w tym zakresie zabezpiecza udział szerokiej grupie w restrukturyzacji przedsiębiorstwa."
 
 let byWord =
-    ipsum
-        .split { $0 == " " }
-        .map { String($0) }
+            ipsum
+                .split{ $0 == " " }
+                .map( String.init )
 
 /*:
  Funkcja `split` oczekuje bloku/closure/domknięcia który będzie mówić _kiedy_ dany string ma być podzielony.

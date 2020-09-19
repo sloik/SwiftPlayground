@@ -3,7 +3,7 @@
 //: Operatory w Swift są po prostu globalnymi (nie należącymi do żadnej Struktury lub Klasy) funkcjami. 
 import UIKit
 
-6 + 9 // klikamy z altem na "+" lub z cmd aby zobaczyć cala listę
+6 + 9 // klikamy z alt/option na "+" lub z cmd aby zobaczyć cala listę
 
 //: Możemy nawet taki operator przypisać do zmiennej jednak musimy podać konkretny "wariant przeciążenia" aby kompilator wiedział o którą wersje nam chodzi.
 
