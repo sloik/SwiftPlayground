@@ -70,7 +70,7 @@ extension CGPoint {
 pointA -<==>- pointB
 pointA -<==>- pointA
 
-//: ## Operator Wyrażeń / [Pattern-Matching Operator](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Patterns.html#//apple_ref/doc/uid/TP40014097-CH36-ID426)
+//: ## [Pattern-Matching Operator](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Patterns.html#//apple_ref/doc/uid/TP40014097-CH36-ID426)
 
 42 ~= 42 // domyślnie używa operatora "=="
 
