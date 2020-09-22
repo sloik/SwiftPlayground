@@ -68,7 +68,6 @@ print(uppercasedWords)
 
 uppercasedWords = byWord.filter { word in
     return word.first == word.uppercased().first
-
 }
 
 print(uppercasedWords)
@@ -120,18 +119,15 @@ let randomUppercasedWords: () -> String = {
 
 print(randomUppercasedWords())
 
-//: Inny przykład
-
-let t1 = 40
-let t2 = 2
-
 /*:
+ Inny przykład
+ 
  Definicja funkcji jak zwykle:
  */
 func addTwoNumbers(_ number1: Int, _ number2: Int) -> Int {
     return number1 + number2
 }
-let sumOfNumbers = addTwoNumbers(t1, t2)
+let sumOfNumbers = addTwoNumbers(40, 2)
 
 /*:
  To samo możemy zapisać inaczej. Wykorzystując stałą i nadać odpowiednie typy. Warto rzucić okiem gdzie jakie wartości wylądowały.
@@ -147,6 +143,7 @@ type(of: addTwoNumbers) == type(of: adder)
  
  Tak na prawdę nie ma to większego znaczenia. Patrzymy na to samo ale pod innym kątem.
  */
-adder(t1, t2) == addTwoNumbers(t1, t2)
+
+adder(40, 2) == addTwoNumbers(40, 2)
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
