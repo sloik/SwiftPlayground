@@ -132,7 +132,7 @@ let sumOfNumbers = addTwoNumbers(40, 2)
 /*:
  To samo możemy zapisać inaczej. Wykorzystując stałą i nadać odpowiednie typy. Warto rzucić okiem gdzie jakie wartości wylądowały.
  */
-let adder: (_ a: Int, _ b: Int) -> Int = { (number1: Int, number2: Int) -> Int in
+let adder: (Int, Int) -> Int = { (number1: Int, number2: Int) -> Int in
     number1 + number2
 }
 
