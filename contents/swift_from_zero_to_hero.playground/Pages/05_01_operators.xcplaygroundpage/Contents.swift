@@ -332,8 +332,8 @@ String(opcja1 | opcja2 | opcja3, radix: 2)
 
 //: ## Kolejność wykonywania działań [Precedence and Associativity](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/AdvancedOperators.html#//apple_ref/doc/uid/TP40014097-CH27-ID41)
 
-let wynik1: Double =  1 +    2 * 3  / 4    // wersja bez nawiasow
-let wynik2: Double = (1 + (((2 * 3) / 4))) // rownowazna wersji z nawiasami
+let wynik1: Double =  1 +    2 * 3  / 4    // wersja bez nawiasów
+let wynik2: Double = (1 + (((2 * 3) / 4))) // równoważna wersja z nawiasami
 
 2 + 2 * 2
 (2 + 2) * 2

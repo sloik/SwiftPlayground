@@ -87,4 +87,5 @@ pogodaGodzinowo4.1.temperatura = "-5 stopni C"
 pogodaGodzinowo3
 pogodaGodzinowo4
 
+print("🍀")
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)

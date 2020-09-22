@@ -3,7 +3,7 @@ import Foundation
 
 /*:
  ## Problem
- Często uzywamy jakiegoś konkretnego typu do repezentowania czegoś zupełnie innego.
+ Często używamy jakiegoś konkretnego typu do reprezentowania czegoś zupełnie innego.
  
  Np.:
  */
@@ -61,7 +61,7 @@ struct Phantom<Type> {
 }
 
 /*:
- Dodatkowo "określmy" z jakimi typami będziemy mieli doczynienia. Ponieważ zależy nam na tym aby dodatkowo anotować typy w czasie kompilacji a nie tworzyć ich instacje to uzyjemy enumów.
+ Dodatkowo "określmy" z jakimi typami będziemy mieli do czynienia. Ponieważ zależy nam na tym aby dodatkowo anotować typy w czasie kompilacji a nie tworzyć ich instancję to użyjemy enumów.
  */
 
 enum Email  {}

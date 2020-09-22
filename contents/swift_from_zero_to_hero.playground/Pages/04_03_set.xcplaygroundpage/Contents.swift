@@ -82,4 +82,5 @@ type(of: setSetowStringow)
 
 //let mieszany: Set<Any> = [setStringow1, setLiczb] // 💥
 
+print("🍀")
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)

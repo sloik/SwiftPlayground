@@ -21,16 +21,16 @@ import Foundation
 Kod jest w 99% identyczny jak na stronie z Klasami.
 */
 
-struct PogodaKlasa {
+struct WeatherStructure {
 
-    var temperatura: Int?
-    var wilgotnosc = 78
-    let maxTemperatura:Int
-    var miasto: String?
+    var temperature: Int?
+    var humidity = 78
+    let maxTemperature:Int
+    var city: String?
 
-    static fileprivate(set) var liczbaStacjiPogodowych = 0
+    static fileprivate(set) var numberOfWeatherStations = 0
 
-    var zachmurzenie: String {
+    var overcast: String {
 
         willSet {
             print("Nowa pogoda będzie: \(newValue)")
@@ -41,163 +41,167 @@ struct PogodaKlasa {
         }
     }
 
-    var tempOrazZach: (temp: Int?, zach: String) {
-        get { return (temperatura, zachmurzenie) }
+    var tempAndOvercast: (temp: Int?, overcast: String) {
+        get { return (temperature, overcast) }
 
         set {
             type(of: newValue)
-            temperatura  = newValue.temp
-            zachmurzenie = newValue.1
+            temperature  = newValue.temp
+            overcast = newValue.1
         }
     }
 
-    var temperaturaF : Double? {
-        if let temperatura = temperatura { return Double(temperatura) * 1.8 + Double(32) }
-        return nil
+    var temperatureF : Double? {
+        if let temperature = temperature { return Double(temperature) * 1.8 + Double(32) }
+        return .none
     }
 
-    lazy var temperaturaOstatni30Dni: [Int] = {
+    lazy var temperatureLast30Days: [Int] = {
         var temp: [Int] = []
 
         print("🍴 Leniwe raz!")
         sleep(5)
         for _ in 0..<30 {
-            temp += [Int(arc4random_uniform(30))]
+            temp += [ Int.random(in: 0...30)]
         }
         print("😱 Matko jak długo!")
 
         return temp
     }()
 
-    init(maxTemperatura: Int, rodzajDeszczu: String) { 
-        self.maxTemperatura = maxTemperatura
-        zachmurzenie        = rodzajDeszczu       
+    init(maxTemperature: Int, rainType: String) {
+        self.maxTemperature = maxTemperature
+        overcast        = rainType
 
-        PogodaKlasa.liczbaStacjiPogodowych += 1
-        print(#function + "\tliczbaInstancji: \(PogodaKlasa.liczbaStacjiPogodowych)")
+        WeatherStructure.numberOfWeatherStations += 1
+        print(#function + "\tliczbaInstancji: \(WeatherStructure.numberOfWeatherStations)")
     }
 
-    init(maxTemperatura: Int) { // 💡 brak convenience
-        self.init(maxTemperatura: maxTemperatura, rodzajDeszczu: "🌧")
+    init(maxTemperature: Int) { // 💡 brak convenience
+        self.init(maxTemperature: maxTemperature, rainType: "🌧")
     }
 
 
-    init(maxTemperatura: Int, temperatura: Int) { // 💡 brak convenience
-        self.init(maxTemperatura: maxTemperatura)
-        self.temperatura = temperatura;
+    init(maxTemperature: Int, temperature: Int) { // 💡 brak convenience
+        self.init(maxTemperature: maxTemperature)
+        self.temperature = temperature;
     }
 
-     init?(miasto: String?, temperatura: Int) { // 💡 brak convenience
-        self.init(maxTemperatura: 1000)
+     init?(city: String?, temperature: Int) { // 💡 brak convenience
+        self.init(maxTemperature: 1000)
 
-        guard let miasto = miasto , miasto.characters.count > 0 else {
+        guard let city = city, city.count > 0 else {
             return nil // Jedyny moment kiedy możemy zwrócić coś w "inicie"
         }
 
-        self.miasto = miasto
+        self.city = city
     }
 
-//    deinit {} // 💥
+    // 💥 Deinitializers may only be declared within a class
+//    deinit {}
 
-    func raportPogody() -> String {
-        var raport = ""
+    func weatherReport() -> String {
+        var report = ""
 
-        if let miasto = miasto {
-            raport += "Pogoda dla miasta: \(miasto.uppercased())\n"
+        if let city = city {
+            report += "Pogoda dla miasta: \(city.uppercased())\n"
         }
 
-        if let temperatura = temperatura {
-            raport += "\t Temperatura: \(temperatura)\n"
+        if let temperature = temperature {
+            report += "\t Temperatura: \(temperature)\n"
         }
 
-        raport += "\tZachmurzenie: \(zachmurzenie)\n"
-        raport += "\t  Wilgotnosc: \(wilgotnosc)\n"
+        report += "\tZachmurzenie: \(overcast)\n"
+        report += "\t  Wilgotnosc: \(humidity)\n"
 
-        print(raport)
+        print(report)
 
-        return raport
+        return report
     }
 
-    static func nowaPogoda(_ miasto: String, temperatura: Int, maxTemperatura: Int, wilgotnosc: Int, rodzajDeszczu: String ) -> PogodaKlasa {
+    static func newWeather(_ city: String, temperature: Int, maxTemperature: Int, humidity: Int, rainType: String ) -> WeatherStructure {
         
-        var pogoda = PogodaKlasa.init(maxTemperatura: maxTemperatura, rodzajDeszczu: rodzajDeszczu)
-        pogoda.wilgotnosc = wilgotnosc
-        pogoda.temperatura = temperatura
-        pogoda.miasto = miasto
+        var weather = WeatherStructure(maxTemperature: maxTemperature, rainType: rainType)
+        weather.humidity = humidity
+        weather.temperature = temperature
+        weather.city = city
         
-        return pogoda
+        return weather
     }
 }
 
 //: ---
 
-protocol Pogodynka {}
+protocol WeatherAnchor {}
 
-struct MojaStruktura: Pogodynka {
+struct MyStructure: WeatherAnchor {
     var klaatu: String
     var barada: Int
     var nikto : Double
 }
 
-let strukturkaMoja = MojaStruktura(klaatu: "klaatu", barada: 42, nikto: 6.9)
-//strukturkaMoja.klaatu = "Klaatu" // 💥
+let structureInstance = MyStructure(klaatu: "klaatu", barada: 42, nikto: 6.9)
+
+// 💥 Cannot assign to property: 'structureInstance' is a 'let' constant
+// Change 'let' to 'var' to make it mutable
+//structureInstance.klaatu = "Klaatu"
 
 //: Domyślne metody struktury nie mogą jej zmienić ani żadnej innej właściwości.
 
-struct Pogoda {
-    var temperatura: Int
-    var wilgotnosc: Int
+struct Weather {
+    var temperature: Int
+    var humidity: Int
 
-    func ustawWilgotnosc(_ nowaWilgotnosc: Int) {
-//        wilgotnosc = nowaWilgotnosc // 💥
+    func setHumidity(_ newHumidity: Int) {
+        // 💥 Cannot assign to property: 'self' is immutable
+//        humidity = newHumidity
     }
 
-    func domyslnaPogoda() {
-//        self = Pogoda() // 💥
+    func defaultWeather() {
+        // 💥 Cannot assign to value: 'self' is immutable
+//        self = Weather(temperature: 21, humidity: 69)
     }
 
-    mutating func mutujWilgotnosc(_ zmutowanaWilgotnosc: Int) {
-        wilgotnosc = zmutowanaWilgotnosc // 👍🏻
+    mutating func mutateHumidity(_ newHumidity: Int) {
+        humidity = newHumidity // 👍🏻
     }
 }
 
 
-let stalaPogoda = Pogoda(temperatura: 42, wilgotnosc: 69)
-//stalaPogoda.mutujWilgotnosc(96) // 💥
+let constantWeather = Weather(temperature: 42, humidity: 69)
+// 💥 Cannot use mutating member on immutable value: 'constantWeather' is a 'let' constant
+//constantWeather.mutateHumidity(96)
 
-var zmiennaPogoda = stalaPogoda
-zmiennaPogoda.mutujWilgotnosc(96) // 👍🏻
+var variableWeather = constantWeather
+variableWeather.mutateHumidity(96) // 👍🏻
 
-stalaPogoda.wilgotnosc
-zmiennaPogoda.wilgotnosc
+constantWeather.humidity
+variableWeather.humidity
 
 //: Struktury mogą być użyte do tworzenia "błędów". W rozdziale o [obsłudze błędów](07_04_obsluga_bledow) był do tego celu użyty enum.
 
-enum CosWybuchlo: Error {
-    case mialesPecha
-    case zwarcie(kod: Int, nazwaFunkcji: String, linijka: Int)
+struct ShortCircuit: Error  {
+    let code: Int
+    let functionName: String
+    let line: Int
 }
 
-struct Zwarcie: Error  {
-    let kod: Int
-    let nazwaFunkcji: String
-    let linijka: Int
-}
-
-func mozeWybuchnac() throws {
-    throw Zwarcie(kod: 69, nazwaFunkcji: #function, linijka: #line)
+func mayExplode() throws {
+    throw ShortCircuit(code: 69, functionName: #function, line: #line)
 }
 
 do {
-    try mozeWybuchnac()
+    try mayExplode()
 }
 //catch {
 //    error.dynamicType
 //}
-catch let error as Zwarcie { // Castowanie jest wymagane
-    error.kod
-    error.nazwaFunkcji
-    error.linijka
+catch let error as ShortCircuit { // Castowanie jest wymagane
+    error.code
+    error.functionName
+    error.line
 }
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
+
+print("🦄")

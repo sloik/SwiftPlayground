@@ -1,28 +1,31 @@
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
 //: ## Definiowanie i Wywoływanie Funkcji
-//: __Funkcje__ to niezależne kawałki reużywalnego kodu. __Metody__ to funkcje należące do jakiegoś __typu__ .
-
+//: __Funkcje__ to niezależne kawałki reużywalnego kodu. __Metody__ to funkcje należące do jakiegoś __typu__ np. instancji klasy.
 //: Funkcje deklarujemy przy użycia słowa kluczowego __func__. Następnie nadajemy jej nazwę (_konwencja_ : notacjaWielbłądzia), parametry w nawiasach okrągłych i w klamerkach __ciało funkcji__ czyli kod jaki ma być wykonywany przy jej wywołaniu.
 func justQuote() {
     print("Można pić bez obawień")
 }
 
 //: Funkcja przyjmująca parametr.
-func sayHi(_ name: String) {
+func sayHi(name: String) {
     print("Cześć \(name), będziesz to jeść?\n")
 }
 
 //: Funkcja przyjmująca więcej parametrów.
-func quote(_ quote: String, author: String) {
+func quote(quote: String, author: String) {
     print("\"\(quote)\"\n\t\t-- \(author)\n")
 }
 
 //: Funkcje wywołujemy podając jej nazwę i przekazując w parametrach niezbędne argumenty. Co ciekawe pierwszy argument nie jest nazwany. To co widać przy wywołaniu funkcji to _zewnętrzna nazwa parametru_ . Nazwa parametru użyta wewnątrz to _wewnętrzna nazwa parametru_ . Domyślnie zewnętrzna i wewnętrzna nazwa parametru jest taka sama.
-quote("Można pić bez obawień.", author: "Wiesław Wszywka")
+quote(quote: "Można pić bez obawień.", author: "Wiesław Wszywka")
 
 func quoteWithArguments(quote: String, whoSaidId author: String) {
     print("\"\(quote)\"\n\t\t-- \(author)\n")
 }
+
+/*:
+ Warto zauważyć, że `whoSaidId` jest widoczna _na zewnątrz_ funkcji. W momencie gdy jest wywoływana. Wewnątrz ciała funkcji (pomiędzy klamrami `{}`) jest już użyta, krótsza nazwa `author`. Dzięki temu kod może być bardziej zwięzły a wywołanie lepiej oddawać _intencję_.
+ */
 
 quoteWithArguments(quote: "Badziewie do badziewia.", whoSaidId: "Wiesław Wszywka")
 
@@ -37,15 +40,19 @@ quoteAnQuote("Niebo w ziemi.", of: "Wiesław Wszywka")
 //: Jeżeli chcemy pozbyć się zewnętrznych parametrów w wywołaniu funkcji, możemy to zrobić zastepując je "_". Funkcje potrafią też zwracać wynik swojego działania. Oznacza się to przez strzłkę __ -> __ i podanie zwracanego typu.
 
 func addTwoNumbers(_ number1: Int, _ number2: Int) -> Int {
-    return number1 + number1
+    return number1 + number2
 }
 
 var sumOfNumbers = addTwoNumbers(40, 2)
 
-//: Typy argumentów oraz zwracany typ tworzą razem coś co nazywa się "typem funkcji".
+/*:
+ Typy argumentów oraz zwracany typ tworzą razem coś co nazywa się "typem funkcji".
+ 
+ Natomiast gdy mówimy, że _coś jest jakiegoś typu_ to mamy na myśli, że może przyjąć wartość z góry ustalonego zbioru. Banalnym przykładem jest typ `Int`. Gdy jakaś zmienna/stała przechowuje wartość tego typu to wiemy, że może to być jakaś liczba całkowita np. -1, 42, etc.
+ */
 type(of: addTwoNumbers)
 
-//: Możemy też stworzyć zmienną, która będzie nam "przechowywać" funkcje. Kluczowe jest użycie __samej__ nazwy funkcji.
+//: Możemy też stworzyć referencje (wskazanie), która będzie "przechowywać" funkcje. Kluczowe jest użycie __samej__ nazwy funkcji.
 
 let function = addTwoNumbers
 

@@ -4,7 +4,7 @@
 W Swift **enumeracje** to dużo bardziej uzyteczny i funkcjonalny typ niż w innych językach (C/ObjC). Dzięki nim możemy grupować powiązane ze sobą wartości (kierunki świata, zestawy kolorów, błędy HTTP etc.). Każda z tych wewnętrznych nazwanych wartości nosi nazwę "członek" (ang. member) 😎. Ponieważ **są typem** wartościowym to są przekazywane przez kopie.
 
 Enumeracje **mają**:
-* wyliczeniowe właściwowści na instancji
+* wyliczeniowe właściwości na instancji
 * "normalne" i wyliczeniowe właściwości na Typie Enumeracji
 * initializery
 * metody
@@ -17,101 +17,105 @@ Enumeracje **nie mają**:
 
 */
 
-enum Kolor {
-    case ladny
-    case brzydki
-    case bardzoBrzydki
+enum Color {
+    case pretty
+    case ugly
+    case veryUgly
 }
 
-let kolorLadny = Kolor.ladny
-type(of: kolorLadny)
+let prettyColor = Color.pretty
+type(of: prettyColor)
 
-func jakiJestKolor(_ wejsciowy: Kolor) {
-    "Kolor jest: \(wejsciowy)"
+func whatsTheColor(_ input: Color) {
+    "Kolor jest: \(input)"
 }
 
-jakiJestKolor(kolorLadny)
+whatsTheColor(prettyColor)
 
+/*:
+ Można zdefiniować enumeracje konkretnego typu. Możemy się też odwołać do wartości przechowywanej przez dany case korzystając z właściwości **rawValue**.
+ 
+ W przypadku gdy enumeracja posiada _rawValue_ oraz jej typ to `Int`, kompilator zacznie przypisywać wartości od `0`. Jeżeli gdzieś w trakcie _przeskoczy_ się te wartości to kompilator będzie numerować _dalej_.
+ */
 
-//: Można zdefiniować enumeracje konkretnego typu. Możemy się też odwołać do wartości przechowywanej przed dany case korzystając z właściwości **rawValue**.
-
-
-
-enum Wyliczanka: Int {
-    case ene // 0
-    case due = 5
-    case rabe, chinczyk, polkna = 20, zabe // 6, 7, 20, 21
+enum CountingOut: Int {
+    case eney // 0
+    case meeny = 5
+    case miny, moe, catchATiger = 20, byTheToe // 6, 7, 20, 21
 }
 
-enum Zachmurzenie: String {
-    case Burza      = "⛈"
-    case GownoBurza = "💩⚡️"
-    case Opady      = "🌧"
-    case Brak       = "☀️"
+enum Overcast: String {
+    case storm      = "⛈"
+    case shitStorm  = "💩⚡️"
+    case rain       = "🌧"
+    case clearSky   = "☀️"
 }
 
-let jakieZachmurzenie = Zachmurzenie.Burza
-type(of: jakieZachmurzenie)
-jakieZachmurzenie.rawValue
+let someOvercast = Overcast.storm
+type(of: someOvercast)
+someOvercast.rawValue
 
-let coWypadlo = Wyliczanka.chinczyk
-type(of: coWypadlo)
-coWypadlo.rawValue
+let whatCountedOut = CountingOut.moe
+type(of: whatCountedOut)
+whatCountedOut.rawValue
 
-//: Możemy stworzyć instancje enumeracje korzystając z jej "surowej wartości" (jeżeli ją zanmy) ;)
+//: Możemy stworzyć instancję enumeracji korzystając z jej "surowej wartości" (jeżeli ją znamy) ;)
 
-var coWypadloSurowe = Wyliczanka(rawValue: 21) // 💡 rawValue: 42
-type(of: coWypadloSurowe)
-if let _ = coWypadloSurowe {
-    coWypadloSurowe!
+var whatCountedOutRawValue = CountingOut(rawValue: 21) // 💡 rawValue: 42
+type(of: whatCountedOutRawValue)
+if let _ = whatCountedOutRawValue {
+    whatCountedOutRawValue!
 } else {
-    coWypadloSurowe
+    whatCountedOutRawValue
 }
 
-var zachmurzenieSurowe = Zachmurzenie(rawValue: "💩⚡️")
-type(of: zachmurzenieSurowe)
-if let _ = zachmurzenieSurowe {
-    zachmurzenieSurowe!
+var overcastRawValue = Overcast(rawValue: "💩⚡️")
+type(of: overcastRawValue)
+if let _ = overcastRawValue {
+    overcastRawValue!
 } else {
-    zachmurzenieSurowe
+    overcastRawValue
 }
 
 //: "Casy" mogą być użyte jako klucze w słownikach.
 
-let coUbrac: [Zachmurzenie: String] = [
-    .Burza      : "Siedz w domu i bój się gromu!",
-    .GownoBurza : "Kalosze, parasole i trzeźwiące sole!",
-    .Opady      : "Na deszcz nie da rady!",
-    .Brak       : "Leż na plaży i opalaj się na wznak!"
+let whatToWear: [Overcast: String] = [
+    .storm      : "Siedź w domu i bój się gromu!",
+    .shitStorm  : "Kalosze, parasole i trzeźwiące sole!",
+    .rain       : "Na deszcz nie da rady!",
+    .clearSky   : "Leż na plaży i opalaj się na wznak!"
 ]
 
-for (zach, co) in coUbrac {
-    print("\(zach):\t\t\(co)")
+run("🐸 what to wear") {
+    for (overcast, what) in whatToWear {
+        print("\(overcast):\t\t\(what)")
+    }
 }
 
-print("")
+/*:
+ ## Initializery Oraz Metody na Enumie
+ 
+ Enumeracje nie różnią się za dużo od _zwykłych_ klas czy struktur. Co za tym idzie można na nich definiować metody oraz property. Dzięki temu można tworzyć bardziej ergonomiczne API do ich konsumowania.
+ 
+ Przy okazji konsumpcji enumeracji. Często zachodzi potrzeba przejścia _po każdym case_ lub po prostu odpowiedzenia na pytanie _ile ich jest?_. W tym momencie przychodzi z pomocą protokół `CaseIterable`. Wystarczy go dodać do enumeracji i kompilator wygeneruje metodę statyczną (na typie), która zwraca tablicę z każdym case-em.
+ */
 
-//: ## Initializery Oraz Metody
-
-enum CytatyWszywka: String {
+enum QuoteWszywka: String, CaseIterable {
     case Niebo     = "Niebo w ziemi."
     case Badziewie = "Badziewie do badziewia."
     case Kur       = "Kur zapiał."
     case Kielich   = "A nie masz tam jakiego kielicha"
 
-    static let mozliweWartosci: [CytatyWszywka] = [CytatyWszywka.Niebo, Badziewie, .Kur, .Kielich]
-
-    init?(ktory: Int) {
-        if ktory < CytatyWszywka.mozliweWartosci.count {
-            self = CytatyWszywka.mozliweWartosci[ktory]
-        }
-        else {
+    init?(quoteIndex: Int) {
+        if QuoteWszywka.allCases.indices.contains(quoteIndex) {
+            self = QuoteWszywka.allCases[quoteIndex]
+        } else {
             return nil
         }
     }
 
-    func cytuj(_ podajAutora: Bool = false) {
-        if podajAutora {
+    func quote(_ author: Bool = false) {
+        if author {
             print("\"\(rawValue)\" -- Wiesław Wszywka")
         } else {
             print("\"\(rawValue)\"")
@@ -119,89 +123,98 @@ enum CytatyWszywka: String {
     }
 }
 
-CytatyWszywka.init(ktory: 1)?.rawValue
+QuoteWszywka(quoteIndex: 1)?.rawValue
 
-let cytatWieslawa = CytatyWszywka.Kielich
-cytatWieslawa.cytuj()
-cytatWieslawa.cytuj(true)
+let quoteWieslaw = QuoteWszywka.Kielich
 
-print("")
+run("🧈 quote Wiesław") {
+    quoteWieslaw.quote()
+    quoteWieslaw.quote(true)
+}
 //: ## Dowiązywanie Wartości / Associating Values
 //: Enumeracje mogą posiadać swój własny typ (Int, String etc.) **lub** mogą mieć dowiązane do siebie instancje typów referencyjnych. 
 
-class MojaKlasaA {
-    let cytat: String
+class ClassA {
+    let quote: String
     
-    init(cytat: String) {
-        self.cytat = cytat
+    init(quote: String) {
+        self.quote = quote
     }
 }
 
-class MojaKlasaB {}
+class ClassB {}
 
-enum MojaEnumeracja {
-    case przypadekKlasyA   (MojaKlasaA)
-    case przypadekKlasyA_B (MojaKlasaA, MojaKlasaB)
-    case przypadekNazwany  (instancjaA: MojaKlasaA, instacjaB: MojaKlasaB)
+enum CustomEnumeration {
+    case unit           (ClassA)
+    case productAB      (ClassA, ClassB)
+    case namedProductAB (instanceA: ClassA, instanceB: ClassB)
 }
 
 
-let mojaEnumeracjaA: MojaEnumeracja = .przypadekKlasyA(MojaKlasaA.init(cytat: "Można pić bez obawień"))
+let instanceOfCustomEnumeration: CustomEnumeration = .unit(ClassA(quote: "Można pić bez obawień"))
 
-if case .przypadekKlasyA(let instancjaA) = mojaEnumeracjaA {
-    instancjaA.cytat
+if case .unit(let instanceOfClassA) = instanceOfCustomEnumeration {
+    instanceOfClassA.quote
 }
 
 //: Dokładnie taka "magia" dzieje się gdy korzystamy z Optionali.
 
-var bycMozeCytat: Optional<String> // 💡 Przytrzymaj "ctrl" i naduś w "Optional"
-type(of: bycMozeCytat)
+var maybeQuote: Optional<String> // 💡 Przytrzymaj "ctrl" i naduś w "Optional" -> Jump to definition
+type(of: maybeQuote)
 
-bycMozeCytat = "Bedziesz to jesc?"
-bycMozeCytat
+maybeQuote = "Będziesz to jeść?"
+maybeQuote
 
-bycMozeCytat = nil
-bycMozeCytat
+maybeQuote = nil
+maybeQuote
 
-bycMozeCytat = .some("Bedziesz to jesc?")
-bycMozeCytat
+maybeQuote = .some("Będziesz to jeść?")
+maybeQuote
 
-bycMozeCytat = .none
-bycMozeCytat
-
-
-//: ## [Rekurencyjne Enumeracje](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Enumerations.html#//apple_ref/doc/uid/TP40014097-CH12-ID536)
-//: Aby zrozumieć rekurencje... 
-
-enum Czesc { // indirect enum Czesc
-    case none
-    indirect case some(nazwa: String, uid: Int, podczesc: Czesc?) // indirect
-
-    static func wypiszCzesci(_ czesc: Czesc) -> String {
-
-        if case let .some(nazwa, uid, czesc) = czesc {
-
-            var des = "Nazwa: \(nazwa)\t UUID: \(uid)"
+maybeQuote = .none
+maybeQuote
 
 
-            if let czesc = czesc {
-                des += " ]---> "
-                des += Czesc.wypiszCzesci(czesc)
-            }
 
-            return des
-        }
 
-        return ""
-    }
+/*:
+ ## [Rekurencyjne Enumeracje](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Enumerations.html#//apple_ref/doc/uid/TP40014097-CH12-ID536)
+ Aby zrozumieć rekurencje... trzeba zrozumieć rekurencje... a czasami ta sama struktura jest w sobie samej. W życiu jest to częściej spotykane niż może się wydawać.
+ 
+ Weźmy np. takie auto. Możemy na nie spojrzeć na kilka sposobów. Jako całość lub jako _grupę części_, które tworzą to auto. Teraz każdą z tych części też możemy potraktować jako _całość_. Jednak przy bliższym spojrzeniu można sobaczyć, że i ta część ma swoje _podczęści_.
+ 
+ Taka relacja może być zamodelowana przy pomocy enumeracji i słowa kluczowego `indirect`. _Normalnie_ kompilator optymalizuje enumeracje, jednak przy tego typu strukturach trzeba jawnie mu powiedzieć, że _tak zrobiłem to specjalnie_.
+ */
+
+enum Part { // indirect enum Part
+    indirect case some(name: String, uid: Int, subpart: Part?) // indirect
 }
 
-let tlok   = Czesc.some(nazwa: "Tlok", uid: 1234, podczesc: .none)
-let silnik = Czesc.some(nazwa: "V8", uid: 8, podczesc: tlok)
-let auto   = Czesc.some(nazwa: "Polonez", uid: 42, podczesc: silnik)
+func printParts(_ part: Part) -> String {
 
-print(Czesc.wypiszCzesci(tlok))
-print(Czesc.wypiszCzesci(silnik))
-print(Czesc.wypiszCzesci(auto))
+    if case let .some(name, uid, subpart) = part {
+
+        var des = "Nazwa: \(name)\t UUID: \(uid)"
+
+        if let subpart = subpart {
+            des += " ]---> "
+            des += printParts(subpart)
+        }
+
+        return des
+    }
+
+    return ""
+}
+
+let piston = Part.some(name: "Tlok", uid: 1234, subpart: .none)
+let engine = Part.some(name: "V8", uid: 8, subpart: piston)
+let auto   = Part.some(name: "Polonez", uid: 42, subpart: engine)
+
+run("🍟 parts") {
+    print(printParts(piston))
+    print(printParts(engine))
+    print(printParts(auto))
+}
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)

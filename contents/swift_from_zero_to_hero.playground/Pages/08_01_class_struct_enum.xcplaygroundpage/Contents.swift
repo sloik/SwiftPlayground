@@ -8,7 +8,7 @@ _Classes and structures are general-purpose, flexible constructs that become the
 
 W gruncie rzeczy __Klasy__ oraz __Struktury__ są bardzo podobne do siebie:
 * posiadają właściwości (properties) i mogą przechowywać wartości
-* można w nich definować metody
+* można w nich definiować metody
 * można wzbogacić je w obsługiwanie subskryptu ([])
 * mogą posiadać initializery 
 * można je rozszerzać przy pomocy kategorii
