@@ -60,7 +60,7 @@ func addCurriedVersion(_ product: String) -> (Double) -> (Int) -> String {
 let brownPantiesWaitingForPriceInformationFunction = addCurriedVersion("Brązowe Galoty")
 
 /*:
-`brownPanties...` ma w sobie zapieczoną informację o produkcie. Jest to bezpiecznie zamknięte wewnątrz bez możliwości podmiany tego produktu. W następnym kroku powiemy tej funkcji jaka jest cena za jedną sztukę produktu i w zamian otrzymamy kolejną funkcje!
+`brownPanties...` ma w sobie zabezpieczoną informację o produkcie. Jest to bezpiecznie zamknięte wewnątrz bez możliwości podmiany tego produktu. W następnym kroku powiemy tej funkcji jaka jest cena za jedną sztukę produktu i w zamian otrzymamy kolejną funkcje!
  */
 
 run ("💰 curry version") {
@@ -78,7 +78,7 @@ run ("💰 curry version") {
 /*:
  Dostajemy kolejny sposób na _enkapsulacje_, ukrywanie detali implementacyjnych.
  
- Curring jest obecny w wielu językach, szczególnie tych nastawionych na programowanie funkcyjne. Dzięki takiemu podejściu dużo łatwiej komponuje się ze sobą funkcje tworząc z mniejszych większe.
+ Currying jest obecny w wielu językach, szczególnie tych nastawionych na programowanie funkcyjne. Dzięki takiemu podejściu dużo łatwiej komponuje się ze sobą funkcje tworząc z mniejszych większe.
  
  Dogłębnie wchodzimy w ten temat na naszym YouTube-owym kanale w play-liście [Lekko Technologiczny - Funkcyjny Swift](https://www.youtube.com/playlist?list=PLk_5PV9LrXp-R6TM86MxqlihQSu_ZIhUk).
  */
