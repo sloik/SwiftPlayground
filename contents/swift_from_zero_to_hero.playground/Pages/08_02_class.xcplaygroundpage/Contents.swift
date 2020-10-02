@@ -95,8 +95,8 @@ class Weather: MyClass {
         return "Mariana"
     }()
 
-//: ### [iniciajlizacja](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html)
-//: W Swift każda klasa musi posiadać __desygnowany initilizer__ jeżeli wszystkie nie opcjonalne właściwości/properties nie mają domyslnie przypisanej wartości. Jeżeli natomiast mają to jest automatycznie generowany pusty initilizer.
+//: ### [inicjalizacja](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html)
+//: W Swift każda klasa musi posiadać __desygnowany initilizer__ jeżeli wszystkie nie opcjonalne właściwości/properties nie mają domyślnie przypisanej wartości. Jeżeli natomiast mają to jest automatycznie generowany pusty initilizer.
 
     init(maxTemperature: Int, currentOvercast: String) { // brak 'func'
         self.maxTemperature = maxTemperature
@@ -107,7 +107,7 @@ class Weather: MyClass {
         // 💡 brak zwrwacanej wartosci
     }
 
-//: Pomicnicze initilizery muszą być oznaczone słowem kluczowym __convenience__. Mogą wołać inne pomocnicze "inity" ale nie mogą wołać "initów" z superklasy.
+//: Pomocnicze initilizery muszą być oznaczone słowem kluczowym __convenience__. Mogą wołać inne pomocnicze "inity" ale nie mogą wołać "initów" z superklasy.
     convenience init(maxTemperature: Int) {
         self.init(maxTemperature: maxTemperature, currentOvercast: "🌧")
 //        super.init() // 💥
@@ -122,7 +122,7 @@ class Weather: MyClass {
         self.temperature = temperature // 👍🏻
     }
 
-//: Nie zawsze inicjalizacja obiektu może się udać. Zabraknie pamięciu lub dane wprowadzone do "init"-a nie mają sensu. W takiej sytuacji chcemy pokazać, że jednak coś się nie udało. Służą do tego _fejlujące initializery_ ([dokumentacja](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html#//apple_ref/doc/uid/TP40014097-CH18-ID224)). Deklaruje je sie dodając **?** za **init**. Dość ciekawym kuriozum jest sytuacja w której jesteśmy pewni, że fejlujący init nigdy nie z fejluje. Wtedy możemy "?" zastąpić **!** i nie otrzymamy wtedy oprionala.
+//: Nie zawsze inicjalizacja obiektu może się udać. Zabraknie pamięciu lub dane wprowadzone do "init"-a nie mają sensu. W takiej sytuacji chcemy pokazać, że jednak coś się nie udało. Służą do tego _fejlujące initializery_ ([dokumentacja](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html#//apple_ref/doc/uid/TP40014097-CH18-ID224)). Deklaruje je sie dodając **?** za **init**. Dość ciekawym kuriozum jest sytuacja w której jesteśmy pewni, że fejlujący init nigdy nie z fejluje. Wtedy możemy "?" zastąpić **!** i nie otrzymamy wtedy optionala.
 
     convenience init?(city: String?, temperature: Int) { // 💡: init!(...
         self.init(maxTemperature: 1000)
@@ -263,7 +263,7 @@ do {
     type(of: outerInstance)
     outerInstance.justOuterMethod()
 
-//: 💡 Type klasy wewnetrznej jest zwiazany z typem klasy zewnetrznej
+//: 💡 Type klasy wewnetrznej jest związany z typem klasy zewnetrznej
     type(of: outerInstance.inner)
 
     outerInstance.outherMethodCallingOnInnerInstance()
