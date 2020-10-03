@@ -17,7 +17,7 @@ Cała ta _księgowość_ dzieje się automatycznie i nie musimy w nią w żaden 
 
 ## Cykliczne Referencje
 
-Wiedząc już jak działa ta _księgowość_ wyobraxmy sobie sytuacje w której obiekt klasy __A__ ma referencje do obiektu klasy __B__ i to ponownie do obiektu __A__.
+Wiedząc już jak działa ta _księgowość_ wyobraźmy sobie sytuacje w której obiekt klasy __A__ ma referencje do obiektu klasy __B__ i to ponownie do obiektu __A__.
 
 ![retain cycle](retain-cycle-copy.png)
 
@@ -95,7 +95,7 @@ run("👗 No leaking memory") {
 /*:
  ## Bloki
  
- Ponieważ "łapią" obiekty w dostępnym zakresie (scope), **również mogą spowodować retain cycle**. W miejscu gdzie w bloku używamy jakiejś zmiennej z poza bloku kompilator tworzy i "dowiązuje" specjalny obiekt, który jest używany do "złapania" referencji lub użytych wartości.
+ Ponieważ "łapią" obiekty w dostępnym zakresie (scope), **również mogą spowodować retain cycle**. W miejscu gdzie w bloku używamy jakiejś zmiennej spoza bloku kompilator tworzy i "dowiązuje" specjalny obiekt, który jest używany do "złapania" referencji lub użytych wartości.
  
  > Działa to tak, że kompilator w miejscu użycia bloku generuje _ukrytą_ klasę i tworzy jej instancje. Wszystkie obiekty, jakie są użyte wewnątrz stają się _property_ tej klasy. To też mam nadzieje _wyjaśnia_ dlaczego można się spotkać ze stwierdzeniem, że _bloki to obiekty_. [Stack: how are nsblocks objects created](https://stackoverflow.com/questions/20134616/how-are-nsblock-objects-created) i [Implementacja NSBlock w ObjC](https://github.com/nst/iOS-Runtime-Headers/blob/master/Frameworks/CoreFoundation.framework/NSBlock.h)
  
