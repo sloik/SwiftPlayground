@@ -17,7 +17,7 @@ Cała ta _księgowość_ dzieje się automatycznie i nie musimy w nią w żaden 
 
 ## Cykliczne Referencje
 
-Wiedząc już jak działa ta _księgowość_ wyobraxmy sobie sytuacje w której obiekt klasy __A__ ma referencje do obiektu klasy __B__ i to ponownie do obiektu __A__.
+Wiedząc już jak działa ta _księgowość_ wyobraźmy sobie sytuacje w której obiekt klasy __A__ ma referencje do obiektu klasy __B__ i to ponownie do obiektu __A__.
 
 ![retain cycle](retain-cycle-copy.png)
 
