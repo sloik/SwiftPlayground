@@ -281,7 +281,11 @@ do {
     type(of: innerInstance)
 }
 
-//: A co jeżeli klasa wewnątrz będzie prywatna?
+/*:
+ A co jeżeli klasa wewnątrz będzie prywatna?
+ 
+ > O modyfikatorach dostępu opowiemy trochę później w serii. Na ten moment powiedzmy, że pozwalają pokazać ukryć detale implementacyjne a udostępnić publiczny interface. 
+ */
 
 print("\nWewnetrzna Klasa Prywatna".uppercased())
 class OtherOuter {
