@@ -9,7 +9,7 @@ Struktury są niemal identyczne z klasami. Mogą:
 * posiadają initializery
 
 To co je odróżnia to:
-* są przekazywane przez kopie/warość,
+* są przekazywane przez kopie/wartość,
 * nie mogą dziedziczyć,
 * nie mają deinitializera,
 * jeżeli nie ma zdefiniowanego initializera to jest generowany przez kompilator
