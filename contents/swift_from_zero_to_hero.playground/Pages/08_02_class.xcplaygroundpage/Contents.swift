@@ -139,9 +139,15 @@ class Weather: MyClass {
         self.city = city
     }
 
+/*:
+    Tworzenie obiektów (instancji klas) to tylko połowa historii. Drugą połową jest deinicjalizacja. W bloku `deinit` definiuje się akcje, które mają się wykonać w momencie gdy do instancji nie ma już więcej żadnych _silnych referencji_.
+     
+     Powolutku zmierzamy nieuchronnie w tematy związane z zarządzaniem pamięcią. Nie ma się czego bać a sam `deinit` to _wygodne_ miejsce aby oddać wszelkie zasoby, które zostały przydzielone.
+ */
+
     deinit {
         Weather.numberOfWeatherStations -= 1
-        print(#function + "\tliczbaInstancji: \(Weather.numberOfWeatherStations)")
+        print(#function + "\t", "liczbaInstancji: \(Weather.numberOfWeatherStations)")
     }
 
 //: ### Metody Instancji
