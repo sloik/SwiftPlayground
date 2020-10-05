@@ -21,7 +21,9 @@ Wiedząc już jak działa ta _księgowość_ wyobraźmy sobie sytuacje w której
 
 ![retain cycle](retain-cycle-copy.png)
 
-Jak widać każdy z nich w takiej sytuacji ma retain count równy +1.
+Jak widać każdy z nich w takiej sytuacji ma retain count równy +1. Razem właśnie tworzą taki zamknięty cykl silnych referencji, który uniemożliwia ich dealokacje (zwolnienie).
+ 
+ Dwa obiekty to przypadek bardzo prosty i w miarę _łatwy_ do namierzenia. W aplikacjach takie cykle mogą przechodzić przez wiele _warstw_ i już nie są takie _łatwe_ w odszukaniu.
 
 */
 
