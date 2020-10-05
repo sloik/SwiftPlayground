@@ -133,8 +133,6 @@ class Weather: MyClass {
         guard let city = city , city.count > 0 else {
             return nil // Jedyny moment kiedy możemy zwrócić coś w "inicie"
         }
-        
-        
 
         self.city = city
     }
