@@ -122,7 +122,7 @@ class Weather: MyClass {
         self.temperature = temperature // 👍🏻
     }
 
-//: Nie zawsze inicjalizacja obiektu może się udać. Zabraknie pamięciu lub dane wprowadzone do "init"-a nie mają sensu. W takiej sytuacji chcemy pokazać, że jednak coś się nie udało. Służą do tego _fejlujące initializery_ ([dokumentacja](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html#//apple_ref/doc/uid/TP40014097-CH18-ID224)). Deklaruje je sie dodając **?** za **init**. Dość ciekawym kuriozum jest sytuacja w której jesteśmy pewni, że fejlujący init nigdy nie z fejluje. Wtedy możemy "?" zastąpić **!** i nie otrzymamy wtedy optionala.
+//: Nie zawsze inicjalizacja obiektu może się udać. Zabraknie pamięciu lub dane wprowadzone do "init"-a nie mają sensu. W takiej sytuacji chcemy pokazać, że jednak coś się nie udało. Służą do tego _fejlujące initializery_ ([dokumentacja](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html#//apple_ref/doc/uid/TP40014097-CH18-ID224)). Deklaruje je sie dodając **?** za **init**. Dość ciekawym kuriozum jest sytuacja w której jesteśmy pewni, że fejlujący init nigdy nie zfejluje. Wtedy możemy "?" zastąpić **!** i nie otrzymamy wtedy Optional-a.
 
     convenience init?(city: String?, temperature: Int) { // 💡: init!(...
         self.init(maxTemperature: 1000)
@@ -284,7 +284,7 @@ do {
 /*:
  A co jeżeli klasa wewnątrz będzie prywatna?
  
- > O modyfikatorach dostępu opowiemy trochę później w serii. Na ten moment powiedzmy, że pozwalają pokazać ukryć detale implementacyjne a udostępnić publiczny interface. 
+ > O modyfikatorach dostępu opowiemy trochę później w serii. Na ten moment powiedzmy, że pozwalają pokazać ukryć detale implementacyjne a udostępnić publiczny interface.
  */
 
 print("\nWewnetrzna Klasa Prywatna".uppercased())
