@@ -3,7 +3,7 @@
 
 /*:
 ## Uwaga na typy referencyjne 💥
-Bardzo często w trakcie pisania kodu musimy wewnątrz jednej klasy umieścić wskazania (referencje) na obiekty z innej klasy. Samo w sobie nie jest to groźne, natomiast z racji tego w jaki sposób w Swift zarządza pamięcią może doprowadzić do wycieku pamięci.
+Bardzo często w trakcie pisania kodu musimy wewnątrz jednej klasy umieścić wskazania (referencje) na obiekty z innej klasy. Samo w sobie nie jest to groźne, natomiast z racji tego w jaki sposób Swift zarządza pamięcią może doprowadzić do wycieku pamięci.
 
 ## Zarządzanie pamięcią kurs bardzo przyśpieszony.
 Każdy obiekt gdzieś pod spodem ma przypisany ukryty licznik, który mówi ile innych obiektów trzyma do niego wskazanie (referencje). Ta _ukryta_ właściwość każdego obiektu, który powstał nazywa się __retain count__.
