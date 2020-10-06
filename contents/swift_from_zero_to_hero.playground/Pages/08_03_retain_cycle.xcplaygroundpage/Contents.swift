@@ -17,9 +17,19 @@ Cała ta _księgowość_ dzieje się automatycznie i nie musimy w nią w żaden 
 
 ## Cykliczne Referencje
 
-Wiedząc już jak działa ta _księgowość_ wyobraźmy sobie sytuacje w której obiekt klasy __A__ ma referencje do obiektu klasy __B__ i to ponownie do obiektu __A__.
-
-![retain cycle](retain-cycle-copy.png)
+Wiedząc już jak działa ta _księgowość_ wyobraźmy sobie sytuacje w której obiekt klasy __A__ ma referencje do obiektu klasy __B__. Ten natomiast ma silną referencje do obiektu __A__.
+ 
+ ```
+   ┌─────────────────────────┐
+┌─▶│      Instance of A      │──┐
+│  └─────────────────────────┘  │
+│                               │
+│                               │
+│                               │
+│  ┌─────────────────────────┐  │
+└──│      Instance of B      │◀─┘
+   └─────────────────────────┘
+ ```
 
 Jak widać każdy z nich w takiej sytuacji ma retain count równy +1. Razem właśnie tworzą taki zamknięty cykl silnych referencji, który uniemożliwia ich dealokacje (zwolnienie).
  
@@ -71,9 +81,19 @@ run("🧑‍🔬 No deinit!") {
 
 Aby zaradzić tej sytuacji mamy do dyspozycji dwa mechanizmy które sprawiają, że retain count obiektu na który jest wskazanie **nie wzrasta**. Jednym z nich jest słowo kluczowe [**weak**](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/AutomaticReferenceCounting.html#//apple_ref/doc/uid/TP40014097-CH20-ID53) a drugim [ **unowned** ](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/AutomaticReferenceCounting.html#//apple_ref/doc/uid/TP40014097-CH20-ID54).
 
-![retain cycle](retain-cycle-broken.png)
+```
+   ┌─────────────────────────┐
+┌─▶│      Instance of A      │─ ┐
+│  └─────────────────────────┘
+│                               │
+│
+│                               │
+│  ┌─────────────────────────┐
+└──│      Instance of B      │◀ ┘
+   └─────────────────────────┘
+```
 
-### Kiedy używać którego?
+ ### Kiedy używać którego?
 * **weak** uzywamy w momencie gdy referencja może być nil 
 * **unowned** gdy referencja zawsze musi mieć wartość
 */
