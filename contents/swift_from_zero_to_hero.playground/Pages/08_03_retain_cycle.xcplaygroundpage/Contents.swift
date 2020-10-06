@@ -10,7 +10,7 @@ Każdy obiekt gdzieś pod spodem ma przypisany ukryty licznik, który mówi ile 
 
 Zasady są bardzo proste:
 * _Każde_ ( _chwilowo kłamię, ale się to wyjaśni dalej_ ) wskazanie na obiekt zwiększa wartość tego licznika o +1. 
-* Gdy referencja jest _wynilowana_ lub w inny sposób przestaje wskazywać na obiekt wartość tego licznika jest zmniejszana o 1 (np. z 3 na 2).
+* Gdy referencja jest _wynilowana_ lub w inny sposób przestaje wskazywać na obiekt (np. wskazuje na inny) wartość tego licznika jest zmniejszana o 1 (np. z 3 na 2).
 * Gdy wartość licznika spada do 0 obiekt jest niszczony a jego pamięć jest zwalniana do systemu.
 
 Cała ta _księgowość_ dzieje się automatycznie i nie musimy w nią w żaden sposób ingerować. Musimy natomiast być jej świadomi (trzymać gdzieś w piwnicy razem z innymi rzeczami, które czasem nas straszą).
