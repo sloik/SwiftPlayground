@@ -20,7 +20,11 @@ func addToCartNormal(_ product: String, price: Double) -> (Int) -> String {
             discountAmount = 0.8
         }
 
-        return String(format: "Kupujesz \(count) razy \"\(product)\" każde po cenie %.2f co daje łącznie: %.2f", price * discountAmount, price * discountAmount * Double(count))
+        return String(
+            format: "Kupujesz \(count) razy \"\(product)\" każde po cenie %.2f co daje łącznie: %.2f",
+            price * discountAmount,
+            price * discountAmount * Double(count)
+        )
     }
 
     return discountFunction
@@ -28,7 +32,9 @@ func addToCartNormal(_ product: String, price: Double) -> (Int) -> String {
 
 run ("📀 Golden Pants"){
     let itemToBuy = addToCartNormal("Złote Galoty", price: 100)
-    print(itemToBuy(5))
+    print(
+        itemToBuy(5)
+    )
 }
 
 

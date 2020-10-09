@@ -3,25 +3,37 @@
 
 /*:
 ## Uwaga na typy referencyjne 💥
-Bardzo często w trakcie pisania kodu musimy wewnątrz jednej klasy umieścić wskazania (referencje) na obiekty z innej klasy. Samo w sobie nie jest to groźne, natomiast z racji tego w jaki sposób w Swift zarządza pamięcią może doprowadzić do wycieku pamięci.
+Bardzo często w trakcie pisania kodu musimy wewnątrz jednej klasy umieścić wskazania (referencje) na obiekty z innej klasy. Samo w sobie nie jest to groźne, natomiast z racji tego w jaki sposób Swift zarządza pamięcią może doprowadzić do wycieku pamięci.
 
 ## Zarządzanie pamięcią kurs bardzo przyśpieszony.
 Każdy obiekt gdzieś pod spodem ma przypisany ukryty licznik, który mówi ile innych obiektów trzyma do niego wskazanie (referencje). Ta _ukryta_ właściwość każdego obiektu, który powstał nazywa się __retain count__.
 
 Zasady są bardzo proste:
 * _Każde_ ( _chwilowo kłamię, ale się to wyjaśni dalej_ ) wskazanie na obiekt zwiększa wartość tego licznika o +1. 
-* Gdy referencja jest _wynilowana_ lub w inny sposób przestaje wskazywać na obiekt wartość tego licznika jest zmniejszana o -1.
+* Gdy referencja jest _wynilowana_ lub w inny sposób przestaje wskazywać na obiekt (np. wskazuje na inny) wartość tego licznika jest zmniejszana o 1 (np. z 3 na 2).
 * Gdy wartość licznika spada do 0 obiekt jest niszczony a jego pamięć jest zwalniana do systemu.
 
 Cała ta _księgowość_ dzieje się automatycznie i nie musimy w nią w żaden sposób ingerować. Musimy natomiast być jej świadomi (trzymać gdzieś w piwnicy razem z innymi rzeczami, które czasem nas straszą).
 
 ## Cykliczne Referencje
 
-Wiedząc już jak działa ta _księgowość_ wyobraźmy sobie sytuacje w której obiekt klasy __A__ ma referencje do obiektu klasy __B__ i to ponownie do obiektu __A__.
+Wiedząc już jak działa ta _księgowość_ wyobraźmy sobie sytuacje w której obiekt klasy __A__ ma referencje do obiektu klasy __B__. Ten natomiast ma silną referencje do obiektu __A__.
+ 
+ ```
+   ┌─────────────────────────┐
+┌─▶│      Instance of A      │──┐
+│  └─────────────────────────┘  │
+│                               │
+│                               │
+│                               │
+│  ┌─────────────────────────┐  │
+└──│      Instance of B      │◀─┘
+   └─────────────────────────┘
+ ```
 
-![retain cycle](retain-cycle-copy.png)
-
-Jak widać każdy z nich w takiej sytuacji ma retain count równy +1.
+Jak widać każdy z nich w takiej sytuacji ma retain count równy +1. Razem właśnie tworzą taki zamknięty cykl silnych referencji, który uniemożliwia ich dealokacje (zwolnienie).
+ 
+ Dwa obiekty to przypadek bardzo prosty i w miarę _łatwy_ do namierzenia. W aplikacjach takie cykle mogą przechodzić przez wiele _warstw_ i już nie są takie _łatwe_ w odszukaniu.
 
 */
 
@@ -69,9 +81,19 @@ run("🧑‍🔬 No deinit!") {
 
 Aby zaradzić tej sytuacji mamy do dyspozycji dwa mechanizmy które sprawiają, że retain count obiektu na który jest wskazanie **nie wzrasta**. Jednym z nich jest słowo kluczowe [**weak**](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/AutomaticReferenceCounting.html#//apple_ref/doc/uid/TP40014097-CH20-ID53) a drugim [ **unowned** ](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/AutomaticReferenceCounting.html#//apple_ref/doc/uid/TP40014097-CH20-ID54).
 
-![retain cycle](retain-cycle-broken.png)
+```
+   ┌─────────────────────────┐
+┌─▶│      Instance of A      │─ ┐
+│  └─────────────────────────┘
+│                               │
+│
+│                               │
+│  ┌─────────────────────────┐
+└──│      Instance of B      │◀ ┘
+   └─────────────────────────┘
+```
 
-### Kiedy używać którego?
+ ### Kiedy używać którego?
 * **weak** uzywamy w momencie gdy referencja może być nil 
 * **unowned** gdy referencja zawsze musi mieć wartość
 */

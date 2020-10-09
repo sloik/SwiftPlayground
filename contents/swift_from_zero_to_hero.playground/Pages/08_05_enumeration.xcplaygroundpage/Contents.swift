@@ -59,10 +59,15 @@ let whatCountedOut = CountingOut.moe
 type(of: whatCountedOut)
 whatCountedOut.rawValue
 
-//: Możemy stworzyć instancję enumeracji korzystając z jej "surowej wartości" (jeżeli ją znamy) ;)
+/*:
+ O tego typu enumeracjach (_dziedziczących_ po jakimś konkretnym typie) można myśleć tak: kompilator dla każdego `case`-a przypisuje konkretną wartość `eney` to `0` a `storm` to `⛈`. W czasie pisania programu jednak "⛈" i "0" to nie są instancje enumeracji. Ujmując to inaczej kompilator potrafi odróżnić czy chodzi np. o liczbę "0" czy chcemy instancje `CountingOut`, która pod spodem jest reprezentowana jako "0".
+ 
+ Możemy stworzyć instancję enumeracji korzystając z jej "surowej wartości" (jeżeli ją znamy) ;) Trzeba tylko przekazać tą "surową wartość" do specjalnej funkcji init, która jeżeli będzie pasować do wzorca zwróci odpowiednią instancję. Jeżeli nie to dostaniemy `nil / none`.
+ */
 
-var whatCountedOutRawValue = CountingOut(rawValue: 21) // 💡 rawValue: 42
+var whatCountedOutRawValue = CountingOut(rawValue: 21) // 💡 rawValue: 42 lub inna ale nie będąca "rawValue"
 type(of: whatCountedOutRawValue)
+
 if let _ = whatCountedOutRawValue {
     whatCountedOutRawValue!
 } else {
@@ -71,6 +76,7 @@ if let _ = whatCountedOutRawValue {
 
 var overcastRawValue = Overcast(rawValue: "💩⚡️")
 type(of: overcastRawValue)
+
 if let _ = overcastRawValue {
     overcastRawValue!
 } else {

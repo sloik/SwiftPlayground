@@ -97,9 +97,11 @@ func ~=(number: Int, text: String) -> Bool {
  Operator pattern matchingu można wykorzystać nawet w zwykłym `if`ie:
  */
 
-for i in 0...10 {
-    if 3...6 ~= i {
-        print(i)
+run("🧚🏼‍♀️ plain ~= if"){
+    for i in 0...10 {
+        if 3...6 ~= i {
+            print(i)
+        }
     }
 }
 

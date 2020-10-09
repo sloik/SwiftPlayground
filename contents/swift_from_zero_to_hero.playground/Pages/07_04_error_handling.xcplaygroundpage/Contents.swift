@@ -20,19 +20,14 @@ func mayExplode() throws {
     let error1 =  Bool.random()
     let error2 =  Bool.random()
     defer {
-        print("🤔 Wystąpił babol1: \(error1)\t\tWystąpił babol2: \(error2)")
+        print("🤔", #function, "Wystąpił babol1: \(error1)\t\tWystąpił babol2: \(error2)")
     }
 
+    if error1 { throw SomethingWentWrong.badLuck }
 
-    guard error1 == false else {
-        throw SomethingWentWrong.badLuck
-    }
+    if error2 { throw SomethingWentWrong.ups(code: 69) }
 
-    guard error2 == false else {
-        throw SomethingWentWrong.ups(code: 69)
-    }
-
-    print("😎 jednak nie wybuchło")
+    print("😎", #function, "jednak nie wybuchło")
 }
 
 /*:
@@ -74,7 +69,7 @@ run("☄️☄️☄️ calling exploding function") {
 
 func functionCallingMayExplode() {
     do {
-    try mayExplode()
+        try mayExplode()
     } catch {
         print("😱 wołająca ohandlowała")
     }
@@ -86,7 +81,7 @@ run("👘👘👘 calling function handles error") {
 
 //: Teraz fragment wywołujący tą funkcje musi albo "ohandlować" błąd albo sam "rzucać" go dalej.
 func functionThatItSelfMayExplode() throws {
-        try mayExplode()
+    try mayExplode()
 }
 
 run("🔥🔥🔥 calling function rethrows error") {
