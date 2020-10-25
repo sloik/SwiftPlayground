@@ -20,7 +20,7 @@ Cała ta _księgowość_ dzieje się automatycznie i nie musimy w nią w żaden 
 Wiedząc już jak działa ta _księgowość_ wyobraźmy sobie sytuacje w której obiekt klasy __A__ ma referencje do obiektu klasy __B__. Ten natomiast ma silną referencje do obiektu __A__.
  
  ```
-   ┌─────────────────────────┐
+    ┌─────────────────────────┐
 ┌─▶│      Instance of A      │──┐
 │  └─────────────────────────┘  │
 │                               │
@@ -28,7 +28,7 @@ Wiedząc już jak działa ta _księgowość_ wyobraźmy sobie sytuacje w której
 │                               │
 │  ┌─────────────────────────┐  │
 └──│      Instance of B      │◀─┘
-   └─────────────────────────┘
+    └─────────────────────────┘
  ```
 
 Jak widać każdy z nich w takiej sytuacji ma retain count równy +1. Razem właśnie tworzą taki zamknięty cykl silnych referencji, który uniemożliwia ich dealokacje (zwolnienie).
