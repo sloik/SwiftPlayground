@@ -12,7 +12,7 @@ Enumeracje **mają**:
 * adopotowac protokoły
 
 Enumeracje **nie mają**:
-* właściwości na instancji enumeracji
+* właściwości na instancji (konkretnym case) enumeracji
 * dziedziczenia
 
 */
@@ -138,7 +138,7 @@ run("🧈 quote Wiesław") {
     quoteWieslaw.quote(true)
 }
 //: ## Dowiązywanie Wartości / Associating Values
-//: Enumeracje mogą posiadać swój własny typ (Int, String etc.) **lub** mogą mieć dowiązane do siebie instancje typów referencyjnych. 
+//: Enumeracje mogą posiadać swój własny typ (Int, String etc.) **lub** mogą mieć dowiązane do siebie instancje innych typów. 
 
 class ClassA {
     let quote: String
@@ -193,12 +193,12 @@ maybeQuote
  */
 
 enum Part { // indirect enum Part
-    indirect case some(name: String, uid: Int, subpart: Part?) // indirect
+    indirect case element(name: String, uid: Int, subpart: Part?) // indirect
 }
 
 func printParts(_ part: Part) -> String {
 
-    if case let .some(name, uid, subpart) = part {
+    if case let .element(name, uid, subpart) = part {
 
         var des = "Nazwa: \(name)\t UUID: \(uid)"
 
@@ -213,9 +213,9 @@ func printParts(_ part: Part) -> String {
     return ""
 }
 
-let piston = Part.some(name: "Tlok", uid: 1234, subpart: .none)
-let engine = Part.some(name: "V8", uid: 8, subpart: piston)
-let auto   = Part.some(name: "Polonez", uid: 42, subpart: engine)
+let piston = Part.element(name: "Tlok", uid: 1234, subpart: .none)
+let engine = Part.element(name: "V8", uid: 8, subpart: piston)
+let auto   = Part.element(name: "Polonez", uid: 42, subpart: engine)
 
 run("🍟 parts") {
     print(printParts(piston))
