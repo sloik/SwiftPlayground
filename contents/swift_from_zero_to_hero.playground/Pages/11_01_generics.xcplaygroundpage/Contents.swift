@@ -4,7 +4,7 @@
 import Foundation
 
 /*:
-W Swift każda stała lub zmienna mają zadeklarowany typ. Dzięku temu zawsze (prawie zawsze) wimy z jakiego _typu_ obiektem mamy do czynienia. Gdy potrzebujemy nieco rozluźnić "więzy" możemy zadeklarować zmienną jako _Any_ lub _AnyObject_. Dodatkowo mając protokoły znamy interfejs danego typu i możemy bezpiecznie wywoływać na nim metody. Jeżeli natomiast mamy potrzebę sprawdzenia z jakim konkretnie typem teraz pracujemy możemy skastować na odpowiedni typ (oczywiście wymaga to sprawdzenia czy instancja z którą teraz pracujemy jest tego typu). **Generyki** pozwalają nam zachować "gwarancje typu" i pozwalają nam pracować bezpośrednio z instancją bez wymogu kastowania.
+W Swift każda stała lub zmienna mają zadeklarowany typ. Dzięku temu zawsze (prawie zawsze) wiemy z jakiego _typu_ obiektem mamy do czynienia. Gdy potrzebujemy nieco rozluźnić "więzy" możemy zadeklarować zmienną jako _Any_ lub _AnyObject_. Dodatkowo mając protokoły znamy interfejs danego typu i możemy bezpiecznie wywoływać na nim metody. Jeżeli natomiast mamy potrzebę sprawdzenia z jakim konkretnie typem teraz pracujemy możemy skastować na odpowiedni typ (oczywiście wymaga to sprawdzenia czy instancja z którą teraz pracujemy jest tego typu). **Generyki** pozwalają nam zachować "gwarancje typu" i pozwalają nam pracować bezpośrednio z instancją bez wymogu kastowania.
 
 Kilka przykładów:
 */
@@ -16,15 +16,15 @@ let tablicaIntow: Array<Int> = []
 type(of: tablicaIntow)
 
 struct 💩 { var id:Int  }
-//: 💡: Zobacz jak zadeklarowana jest tablica w standardowej bibliotece (cmd + click)
+//: 💡: Zobacz jak zadeklarowana jest tablica w standardowej bibliotece (cmd + double click)
 let tablica💩: Array<💩> = []
 type(of: tablica💩)
 
 /*:
-Wygląda na to, że już zupełnie niechcący generyki były wkorzystywane na potęgę i nawet o tym nie wiedzieliśmy!
+Wygląda na to, że już zupełnie niechcący generyki były wykorzystywane na potęgę i nawet o tym nie wiedzieliśmy!
 */
 
-let slownikStringInt: Dictionary<String, Int> = [:] //💡: Wiecej jak jeden typ genereyczny
+let slownikStringInt: Dictionary<String, Int> = [:] //💡: Więcej jak jeden typ genereyczny
 type(of: slownikStringInt)
 
 let setStringowNiemieckich: Set<String> = []
@@ -77,7 +77,7 @@ xrun {
     
 }
 //: ## Ograniczanie Generyków
-//: Istnieje składnia, która pozwala na nalożenie dodatkowych ograniczeń co do typu.
+//: Istnieje składnia, która pozwala na nałożenie dodatkowych ograniczeń co do typu.
 
 protocol Skaczacy   {}
 protocol Spiewajacy {}
@@ -100,11 +100,11 @@ xrun {
 
     struct GrajekSkaczacy      : Skaczacy             {}
     struct GrajekSpiewajacy    : Spiewajacy           {}
-    struct MurazPiekrzaAkrobata: Skaczacy, Spiewajacy {} // 👍🏻
+    struct MurarzPiekarzAkrobata: Skaczacy, Spiewajacy {} // 👍🏻
 
     let skaczacyGrajkowie   = [GrajekSkaczacy(), GrajekSkaczacy()]
     let spiewajacyGrajkowie = [GrajekSpiewajacy(), GrajekSpiewajacy()]
-    let artysci             = [MurazPiekrzaAkrobata(), MurazPiekrzaAkrobata()]
+    let artysci             = [MurarzPiekarzAkrobata(), MurarzPiekarzAkrobata()]
 
 //    let sreberko1 = Sreberko.init(zawin: skaczacyGrajkowie) // 💥
 //    let sreberko2 = Sreberko.init(zawin: spiewajacyGrajkowie) // 💥
