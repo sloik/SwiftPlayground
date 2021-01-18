@@ -1,9 +1,9 @@
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
 //: ## [Protocols](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Protocols.html)
 /*:
-Najłatwiej myśleć o protokołach jak o kontrakcie zawierającym wymagania, które adoptujący typ (struktura/klasa/typ prosty) "obiecuje" spełnić. Jeżeli taka sytuacja nastąpi to mówimy, że dany tym implementuje dany protokół.
+Najłatwiej myśleć o protokołach jak o kontrakcie zawierającym wymagania, które adoptujący typ (struktura/klasa/typ prosty) "obiecuje" spełnić. Jeżeli taka sytuacja nastąpi to mówimy, że dany typ implementuje dany protokół.
 
-W definicji protokolu mogą się znajdować metody jak rownież i właściwości oraz, co jest unikalne dla Swift-a, domyślne implementacje tych metod. Dodatkowo protokoły mogą dziedziczyć po sobie.
+W definicji protokołu mogą się znajdować metody jak rownież i właściwości oraz, co jest unikalne dla Swift-a, domyślne implementacje tych metod. Dodatkowo protokoły mogą dziedziczyć po sobie.
 */
 
 import Foundation
@@ -18,7 +18,7 @@ protocol Pogodynka {
 }
 
 //: ## Dziedziczenie Protokołów
-//: Podajemy listę protokołów po ":" oddzielając je przecinkami. Dodatkowo jeżei chcemy aby aby protkół mogły implementować tylko klasy jako pierwsze piszemy słowo kluczowe **class**.
+//: Podajemy listę protokołów po ":" oddzielając je przecinkami. Dodatkowo jeżei chcemy aby protokół mogły implementować tylko klasy jako pierwsze piszemy słowo kluczowe **class**.
 
 protocol PogodynkaTV: class, Pogodynka {
     var imie: String { get }
@@ -53,7 +53,7 @@ protocol Liczacy {
 //    }
 //}
 
-//: ## Implementowanie Prtokołu
+//: ## Implementowanie Protokołu
 
 class Implementuje: PogodynkaTV, Liczacy {
     // PogodynkaTV
@@ -61,7 +61,7 @@ class Implementuje: PogodynkaTV, Liczacy {
     var wiek: Int?
 
     // Pogodynka
-    fileprivate(set) var wilgotnosc: Int = 69 // protokol wymaga tylko gettera
+    fileprivate(set) var wilgotnosc: Int = 69 // protokół wymaga tylko gettera
     var temperatura: Int = 24
 
     func statusPogody() {
@@ -71,7 +71,7 @@ class Implementuje: PogodynkaTV, Liczacy {
     // Liczacy
     static var licznikInstancji: Int = 0
 
-    // Pozostale Metody Typu
+    // Pozostałe Metody Typu
     required init(imiePogodynki: String, wiekPogodynki: Int? = nil) {
         imie = imiePogodynki
         wiek = wiekPogodynki
@@ -151,7 +151,7 @@ if let pog = pogodynka as? Pogodynka {
     pog.temperatura
 }
 
-//: Typ ktory jest klasa i konforumuje do protokolu
+//: Typ ktory jest klasą i konforumuje do protokołu
 protocol TestowyProtocol {}
 class WlasnaKlasa {}
 class Podklasa: WlasnaKlasa, TestowyProtocol {}
