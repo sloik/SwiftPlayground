@@ -78,12 +78,15 @@ Za pomocą rozszerzeń można dodać domyślną implementacje dla protokołu. Mo
 extension InstanceCauntable {
     static func numberOfInstances() -> Int {
 //: `Self` oznacza typ implementujący protokół. `self` oznacza instancje.
-        print("\(Self.instanceCounter)")
-        return Self.instanceCounter
+        Self.instanceCounter
     }
 }
 
-class Implementuje: TvAnchor, InstanceCauntable {
+/*:
+ Ponieważ protokół posiada domyślną implementacje to każdy konformujący typ już nie musi jej dostarczać. Może, ale nie jest to wymagane.
+ */
+
+class ProtocolsImplementer: TvAnchor, InstanceCauntable {
     // PogodynkaTV
     var name: String
     var age : Int?
@@ -104,81 +107,161 @@ class Implementuje: TvAnchor, InstanceCauntable {
         name = nameOfAnchor
         age  = ageOfAnchor
         
-        Implementuje.instanceCounter += 1
+        ProtocolsImplementer.instanceCounter += 1
     }
     
     deinit {
-        Implementuje.instanceCounter -= 1
+        ProtocolsImplementer.instanceCounter -= 1
     }
     
-    func ustawWilgotnosc(_ nowaWilgotnosc: Int) {
-        humidity = nowaWilgotnosc
+    func updateHumidity(_ newHumidity: Int) {
+        humidity = newHumidity
     }
 }
 
+/*:
+## Przykłady :)
+ 
+ Tworzymy instancje `anchor` i ustawiamy trochę wartości:
+ */
 
+var anchor = ProtocolsImplementer(nameOfAnchor: "Sandra")
 
-//: ### Przykłady :)
-
-var pogodynka = Implementuje.init(nameOfAnchor: "Sandra")
-pogodynka.weatherStatus()
-pogodynka.ustawWilgotnosc(80)
-pogodynka.weatherStatus()
-Implementuje.liczbaInstancji()
-
-do {
-    Implementuje.init(nameOfAnchor: "Natalia") // 💡 żyje na stosie
-    Implementuje.liczbaInstancji()
+run("🥺 anchor"){
+    anchor.weatherStatus()
+    anchor.updateHumidity(80)
+    anchor.weatherStatus()
+    
+    print(#line, "Liczba instancji:", ProtocolsImplementer.numberOfInstances())
 }
 
-Implementuje.liczbaInstancji()
+/*:
+ Liczba instancji się zgadza oraz metody. Dodajmy jeszcze jedna instancje:
+ */
 
-//: Tablica Obiektów Implementująca Protokoły
+run("🍁 one more instance") {
+    
+    do {
+        ProtocolsImplementer(nameOfAnchor: "Natalia") // 💡 żyje na stosie
+        print(#line, "Liczba instancji:", ProtocolsImplementer.numberOfInstances())
+    }
+    
+    print(#line, "Liczba instancji:", ProtocolsImplementer.numberOfInstances())
+}
 
-class Jakis: InstanceCauntable {
+/*:
+ W Swift kolekcje mogą posiadać tylko jeden typ. Np. nie wrzucimy do jednej tablicy instancji String oraz Int. To znacz wrzucimy, ale kompilator potraktuje to jako `Any` z którym nic nie można zrobić. Trzeba sprawdzić z jakim typem pracujemy i... generalnie robi się włochato.
+ 
+ To co możemy zrobić to powiedzieć, że kolekcja będzie przechowywać instancje _czegoś co konformuje_ do protokołu.
+ 
+ Jeszcze jedna klasa...
+ */
+
+class SomeCauntableImplementerType: InstanceCauntable {
     static var instanceCounter: Int = 0
 }
 
-var implementujace: [WeatherAnchor & InstanceCauntable] = []
-type(of: implementujace)
+/*:
+Czas utworzyć kolekcje... ale co jeżeli chcemy aby ta kolekcja przechowywała instancje obiektów, które konformują do kilku protokołów? Wystarczy w deklaracji typu użyć `&` i wymienić wszystkie protokoły. Jest to **kompozycja protokołów**:
+ */
 
-typealias SamoliczacaSiePogodynka = WeatherAnchor & InstanceCauntable
-let samoliczaca: [SamoliczacaSiePogodynka] = []
+var conformers: [WeatherAnchor & InstanceCauntable] = []
 
-type(of: implementujace) == type(of: samoliczaca)
+run("🧣 conformer"){
+    print(
+        type(of: conformers)
+    )
+}
 
-implementujace.append(pogodynka)
+/*:
+ Takie podejście sprawia, że warto mieć dużo małych protokołów. Gdy potrzeba większej ilości funkcjonalności to wystarczy je ze sobą posklejać.
+ 
+ > Mały protokół (z małą listą _wymagań_) jest łatwiej zaimplementować!
+ 
+ Jeżeli jakieś protokoły często występują razem to warto nadać im nazwę za pomocą type aliasu:
+ */
 
-let cosiek = Jakis()
-Jakis.instanceCounter
+typealias SelfCauntableAnchor = WeatherAnchor & InstanceCauntable
 
-//implementujace.append(cosiek) // 💥
+/*:
+ lub korzystając z **dziedziczenia** protokołów:
+ */
 
-implementujace
+protocol WeatherCauntable: WeatherAnchor, InstanceCauntable {}
 
-//: ## Delikatna Introspekcja
-//: Czasami chcemy wiedzieć czy jakiś typ implementuje dany protokół...
+/*:
+ W pierwszym wypadku mamy alias, którym się możemy posługiwać. W drugim tworzymy całkiem nowy typ.
+ */
 
-Implementuje.self is TvAnchor
-Implementuje.self is WeatherAnchor
+let typeAliasedArray: [SelfCauntableAnchor] = []
+let inheritedArray  : [WeatherCauntable]    = []
+
+type(of: conformers)
+type(of: conformers) == type(of: typeAliasedArray)
+type(of: conformers) == type(of: inheritedArray)
+
+/*:
+ Jak widać chociaż funkcjonalnie (właściwości i metody) są identyczne. To jednak dlatego, że przy dziedziczeniu jest tworzona definicja nowego typy. Kompilator traktuje je jako coś innego.
+ 
+ Instancja (typ instancji) `anchor` konformuje do tych protokołów. Tak więc możemy ją dodać do kolekcji:
+ */
+
+
+conformers.append(anchor)
+
+/*:
+ Gdy nie wszystkie warunki są spełnione to kompilator nie pozwoli wykonać takiej operacji:
+ */
+
+let someSelfCauntable = SomeCauntableImplementerType()
+
+// 💥 argument type 'SomeCauntableImplementerType' does not conform to expected type 'WeatherAnchor'
+//conformers.append( someSelfCauntable )
+
+/*:
+ ## Delikatna Introspekcja
+ 
+ Czasami chcemy wiedzieć czy jakiś typ implementuje dany protokół...
+ */
+
+protocol Dummy {}
+
+ProtocolsImplementer.self is TvAnchor.Type
+ProtocolsImplementer.self is WeatherAnchor.Type
+ProtocolsImplementer.self is InstanceCauntable.Type
+ProtocolsImplementer.self is Dummy.Type
 
 //: Typ **musi** zadeklarować, że implementuje dany protokół.
-pogodynka is TvAnchor // 💡 usuń "PogodynkaTV" z definicji klasy "Implementuje"
-pogodynka is WeatherAnchor
+anchor is TvAnchor // 💡 usuń "PogodynkaTV" z definicji klasy "Implementuje"
+anchor is WeatherAnchor
 
-
-if let pog = pogodynka as? WeatherAnchor {
+/*:
+ Można skorzystać z operatora `as?` aby sprawdzić czy instancja jakiegoś typu (sam typ) implementuje protokół. Ponieważ operator zwraca optional to dalej pracujemy jak z każdym innym optional-em. Np. używając składni `if let` lub `map`.
+ */
+if let pog = anchor as? WeatherAnchor {
     pog.temperature
 }
 
-//: Typ ktory jest klasą i konforumuje do protokołu
-protocol TestowyProtocol {}
-class WlasnaKlasa {}
-class Podklasa: WlasnaKlasa, TestowyProtocol {}
+/*:
+ To co się przytrafia czasem to potrzeba powiedzenia, że przetrzymujemy w kolekcji instancje jakiejś klasy, ale ta klasa implementuje konkretny protokół (lub kilka). Przy pisaniu aplikacji np. chcemy mieć kolekcje instancji `UIView`, które implementują protokół `XYZ`.
+ 
+ Swift nie wspiera wielokrotnego dziedziczenia. Dlatego jeżeli jakaś klasa ma _super klasę_ to musi być ona wymieniona jako pierwsza. Dalej po przecinku można wymienić protokoły, które implementuje dany typ.
+ 
+ */
 
-let klasaImplementujacaProtokol: (WlasnaKlasa & TestowyProtocol) = Podklasa()
+protocol TestProtocol {}
 
-let kolekcja: [(WlasnaKlasa & TestowyProtocol)] = [Podklasa(), Podklasa()]
+class SuperClass {}
+
+class JustClass: SuperClass, TestProtocol {}
+
+/*:
+ Samą kolekcje definjuje się przy użyciu kompozycji:
+ */
+
+let classThatImplementsProtocol: (SuperClass & TestProtocol) = JustClass()
+
+let collection: [(SuperClass & TestProtocol)] = [JustClass(), JustClass()]
 
 /*:
  # Jaki problem rozwiązują protokoły
