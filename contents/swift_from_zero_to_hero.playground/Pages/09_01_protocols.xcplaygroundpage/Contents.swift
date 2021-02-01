@@ -13,7 +13,7 @@ import Foundation
  */
 
 protocol WeatherAnchor {
-    var humidity   : Int { get }
+    var humidity   : Int { get }     // trzeba określić czy property jest get czy get i set
     var temperature: Int { get set } // let 💥
     
     func weatherStatus()
