@@ -264,6 +264,45 @@ let classThatImplementsProtocol: (SuperClass & TestProtocol) = JustClass()
 let collection: [(SuperClass & TestProtocol)] = [JustClass(), JustClass()]
 
 /*:
+ Aby się lepiej to wszystko utrwaliło to rzućmy okiem na jeszcze jeden przykład zbierający do kupy wszystko.
+ */
+
+protocol LandVehicle {
+    var numberOfWheels: Int { get }
+}
+
+protocol Car: LandVehicle {
+    var engineCylinders: Int { get }
+}
+
+/*:
+ Posiadamy dwie abstrakcje (coś co ukrywa nam szczegóły). Jedna mówi nam co to znaczy, że coś jest pojazdem lądowym (posiada koła). Druga abstrakcja mówi nam co rozumiemy przez samochód.
+ 
+ Czas aby _coś_ zaimplementowało te protokoły:
+ */
+
+class SkateBoard: LandVehicle {
+    var numberOfWheels: Int { 4 }
+}
+
+struct Bike: LandVehicle {
+    var numberOfWheels: Int { 2 }
+}
+
+class Toyota: Car {
+    var numberOfWheels: Int { 4 }
+    var engineCylinders: Int { 8 }
+}
+
+struct Tesla: Car {
+    var numberOfWheels: Int { 4 }
+    var engineCylinders: Int { 0 }
+}
+
+let landVehicles: [LandVehicle] = [SkateBoard(), Bike(), Toyota(), Tesla()]
+let cars: [Car] = [Toyota(), Tesla()]
+
+/*:
  # Jaki problem rozwiązują protokoły
  
  Protokoły pozwalają "odkleić" definicję od implementacji. Można powiedzieć też, że ukrywają implementujący typ za wspólnym interfejsem (protokołem).
