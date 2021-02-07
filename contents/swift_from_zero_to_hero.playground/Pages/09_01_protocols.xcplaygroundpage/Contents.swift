@@ -33,7 +33,7 @@ protocol TvAnchor: class, WeatherAnchor {
 }
 
 /*:
- Protokól `TvAnchor` ma wymaganie aby tylko klasy mogły do niego konformować. Poniższy kod się nie skompiluje mimo że implementuje wszystkie wymagande property i metody!
+ Protokól `TvAnchor` ma wymaganie aby tylko klasy mogły do niego konformować. Poniższy kod się nie skompiluje mimo że implementuje wszystkie wymagane property i metody!
  */
 
 /*:
@@ -58,7 +58,7 @@ protocol TvAnchor: class, WeatherAnchor {
  > Nie należy korzystać z tego kodu ponieważ w pewnych momentach działa źle! Natomiast widzieliśmy go we wcześniejszych placach zabaw więc nie powinien być taki obcy tu!
  */
 
-protocol InstanceCauntable {
+protocol InstanceCountable {
     static var instanceCounter: Int { get }
     
     static func numberOfInstances() -> Int
@@ -75,7 +75,7 @@ Za pomocą rozszerzeń można dodać domyślną implementacje dla protokołu. Mo
 
  */
 
-extension InstanceCauntable {
+extension InstanceCountable {
     static func numberOfInstances() -> Int {
 //: `Self` oznacza typ implementujący protokół. `self` oznacza instancje.
         Self.instanceCounter
@@ -83,10 +83,10 @@ extension InstanceCauntable {
 }
 
 /*:
- Ponieważ protokół posiada domyślną implementacje to każdy konformujący typ już nie musi jej dostarczać. Może, ale nie jest to wymagane.
+ Ponieważ protokół posiada domyślną implementację to każdy konformujący typ już nie musi jej dostarczać. Może, ale nie jest to wymagane.
  */
 
-class ProtocolsImplementer: TvAnchor, InstanceCauntable {
+class ProtocolsImplementer: TvAnchor, InstanceCountable {
     // PogodynkaTV
     var name: String
     var age : Int?
@@ -96,10 +96,10 @@ class ProtocolsImplementer: TvAnchor, InstanceCauntable {
     var temperature: Int = 24
     
     func weatherStatus() {
-        print("Wilgotnosc: \(humidity)\tTemperatura: \(temperature)")
+        print("Wilgotność: \(humidity)\tTemperatura: \(temperature)")
     }
     
-    // InstanceCauntable
+    // InstanceCountable
     static var instanceCounter: Int = 0
     
     // Pozostałe Metody Typu
@@ -122,7 +122,7 @@ class ProtocolsImplementer: TvAnchor, InstanceCauntable {
 /*:
 ## Przykłady :)
  
- Tworzymy instancje `anchor` i ustawiamy trochę wartości:
+ Tworzymy instancję `anchor` i ustawiamy trochę wartości:
  */
 
 var anchor = ProtocolsImplementer(nameOfAnchor: "Sandra")
@@ -136,7 +136,7 @@ run("🥺 anchor"){
 }
 
 /*:
- Liczba instancji się zgadza oraz metody. Dodajmy jeszcze jedna instancje:
+ Liczba instancji się zgadza oraz metody. Dodajmy jeszcze jedną instancję:
  */
 
 run("🍁 one more instance") {
@@ -150,14 +150,14 @@ run("🍁 one more instance") {
 }
 
 /*:
- W Swift kolekcje mogą posiadać tylko jeden typ. Np. nie wrzucimy do jednej tablicy instancji String oraz Int. To znacz wrzucimy, ale kompilator potraktuje to jako `Any` z którym nic nie można zrobić. Trzeba sprawdzić z jakim typem pracujemy i... generalnie robi się włochato.
+ W Swift kolekcje mogą posiadać tylko jeden typ. Np. nie wrzucimy do jednej tablicy instancji String oraz Int. To znaczy wrzucimy, ale kompilator potraktuje to jako `Any` z którym nic nie można zrobić. Trzeba sprawdzić z jakim typem pracujemy i... generalnie robi się włochato.
  
  To co możemy zrobić to powiedzieć, że kolekcja będzie przechowywać instancje _czegoś co konformuje_ do protokołu.
  
  Jeszcze jedna klasa...
  */
 
-class SomeCauntableImplementerType: InstanceCauntable {
+class SomeCountableImplementerType: InstanceCountable {
     static var instanceCounter: Int = 0
 }
 
@@ -165,7 +165,7 @@ class SomeCauntableImplementerType: InstanceCauntable {
 Czas utworzyć kolekcje... ale co jeżeli chcemy aby ta kolekcja przechowywała instancje obiektów, które konformują do kilku protokołów? Wystarczy w deklaracji typu użyć `&` i wymienić wszystkie protokoły. Jest to **kompozycja protokołów**:
  */
 
-var conformers: [WeatherAnchor & InstanceCauntable] = []
+var conformers: [WeatherAnchor & InstanceCountable] = []
 
 run("🧣 conformer"){
     print(
@@ -181,27 +181,27 @@ run("🧣 conformer"){
  Jeżeli jakieś protokoły często występują razem to warto nadać im nazwę za pomocą type aliasu:
  */
 
-typealias SelfCauntableAnchor = WeatherAnchor & InstanceCauntable
+typealias SelfCountableAnchor = WeatherAnchor & InstanceCountable
 
 /*:
  lub korzystając z **dziedziczenia** protokołów:
  */
 
-protocol WeatherCauntable: WeatherAnchor, InstanceCauntable {}
+protocol WeatherCountable: WeatherAnchor, InstanceCountable {}
 
 /*:
  W pierwszym wypadku mamy alias, którym się możemy posługiwać. W drugim tworzymy całkiem nowy typ.
  */
 
-let typeAliasedArray: [SelfCauntableAnchor] = []
-let inheritedArray  : [WeatherCauntable]    = []
+let typeAliasedArray: [SelfCountableAnchor] = []
+let inheritedArray  : [WeatherCountable]    = []
 
 type(of: conformers)
 type(of: conformers) == type(of: typeAliasedArray)
 type(of: conformers) == type(of: inheritedArray)
 
 /*:
- Jak widać chociaż funkcjonalnie (właściwości i metody) są identyczne. To jednak dlatego, że przy dziedziczeniu jest tworzona definicja nowego typy. Kompilator traktuje je jako coś innego.
+ Jak widać chociaż funkcjonalnie (właściwości i metody) są identyczne. To jednak dlatego, że przy dziedziczeniu jest tworzona definicja nowego typu. Kompilator traktuje je jako coś innego.
  
  Instancja (typ instancji) `anchor` konformuje do tych protokołów. Tak więc możemy ją dodać do kolekcji:
  */
@@ -213,10 +213,10 @@ conformers.append(anchor)
  Gdy nie wszystkie warunki są spełnione to kompilator nie pozwoli wykonać takiej operacji:
  */
 
-let someSelfCauntable = SomeCauntableImplementerType()
+let someSelfCountable = SomeCountableImplementerType()
 
-// 💥 argument type 'SomeCauntableImplementerType' does not conform to expected type 'WeatherAnchor'
-//conformers.append( someSelfCauntable )
+// 💥 argument type 'SomeCountableImplementerType' does not conform to expected type 'WeatherAnchor'
+//conformers.append( someSelfCountable )
 
 /*:
  ## Delikatna Introspekcja
@@ -228,7 +228,7 @@ protocol Dummy {}
 
 ProtocolsImplementer.self is TvAnchor.Type
 ProtocolsImplementer.self is WeatherAnchor.Type
-ProtocolsImplementer.self is InstanceCauntable.Type
+ProtocolsImplementer.self is InstanceCountable.Type
 ProtocolsImplementer.self is Dummy.Type
 
 //: Typ **musi** zadeklarować, że implementuje dany protokół.
@@ -309,7 +309,7 @@ let cars: [Car] = [Toyota(), Tesla()]
  
  ## Dlaczego to jest dobre?
  
- Mając dobre abstrakcje możemy skupić się na problemie nie na detalach. Powiedzmy mamy protokół `Drivable`, który abstrahuje pomysł/możliwość prowadzenia pojazdu. Jednak pojazdy są różne, duże ciężarówki, małe rowerki, statki, samoloty. Nie chcemy się barć z detalami związanymi z tym jak się prowadzi dany pojazd. Wszystkie te pojazdy można ukryć za jedną abstrakcją.
+ Mając dobre abstrakcje możemy skupić się na problemie nie na detalach. Powiedzmy mamy protokół `Drivable`, który abstrahuje pomysł/możliwość prowadzenia pojazdu. Jednak pojazdy są różne, duże ciężarówki, małe rowerki, statki, samoloty. Nie chcemy się babrać z detalami związanymi z tym jak się prowadzi dany pojazd. Wszystkie te pojazdy można ukryć za jedną abstrakcją.
  
  Kolejnym powodem jest to, że tworząc nowy typ możemy skonformować do protokołu i wszystkie algorytmy będą działać z nowo zdefiniowanym typem. Nawet można skonformować cudzy typ! Pozwala to na ponowne użycie kodu.
  
@@ -317,7 +317,7 @@ let cars: [Car] = [Toyota(), Tesla()]
  
  > Nie jest to zasada, której trzeba ślepo przestrzegać! Protokoły nie są lekką abstrakcją (mają koszt ze sobą związany). Czasem zwykła funkcja lub value type w zupełności wystarczą!
  
- Takie podejście pozwala na napisanie mockowych iplemnetacji zależności i użycie ich w testach. Zyskujemy sposób na "udowodnienie", że nasz kod działa zgodnie z wymaganiami. A zestaw testów sprawia, że bez strachu można modyfikować aplikację.
+ Takie podejście pozwala na napisanie mockowych implementacji zależności i użycie ich w testach. Zyskujemy sposób na "udowodnienie", że nasz kod działa zgodnie z wymaganiami. A zestaw testów sprawia, że bez strachu można modyfikować aplikację.
  
  ## Jeszcze jedna rzecz
  
