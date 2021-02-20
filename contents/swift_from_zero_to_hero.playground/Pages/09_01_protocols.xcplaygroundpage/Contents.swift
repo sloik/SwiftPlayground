@@ -28,7 +28,7 @@ protocol TvAnchor: AnyObject, WeatherAnchor {
     
     init(nameOfAnchor: String, ageOfAnchor: Int?) // 💡
     
-    //: Tylko klasy dziedziczące z NSObject (lub po klasie, która dziedziczy z NSObject) mogą implementować opcjonalne metody. Wiąże się to z tym, że protokoły w ObjC mogły posiadać opcjonalne metody. W _czystym_ swift nie można zdefiniować takiego protokołu.
+//: Tylko klasy dziedziczące z NSObject (lub po klasie, która dziedziczy z NSObject) mogą implementować opcjonalne metody. Wiąże się to z tym, że protokoły w ObjC mogły posiadać opcjonalne metody. W _czystym_ swift nie można zdefiniować takiego protokołu.
     //    optional func optionalMethod() -> Void // 💥 "'optional' can only be applied to members of an @objc protocol"
 }
 
