@@ -60,16 +60,5 @@
 
 > # Chapter 12 - Access Control
 * ## [Access Control](12_00_Access_Control)
-
-*/
-/*:
-> # Appendix
-*/
-/*:
-* ## [Copy on Write](100-02_copy_on_right)
-* ## [UI Trait Collection](100-03_UI_TraitCollection)
-* ## [Swift Phantom Type](100-04_Swift_Phantom_Types)
----
-# [Tipsy and Tricks - TOC](900-00-tips_and_tricks)
 */
 //: [Next](@next)
