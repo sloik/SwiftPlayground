@@ -33,7 +33,7 @@ protocol TvAnchor: AnyObject, WeatherAnchor {
 }
 
 /*:
- Protokól `TvAnchor` ma wymaganie aby tylko klasy mogły do niego konformować. Poniższy kod się nie skompiluje mimo że implementuje wszystkie wymagane property i metody!
+ Protokól `TvAnchor` ma wymaganie aby tylko klasy (typy referencyjne) mogły do niego konformować. Poniższy kod się nie skompiluje mimo że implementuje wszystkie wymagane property i metody!
  */
 
 /*:
