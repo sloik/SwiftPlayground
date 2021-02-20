@@ -22,7 +22,7 @@ protocol WeatherAnchor {
 //: ## Dziedziczenie Protokołów
 //: Podajemy listę protokołów po ":" oddzielając je przecinkami. Dodatkowo jeżeli chcemy aby protokół mogły implementować tylko klasy jako pierwsze piszemy słowo kluczowe **class**.
 
-protocol TvAnchor: class, WeatherAnchor {
+protocol TvAnchor: AnyObject, WeatherAnchor {
     var name: String { get }
     var age : Int? { get }
     
