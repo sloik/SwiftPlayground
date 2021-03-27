@@ -7,73 +7,78 @@ import Foundation
 Dziedziczenie jest najprostrzym sposobem rozszerzania funkcjonalności klasy. Klasa dziedzicząca ma wszystkie zachowanie (metody) oraz właściwości co klasa bazowa (**superklasa**) i dodatkowo może dodać swoje lub nadpisać istniejące (w 99% jest to prawda ;)).
 */
 
-class Pogoda {
-    var temperatura: Int
+class Weather {
+    var temperature: Int
 
-    init(temperatura: Int) {
-        self.temperatura = temperatura
+    init(temperature: Int) {
+        self.temperature = temperature
     }
 
-    convenience init(jakiesCos: String) {
-        self.init(temperatura: 42)
+    convenience init(randomString: String) {
+        self.init(temperature: 42)
     }
 
-    func zaraportujPogode() -> String {
-        return "Temperatura wynosi:  \(temperatura)"
+    func weatherReport() -> String {
+        return "Temperatura wynosi:  \(temperature)"
     }
 }
 
-xrun {
+run("🥶 just inheritance") {
 
-    class DokladniejszaPogoda: Pogoda {}
+    class Detailed: Weather {}
 
 //: Klasa odziedziczyła wszystkie właściwości jak również domyslny initializer.
-    let pogoda = DokladniejszaPogoda.init(jakiesCos: "bez znaczenia")
-    pogoda.zaraportujPogode()
+    let detailedWeather = Detailed(randomString: "bez znaczenia")
+    print(
+        detailedWeather.weatherReport()
+    )
 
-    let pogoda2 = DokladniejszaPogoda.init(temperatura: 32)
-    pogoda2.zaraportujPogode()
+    let detailedWeather2 = Detailed(temperature: 32)
+    
+    print(
+        detailedWeather2.weatherReport()
+    )
 }
 
-xrun {
+run("🍁 inheritance with extra stuff") {
 
-    class DokladniejszaPogoda: Pogoda {
-        var wilgotnosc = 69
+    class Detailed: Weather {
+        var humidity = 69
 
-        override init(temperatura: Int) {
-            super.init(temperatura: temperatura) // wywolanie init w superklasie (Pogoda)
+        override init(temperature: Int) {
+            super.init(temperature: temperature) // wywolanie init w superklasie (Pogoda)
         }
         
 //: 💡: Wszystkie convenience initializery mogą wołać init-y z tej samej klasy. Natomiast desygnowany init może wołać "w górę" do superklasy.
-        convenience init(wilgotnosc: Int) {
+        convenience init(humidity: Int) {
 //            super.init(temperatura: 0) // 💥
-            self.init(temperatura: 0) // wywolanie swojego nadpisanego
-            self.wilgotnosc = wilgotnosc
+            self.init(temperature: 0) // wywolanie swojego nadpisanego
+            self.humidity = humidity
         }
 
 //: ### Nadpisywanie Metod
 
-        override func zaraportujPogode() -> String {
-            let oryginalna = super.zaraportujPogode()
-            let wlasna = "Wilgotność: \(wilgotnosc)"
+        override func weatherReport() -> String {
+            let reportFromSuper = super.weatherReport()
+            let addedPart = "Wilgotność: \(humidity)"
 
-            return oryginalna + "\t\t" + wlasna
+            return reportFromSuper + "\t\t" + addedPart
         }
     } // class
 
-    let pogoda = DokladniejszaPogoda.init(wilgotnosc: 69)
-    pogoda.zaraportujPogode()
+    let weather = Detailed(humidity: 69)
+    weather.weatherReport()
 }
 
 //: ### Nadpisywanie Własciwości
 
-xrun {
-    class DokladniejszaPogoda: Pogoda {
+run("🌼 override property") {
+    class Detailed: Weather {
 
 //: error: cannot override with a stored property 'temperatura' -> nadpisane właściwości muszą być __computed__
-        override var temperatura: Int {
+        override var temperature: Int {
             get {
-                return super.temperatura
+                return super.temperature
             }
             set {
 //                fatalError("\(__FUNCTION__) 💥") // 💡: tak można wymusić nie ustawianie zmiennej ;)
@@ -81,49 +86,49 @@ xrun {
             }
         }
 
-        init() { super.init(temperatura: 42) }
+        init() { super.init(temperature: 42) }
     }
 
-    let pogoda = DokladniejszaPogoda.init()
-    pogoda.temperatura 
+    let weather = Detailed()
+    weather.temperature
 }
 
 //: ### Wymuszenie Posiadania Metody
 
-xrun {
+run("👩🏼‍💼") {
 
-    class Pogodynka {
-        var imie: String
-        init () { imie = "Sandra" }
-        required init(imie: String) { self.imie = imie }
+    class Anchor {
+        var name: String
+        init () { name = "Yanet Garcia" }
+        required init(name: String) { self.name = name }
     }
 
-    class SexyPogodynka: Pogodynka {
+    class HotAnchor: Anchor {
 
         override init() { super.init() }
 
 //: Bez < error: 'required' initializer 'init(imie:)' must be provided by subclass of 'Pogodynka' >
-        required init(imie: String) {
-            super.init(imie: imie)
+        required init(name: String) {
+            super.init(name: name)
         }
     }
 }
 
 //: ## Zapobieganie Dziedziczeniu
 
-xrun {
+run("👘") {
 
 //: Czasami chcemy wymusić aby jakaś właściwośc lub metoda nie zostały nadpisane w podklasie. Używa się do tego słowa kluczowego **final**. Dodatkowym bonusem jest to, że kompilator na tej podstawie jest w stanie wykonać optymalizację generowanego kodu (bezpośredni skok do pamieci bez przechodzenia przez __vtable__).
 
-    class Pogodynka {
-        final var imie: String = "Sandra"
+    class Anchor {
+        final var name: String = "Yanet Garcia"
 
         final func przedstawPogode() {
             "Nadchodzi ⛈"
         }
     }
 
-    class PoczatkującaPogodynka: Pogodynka {
+    class BeginierTVStar: Anchor {
         // 💥 error: var overrides a 'final' var override var imie...
 //        override var imie: String { get { "Janusz" } set { super.imie = "Janusz"} }
 
@@ -131,5 +136,9 @@ xrun {
 //        override func przedstawPogode() {}
     }
 }
+
+
+print("🦄")
+
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
