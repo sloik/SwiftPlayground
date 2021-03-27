@@ -41,7 +41,6 @@
         <page name='12_00_Access_Control'/>
         <page name='100-02_copy_on_right'/>
         <page name='100-03_UI_TraitCollection'/>
-        <page name='100-04_Swift_Phantom_Types'/>
         <page name='900-00-tips_and_tricks'/>
         <page name='900-01-asyc_playground'/>
     </pages>

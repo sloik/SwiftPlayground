@@ -17,7 +17,7 @@ Używamy słowa kluczowego **extension** nastepnie typ, który rozszerzamy i opc
 */
 extension String {
     var licznikZnakow: Int {
-        return characters.count // 💡: można też dodać odwołanie do 'self'
+        return count // 💡: można też dodać odwołanie do 'self'
     }
 }
 

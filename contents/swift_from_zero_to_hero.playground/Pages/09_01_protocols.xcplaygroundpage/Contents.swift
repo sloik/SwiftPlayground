@@ -1,163 +1,328 @@
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
 //: ## [Protocols](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Protocols.html)
 /*:
-Najłatwiej myśleć o protokołach jak o kontrakcie zawierającym wymagania, które adoptujący typ (struktura/klasa/typ prosty) "obiecuje" spełnić. Jeżeli taka sytuacja nastąpi to mówimy, że dany tym implementuje dany protokół.
-
-W definicji protokolu mogą się znajdować metody jak rownież i właściwości oraz, co jest unikalne dla Swift-a, domyślne implementacje tych metod. Dodatkowo protokoły mogą dziedziczyć po sobie.
-*/
+ Najłatwiej myśleć o protokołach jak o kontrakcie zawierającym wymagania, które adoptujący typ (struktura/klasa/typ prosty) "obiecuje" spełnić. Jeżeli taka sytuacja nastąpi to mówimy, że dany typ implementuje (ang. conforms to) dany protokół.
+ 
+ W definicji protokołu mogą się znajdować metody jak rownież i właściwości oraz domyślne implementacje tych metod. Dodatkowo protokoły mogą dziedziczyć po sobie. Co pozwala na komponowanie protokołów (łączenie kliku w jeden).
+ */
 
 import Foundation
 
-//: ## Definiowanie Protokołu
+/*:
+ ## Definiowanie Protokołu
+ */
 
-protocol Pogodynka {
-    var wilgotnosc:  Int { get }
-    var temperatura: Int { get set } // let 💥
-
-    func statusPogody()
+protocol WeatherAnchor {
+    var humidity   : Int { get }     // trzeba określić czy property jest get czy get i set
+    var temperature: Int { get set } // let 💥
+    
+    func weatherStatus()
 }
 
 //: ## Dziedziczenie Protokołów
-//: Podajemy listę protokołów po ":" oddzielając je przecinkami. Dodatkowo jeżei chcemy aby aby protkół mogły implementować tylko klasy jako pierwsze piszemy słowo kluczowe **class**.
+//: Podajemy listę protokołów po ":" oddzielając je przecinkami. Dodatkowo jeżeli chcemy aby protokół mogły implementować tylko klasy jako pierwsze piszemy słowo kluczowe **class**.
 
-protocol PogodynkaTV: class, Pogodynka {
-    var imie: String { get }
-    var wiek: Int? { get }
-
-    init(imiePogodynki: String, wiekPogodynki: Int?) // 💡
-
-//: Chwilowo tylko klasy dziedziczące z NSObject (lub po klasie, która dziedziczy z NSObject) mogą implementować opcjonalne metody.
-//    optional func opcjonalnaMetoda() -> Void // 💥 "'optional' can only be applied to members of an @objc protocol"
+protocol TvAnchor: AnyObject, WeatherAnchor {
+    var name: String { get }
+    var age : Int? { get }
+    
+    init(nameOfAnchor: String, ageOfAnchor: Int?) // 💡
+    
+//: Tylko klasy dziedziczące z NSObject (lub po klasie, która dziedziczy z NSObject) mogą implementować opcjonalne metody. Wiąże się to z tym, że protokoły w ObjC mogły posiadać opcjonalne metody. W _czystym_ swift nie można zdefiniować takiego protokołu.
+    //    optional func optionalMethod() -> Void // 💥 "'optional' can only be applied to members of an @objc protocol"
 }
-
-protocol Liczacy {
-    static var licznikInstancji: Int { get }
-
-    static func liczbaInstancji() -> Int
-}
-
 
 /*:
-💥 "non-class type 'Nydyrydy' cannot conform to class protocol 'PogodynkaTV'"
-*/
-//struct Nydyrydy: PogodynkaTV {
-//    var wilgotnosc: Int
-//    var temperatura: Int
-//    var imie: String
-//    var wiek: Int?
-//    func statusPogody() {}
+ Protokól `TvAnchor` ma wymaganie aby tylko klasy (typy referencyjne) mogły do niego konformować. Poniższy kod się nie skompiluje mimo że implementuje wszystkie wymagane property i metody!
+ */
+
+/*:
+ 💥 "non-class type 'StructCantImplementClassProtocols' cannot conform to class protocol 'TvAnchor'"
+ */
+//struct StructCantImplementClassProtocols: TvAnchor {
+//    var name: String
+//    var age: Int?
+//    var humidity: Int
+//    var temperature: Int
 //
-//    init(imiePogodynki: String, wiekPogodynki: Int? = nil) {
-//        imie = imiePogodynki
-//        wiek = wiekPogodynki
+//    required init(nameOfAnchor: String, ageOfAnchor: Int?) {
+//        name = nameOfAnchor
+//        age = ageOfAnchor
 //    }
+//
+//    func weatherStatus() {}
 //}
+/*:
+ Jeszcze jeden protokół, aby było co implementować. Tym razem zawrzemy w nim pomysł czegoś co potrafi liczyć istniejące instancje.
+ 
+ > Nie należy korzystać z tego kodu ponieważ w pewnych momentach działa źle! Natomiast widzieliśmy go we wcześniejszych placach zabaw więc nie powinien być taki obcy tu!
+ */
 
-//: ## Implementowanie Prtokołu
+protocol InstanceCountable {
+    static var instanceCounter: Int { get }
+    
+    static func numberOfInstances() -> Int
+}
 
-class Implementuje: PogodynkaTV, Liczacy {
+/*:
+ # Implementowanie Protokołu
+ 
+ ## Domyślna Implementacja
+ 
+Za pomocą rozszerzeń można dodać domyślną implementacje dla protokołu. Można też dodać extra API, które nie jest zdefiniowane w protokole. Jednak to już jest kwestia tego jak działają rozszerzenia.
+ 
+ > O rozszerzeniach dowiesz się w przyszłości. No chyba, że już je znasz to brawo Ty!
+
+ */
+
+extension InstanceCountable {
+    static func numberOfInstances() -> Int {
+//: `Self` oznacza typ implementujący protokół. `self` oznacza instancje.
+        Self.instanceCounter
+    }
+}
+
+/*:
+ Ponieważ protokół posiada domyślną implementację to każdy konformujący typ już nie musi jej dostarczać. Może, ale nie jest to wymagane.
+ */
+
+class ProtocolsImplementer: TvAnchor, InstanceCountable {
     // PogodynkaTV
-    var imie: String
-    var wiek: Int?
-
+    var name: String
+    var age : Int?
+    
     // Pogodynka
-    fileprivate(set) var wilgotnosc: Int = 69 // protokol wymaga tylko gettera
-    var temperatura: Int = 24
-
-    func statusPogody() {
-        print("Wilgotnosc: \(wilgotnosc)\tTemperatura: \(temperatura)")
+    fileprivate(set) var humidity: Int = 69 // protokół wymaga tylko gettera
+    var temperature: Int = 24
+    
+    func weatherStatus() {
+        print("Wilgotność: \(humidity)\tTemperatura: \(temperature)")
     }
-
-    // Liczacy
-    static var licznikInstancji: Int = 0
-
-    // Pozostale Metody Typu
-    required init(imiePogodynki: String, wiekPogodynki: Int? = nil) {
-        imie = imiePogodynki
-        wiek = wiekPogodynki
-
-        Implementuje.licznikInstancji += 1
+    
+    // InstanceCountable
+    static var instanceCounter: Int = 0
+    
+    // Pozostałe Metody Typu
+    required init(nameOfAnchor: String, ageOfAnchor: Int? = nil) {
+        name = nameOfAnchor
+        age  = ageOfAnchor
+        
+        ProtocolsImplementer.instanceCounter += 1
     }
-
+    
     deinit {
-        Implementuje.licznikInstancji -= 1
+        ProtocolsImplementer.instanceCounter -= 1
     }
-
-    func ustawWilgotnosc(_ nowaWilgotnosc: Int) {
-        wilgotnosc = nowaWilgotnosc
-    }
-}
-
-//: ## Domyślna Implementacja
-//: Normalnie w przyrodzie raczej występuje zaraz przy definicji protokołu :)
-
-extension Liczacy {
-    static func liczbaInstancji() -> Int {
-        print("\(Self.licznikInstancji)")
-        return Self.licznikInstancji
+    
+    func updateHumidity(_ newHumidity: Int) {
+        humidity = newHumidity
     }
 }
 
-//: ### Przykłady :)
+/*:
+## Przykłady :)
+ 
+ Tworzymy instancję `anchor` i ustawiamy trochę wartości:
+ */
 
-var pogodynka = Implementuje.init(imiePogodynki: "Sandra")
-pogodynka.statusPogody()
-pogodynka.ustawWilgotnosc(80)
-pogodynka.statusPogody()
-Implementuje.liczbaInstancji()
+var anchor = ProtocolsImplementer(nameOfAnchor: "Sandra")
 
-do {
-    Implementuje.init(imiePogodynki: "Natalia") // 💡 żyje na stosie
-    Implementuje.liczbaInstancji()
+run("🥺 anchor"){
+    anchor.weatherStatus()
+    anchor.updateHumidity(80)
+    anchor.weatherStatus()
+    
+    print(#line, "Liczba instancji:", ProtocolsImplementer.numberOfInstances())
 }
 
-Implementuje.liczbaInstancji()
+/*:
+ Liczba instancji się zgadza oraz metody. Dodajmy jeszcze jedną instancję:
+ */
 
-//: Tablica Obiektów Implementująca Protokoły
-
-class Jakis: Liczacy {
-    static var licznikInstancji: Int = 0
+run("🍁 one more instance") {
+    
+    do {
+        ProtocolsImplementer(nameOfAnchor: "Natalia") // 💡 żyje na stosie
+        print(#line, "Liczba instancji:", ProtocolsImplementer.numberOfInstances())
+    }
+    
+    print(#line, "Liczba instancji:", ProtocolsImplementer.numberOfInstances())
 }
 
-var implementujace: [Pogodynka & Liczacy] = []
-type(of: implementujace)
+/*:
+ W Swift kolekcje mogą posiadać tylko jeden typ. Np. nie wrzucimy do jednej tablicy instancji String oraz Int. To znaczy wrzucimy, ale kompilator potraktuje to jako `Any` z którym nic nie można zrobić. Trzeba sprawdzić z jakim typem pracujemy i... generalnie robi się włochato.
+ 
+ To co możemy zrobić to powiedzieć, że kolekcja będzie przechowywać instancje _czegoś co konformuje_ do protokołu.
+ 
+ Jeszcze jedna klasa...
+ */
 
-typealias SamoliczacaSiePogodynka = Pogodynka & Liczacy
-let samoliczaca: [SamoliczacaSiePogodynka] = []
+class SomeCountableImplementerType: InstanceCountable {
+    static var instanceCounter: Int = 0
+}
 
-type(of: implementujace) == type(of: samoliczaca)
+/*:
+Czas utworzyć kolekcje... ale co jeżeli chcemy aby ta kolekcja przechowywała instancje obiektów, które konformują do kilku protokołów? Wystarczy w deklaracji typu użyć `&` i wymienić wszystkie protokoły. Jest to **kompozycja protokołów**:
+ */
 
-implementujace.append(pogodynka)
+var conformers: [WeatherAnchor & InstanceCountable] = []
 
-let cosiek = Jakis()
-Jakis.licznikInstancji
+run("🧣 conformer"){
+    print(
+        type(of: conformers)
+    )
+}
 
-//implementujace.append(cosiek) // 💥
+/*:
+ Takie podejście sprawia, że warto mieć dużo małych protokołów. Gdy potrzeba większej ilości funkcjonalności to wystarczy je ze sobą posklejać.
+ 
+ > Mały protokół (z małą listą _wymagań_) jest łatwiej zaimplementować!
+ 
+ Jeżeli jakieś protokoły często występują razem to warto nadać im nazwę za pomocą type aliasu:
+ */
 
-implementujace
+typealias SelfCountableAnchor = WeatherAnchor & InstanceCountable
 
-//: ## Delikatna Introspekcja
-//: Czasami chcemy wiedzieć czy jakiś typ implementuje dany protokół...
+/*:
+ lub korzystając z **dziedziczenia** protokołów:
+ */
 
-Implementuje.self is PogodynkaTV
-Implementuje.self is Pogodynka
+protocol WeatherCountable: WeatherAnchor, InstanceCountable {}
+
+/*:
+ W pierwszym wypadku mamy alias, którym się możemy posługiwać. W drugim tworzymy całkiem nowy typ.
+ */
+
+let typeAliasedArray: [SelfCountableAnchor] = []
+let inheritedArray  : [WeatherCountable]    = []
+
+type(of: conformers)
+type(of: conformers) == type(of: typeAliasedArray)
+type(of: conformers) == type(of: inheritedArray)
+
+/*:
+ Jak widać chociaż funkcjonalnie (właściwości i metody) są identyczne. To jednak dlatego, że przy dziedziczeniu jest tworzona definicja nowego typu. Kompilator traktuje je jako coś innego.
+ 
+ Instancja (typ instancji) `anchor` konformuje do tych protokołów. Tak więc możemy ją dodać do kolekcji:
+ */
+
+
+conformers.append(anchor)
+
+/*:
+ Gdy nie wszystkie warunki są spełnione to kompilator nie pozwoli wykonać takiej operacji:
+ */
+
+let someSelfCountable = SomeCountableImplementerType()
+
+// 💥 argument type 'SomeCountableImplementerType' does not conform to expected type 'WeatherAnchor'
+//conformers.append( someSelfCountable )
+
+/*:
+ ## Delikatna Introspekcja
+ 
+ Czasami chcemy wiedzieć czy jakiś typ implementuje dany protokół...
+ */
+
+protocol Dummy {}
+
+ProtocolsImplementer.self is TvAnchor.Type
+ProtocolsImplementer.self is WeatherAnchor.Type
+ProtocolsImplementer.self is InstanceCountable.Type
+ProtocolsImplementer.self is Dummy.Type
 
 //: Typ **musi** zadeklarować, że implementuje dany protokół.
-pogodynka is PogodynkaTV // 💡 usuń "PogodynkaTV" z definicji klady "Implementuje"
-pogodynka is Pogodynka
+anchor is TvAnchor // 💡 usuń "PogodynkaTV" z definicji klasy "Implementuje"
+anchor is WeatherAnchor
 
-
-if let pog = pogodynka as? Pogodynka {
-    pog.temperatura
+/*:
+ Można skorzystać z operatora `as?` aby sprawdzić czy instancja jakiegoś typu (sam typ) implementuje protokół. Ponieważ operator zwraca optional to dalej pracujemy jak z każdym innym optional-em. Np. używając składni `if let` lub `map`.
+ */
+if let pog = anchor as? WeatherAnchor {
+    pog.temperature
 }
 
-//: Typ ktory jest klasa i konforumuje do protokolu
-protocol TestowyProtocol {}
-class WlasnaKlasa {}
-class Podklasa: WlasnaKlasa, TestowyProtocol {}
+/*:
+ To co się przytrafia czasem to potrzeba powiedzenia, że przetrzymujemy w kolekcji instancje jakiejś klasy, ale ta klasa implementuje konkretny protokół (lub kilka). Przy pisaniu aplikacji np. chcemy mieć kolekcje instancji `UIView`, które implementują protokół `XYZ`.
+ 
+ Swift nie wspiera wielokrotnego dziedziczenia. Dlatego jeżeli jakaś klasa ma _super klasę_ to musi być ona wymieniona jako pierwsza. Dalej po przecinku można wymienić protokoły, które implementuje dany typ.
+ 
+ */
 
-let klasaImplementujacaProtokol: (WlasnaKlasa & TestowyProtocol) = Podklasa()
+protocol TestProtocol {}
 
-let kolekcja: [(WlasnaKlasa & TestowyProtocol)] = [Podklasa(), Podklasa()]
+class SuperClass {}
+
+class JustClass: SuperClass, TestProtocol {}
+
+/*:
+ Samą kolekcje definjuje się przy użyciu kompozycji:
+ */
+
+let classThatImplementsProtocol: (SuperClass & TestProtocol) = JustClass()
+
+let collection: [(SuperClass & TestProtocol)] = [JustClass(), JustClass()]
+
+/*:
+ Aby się lepiej to wszystko utrwaliło to rzućmy okiem na jeszcze jeden przykład zbierający do kupy wszystko.
+ */
+
+protocol LandVehicle {
+    var numberOfWheels: Int { get }
+}
+
+protocol Car: LandVehicle {
+    var engineCylinders: Int { get }
+}
+
+/*:
+ Posiadamy dwie abstrakcje (coś co ukrywa nam szczegóły). Jedna mówi nam co to znaczy, że coś jest pojazdem lądowym (posiada koła). Druga abstrakcja mówi nam co rozumiemy przez samochód.
+ 
+ Czas aby _coś_ zaimplementowało te protokoły:
+ */
+
+class SkateBoard: LandVehicle {
+    var numberOfWheels: Int { 4 }
+}
+
+struct Bike: LandVehicle {
+    var numberOfWheels: Int { 2 }
+}
+
+class Toyota: Car {
+    var numberOfWheels: Int { 4 }
+    var engineCylinders: Int { 8 }
+}
+
+struct Tesla: Car {
+    var numberOfWheels: Int { 4 }
+    var engineCylinders: Int { 0 }
+}
+
+let landVehicles: [LandVehicle] = [SkateBoard(), Bike(), Toyota(), Tesla()]
+let cars: [Car] = [Toyota(), Tesla()]
+
+/*:
+ # Jaki problem rozwiązują protokoły
+ 
+ Protokoły pozwalają "odkleić" definicję od implementacji. Można powiedzieć też, że ukrywają implementujący typ za wspólnym interfejsem (protokołem).
+ 
+ ## Dlaczego to jest dobre?
+ 
+ Mając dobre abstrakcje możemy skupić się na problemie nie na detalach. Powiedzmy mamy protokół `Drivable`, który abstrahuje pomysł/możliwość prowadzenia pojazdu. Jednak pojazdy są różne, duże ciężarówki, małe rowerki, statki, samoloty. Nie chcemy się babrać z detalami związanymi z tym jak się prowadzi dany pojazd. Wszystkie te pojazdy można ukryć za jedną abstrakcją.
+ 
+ Kolejnym powodem jest to, że tworząc nowy typ możemy skonformować do protokołu i wszystkie algorytmy będą działać z nowo zdefiniowanym typem. Nawet można skonformować cudzy typ! Pozwala to na ponowne użycie kodu.
+ 
+ Na deser zostały testy. Jeżeli jakiś typ (klasa, struktura) do działania potrzebuje jakiś zależności to dobrze jest aby _wstrzykiwać_ je właśnie ukryte za protokołem.
+ 
+ > Nie jest to zasada, której trzeba ślepo przestrzegać! Protokoły nie są lekką abstrakcją (mają koszt ze sobą związany). Czasem zwykła funkcja lub value type w zupełności wystarczą!
+ 
+ Takie podejście pozwala na napisanie mockowych implementacji zależności i użycie ich w testach. Zyskujemy sposób na "udowodnienie", że nasz kod działa zgodnie z wymaganiami. A zestaw testów sprawia, że bez strachu można modyfikować aplikację.
+ 
+ ## Jeszcze jedna rzecz
+ 
+ Aby jakiś typ implementował dany protokół to **musi być to jawnie napisane**. Czyli musi wystąpić w liście "dziedziczenia".
+ 
+ */
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
