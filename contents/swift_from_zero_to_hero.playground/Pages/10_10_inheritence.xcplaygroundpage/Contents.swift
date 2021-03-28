@@ -182,13 +182,13 @@ run {
 }
 
 /*:
- Jeżeli klasa dziedzicząca nie definjuje swoich init-ów to automatycznie dziedziczy wszystkie z super klasy. Natomiast jeżeli posiada definicje _swoich_ to musi dostarczyć definicję tych init-ów, które są oznaczone jako wymagana.
+ Jeżeli klasa dziedzicząca nie definiuje swoich init-ów to automatycznie dziedziczy wszystkie z super klasy. Natomiast jeżeli posiada definicje _swoich_ to musi dostarczyć definicję tych init-ów, które są oznaczone jako wymagane.
  
- Brzmi dziwnie? Troche jest, ale najważniejsze jest to, że kompilator patrzy na ręce. Gdy coś będzie nie tak to rzuci odpowiednim błędem, który można łatwo wygooglać ;)
+ Brzmi dziwnie? Trochę jest, ale najważniejsze jest to, że kompilator patrzy na ręce. Gdy coś będzie nie tak to rzuci odpowiednim błędem, który można łatwo wygooglać ;)
 
  ## Zapobieganie Dziedziczeniu
 
- Czasami chcemy wymusić aby jakaś właściwość lub metoda nie zostały nadpisane w podklasie. Używa się do tego słowa kluczowego **final**. Dodatkowym bonusem jest to, że kompilator na tej podstawie jest w stanie wykonać optymalizację generowanego kodu (bezpośredni skok do pamieci bez przechodzenia przez __vtable__).
+ Czasami chcemy wymusić aby jakaś właściwość lub metoda nie zostały nadpisane w podklasie. Używa się do tego słowa kluczowego **final**. Dodatkowym bonusem jest to, że kompilator na tej podstawie jest w stanie wykonać optymalizację generowanego kodu (bezpośredni skok do pamięci bez przechodzenia przez __vtable__).
  */
 
 
