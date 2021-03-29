@@ -96,7 +96,7 @@ run("🍁 inheritance with extra stuff") {
             super.init(temperature: temperature + 10) // wywołanie init w superklasie (Weather)
         }
         
-//: 💡: Wszystkie convenience init mogą wołać init-y z tej samej klasy. Natomiast desygnowany init może wołać "w górę" do superklasy.
+//: 💡: Wszystkie convenience init mogą wołać init-y z tej samej klasy. Natomiast desygnowany init może wołać "w górę" (super.init) do superklasy (rzuć okiem na hierarchię wyżej dla przypomnienia).
         convenience init(humidity: Int) {
             // 💥 error: convenience initializer for 'Detailed' must delegate (with 'self.init')
             // 💥        rather than chaining to a superclass initializer (with 'super.init')
