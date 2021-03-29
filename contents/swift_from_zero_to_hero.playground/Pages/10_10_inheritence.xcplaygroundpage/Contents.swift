@@ -47,6 +47,7 @@ class Weather {
     }
 
     convenience init(randomString: String) {
+        print("Calling custom init with string:", randomString)
         self.init(temperature: 42)
     }
 
