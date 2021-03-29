@@ -93,7 +93,7 @@ run("🍁 inheritance with extra stuff") {
         var humidity = 69
 
         override init(temperature: Int) {
-            super.init(temperature: temperature) // wywołanie init w superklasie (Weather)
+            super.init(temperature: temperature + 10) // wywołanie init w superklasie (Weather)
         }
         
 //: 💡: Wszystkie convenience init mogą wołać init-y z tej samej klasy. Natomiast desygnowany init może wołać "w górę" do superklasy.
