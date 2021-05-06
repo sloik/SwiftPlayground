@@ -16,118 +16,164 @@ Możemy:
 Używamy słowa kluczowego **extension** nastepnie typ, który rozszerzamy i opcjonalnie po ":" protokoły, które chcemy zaimplementować.
 */
 extension String {
-    var licznikZnakow: Int {
-        return count // 💡: można też dodać odwołanie do 'self'
+    var characterCounter: Int {
+        count
     }
 }
 
-let cytat = "Można pić bez obawien"
-cytat.licznikZnakow
-
-//: Standardowa biblioteka Swifta używa rozszerzeń do grupowania kodu. Wystarczy rzucić okiem na definicje String by zobaczyć z jak wielu różnych rozszerzeń się składa.
-
-enum Pogoda {
-    case goraco (temperatura: Int)
-    case mokro  (opday: String)
+run("🪕 string extension") {
+    let quote = "Można pić bez obawień"
+    
+    print("Cytat ma", quote.characterCounter, "znaków.")
 }
 
-let pogodaJakaJest: Pogoda = .goraco(temperatura: 42)
+/*:
+ Standardowa biblioteka Swifta używa rozszerzeń do grupowania kodu. Wystarczy rzucić okiem na definicje String by zobaczyć z jak wielu różnych rozszerzeń się składa.
+ 
+ Rozszerzenia pozwalają dodawać ze sobą zgrupowaną funkcjonalność. Pozwala to na umieszczanie blisko siebie metod i property, które robią podobne rzeczy. Mała rzecz a może sprawić, że kod będzie bardziej czytelny.
+ */
 
-//pogodaJakaJest.jakJestGoraco() // 💥 teoria mówi, że tu też powinno działać, ale nie działa :(
+enum Weather {
+    case hot(temp: Int)
+    case wet(rain: String)
+}
 
-extension Pogoda {
-    func jakJestGoraco() -> String {
+extension Weather {
+    func howHotIsIt() -> String {
         switch self {
-        case .goraco (let temp):
-
+        case .hot(let temp):
             switch temp {
-            case 0..<15: return "⛄️"
-            case 15..<40: return "☀️"
+            case 0..<15          : return "⛄️"
+            case 15..<40         : return "☀️"
             case 40..<(Int.max-1): return "🔥"
-
-            default: return "❄️"
+            default              : return "❄️"
             }
 
-
-        default:
-            return "Skąd mam wiedziec!"
+        default: return "Skąd mam wiedzieć!"
         }
     }
 }
 
-pogodaJakaJest.jakJestGoraco()
+/*:
+ Teraz można zobaczyć w akcji nowo dodaną metodę!
+ */
+run("🎈weather extension") {
+    let anyWeather: Weather = .hot(temp: 42)
+
+    print(
+        anyWeather.howHotIsIt()
+    )
+}
 
 /*:
 ## Implementacja protokołu
-Rozszerzenie świetnie nadaje się do wydzielenia grupy medod, które są wymagane przez prrotokół.
+ 
+Rozszerzenie świetnie nadaje się do wydzielenia grupy medod, które są wymagane przez protokół. Często chcemy daną instancję przedstawić jako String. Możemy zatem zakonformować do protokołu `CustomStringConvertible`. Możemy też użyć do tego rozszerzenia!
 */
 
-extension Pogoda: CustomStringConvertible {
+extension Weather: CustomStringConvertible {
     var description: String {
         switch self {
-        case .goraco(let temperatura):
-            return "Opisuje Temerature: \(temperatura)"
-        case .mokro(let opday):
-            return "Opisuje Opday: \(opday)"
+        case .hot(let temperature) : return "Opisuje Temeraturę: \(temperature)"
+        case .wet(let amountOfRain): return "Opisuje Opday: \(amountOfRain)"
         }
     }
 }
 
-pogodaJakaJest.description
-
-//: ## Rozszerzanie Protokołów
-
-protocol Wdziek {
-    var urokOsobisty: Int {set get}
+run("⛺️ protocol conformance"){
+    let anyWeather: Weather = .hot(temp: 42)
+    
+    print(
+        anyWeather.description
+    )
 }
 
-extension Wdziek {
-    var urokOsobisty: Int {
-        get {
-            return 8
-        }
+/*:
+ # Rozszerzanie Protokołów
+ 
+ Rozszerzenia mogą posłużyć do definiowania domyślnej implementacji dla protokołu. Zaczniemy od zdefiniowania protokołu, który posłuży do opisania _uroku osobistego_.
+ */
 
-        set {} // jeżeli teg nie damy to każdy typ musiałby zaimplementować getter i setter
+protocol Charm {
+    var personal: Int {set get}
+}
+
+/*:
+ Prosty protokół dodający jedno property. Jeżeli uznamy, że dobrą wartością początkową jest 8 to możemy napisać rozszerzenie dzięki któremu typy konformujące nie będą musiały mieć tego zdefiniowanego a będą miały to dostępne.
+ */
+
+extension Charm {
+    var personal: Int {
+        get { 8 }
+        set {   } // jeżeli tego nie damy to każdy typ musiałby zaimplementować getter i setter
     }
 }
 
-protocol Farbowalna {
-    var kolorWlosow: String { get }
-    func opiszWlosy()
+/*:
+ 
+ Rozszerzenia do protokołów to zwykłe rozszerzenia. Jeżeli jest potrzeba dodania dodatkowych metod, które nie są wymagane przez protokół to można to zrobić. Typy konformujące zyskują dużo bardziej czytelne API i wygodniejsze.
+ 
+ */
+
+protocol Dyable {
+    var hairColor: String { get }
 }
 
-extension Farbowalna {
-    var kolorWlosow: String { return "💁" }
+extension Dyable {
+    var hairColor: String { "💁" }
 
-    func opiszWlosy() {
-        print("Farbowalna ma teraz wlosy: \(kolorWlosow)")
+    func describeHair() {
+        print("Farbowalna ma teraz wlosy: \(hairColor)")
     }
 }
 
-do {
-    class SuperPogodynka: Wdziek, Farbowalna { }
+/*:
+ Potrzebujemy czegoś na czym można przetestować te wspaniałe cuda. Pusta klasa tylko deklarująca, że konformuje do tych protokołów nada się świetnie.
+ */
+run("🧗‍♀️ default impl") {
+    final class SuperWeatherAnchor : Charm, Dyable { }
 
-    let pogodynka = SuperPogodynka()
-    pogodynka.urokOsobisty
-    pogodynka.kolorWlosow
-    pogodynka.opiszWlosy()
+    let anchor = SuperWeatherAnchor()
+    anchor.personal
+    anchor.hairColor
+    anchor.describeHair()
 }
 
-//: Nadpisywanie Domyslnej Implementacji
+/*:
+ `SuperWeatherAnchor` ma czystą definicje. Cała funkcjonalność pochodzi z domyślnych implementacji zdefiniowanych w rozszerzeniach. Warto aby nie uciekła jedna rzecz. Metoda `describeHair` nie jest zdefiniowana w protokole. Jednak rozszerzenie protokołu to zwykłe rozszerzenie. Można dodać tez inne metody. Dobrze jest aby jakoś ułatwiały pracę z instancjami danego typu a nie były _od czapy_.
+ 
+ ## Nadpisywanie Domyślnej Implementacji
+ 
+ Gdy domyślna implementacja jakiegoś protokołu nie jest tym czego trzeba to po prostu piszemy to _normalnie_ tak jakbyśmy konformowali do protokołu.
+ */
 
-do {
 
-    class SuperPogodynka: Wdziek, Farbowalna {
-        var urokOsobisty: Int
+run("🥈 some defined some not") {
 
-        init(urok: Int) {
-            urokOsobisty = urok
-        }
+    final class SuperWeatherAnchor: Charm, Dyable {
+        var personal: Int
+
+        init(charm: Int) { personal = charm }
     }
 
-    let pogodynka = SuperPogodynka(urok: 10)
-    pogodynka.urokOsobisty
+    let anchor = SuperWeatherAnchor(charm: 10)
+    anchor.personal
+    anchor.hairColor
+    anchor.describeHair()
 }
+
+/*:
+ # Tyle
+ 
+ W gruncie rzeczy to tyle. Rozszerzenia w Swift to bardzo fajny i użyteczny ficzer. Ważne, żeby zapamiętać że:
+ 
+ * można dodać funkcjonalności do typów, których nie jesteśmy właścicielami (frameworki _trzeciej imprezy_)
+ * używać do definiowania domyślnych implementacji protokołów
+ * organizować kod aby był czytelniejszy
+ 
+ */
+
+print("🍑")
 
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)

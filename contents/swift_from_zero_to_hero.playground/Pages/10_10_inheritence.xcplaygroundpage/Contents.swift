@@ -43,16 +43,19 @@ class Weather {
     var temperature: Int
 
     init(temperature: Int) {
+        print("🛤", #function, "line:", #line)
         self.temperature = temperature
     }
 
     convenience init(randomString: String) {
+        print("🛤", #function, "line:", #line)
         print("Calling custom init with string:", randomString)
         self.init(temperature: 42)
     }
 
     func weatherReport() -> String {
-         "Temperatura wynosi:  \(temperature)"
+        print("🛤", #function, "line:", #line)
+        return "Temperatura wynosi:  \(temperature)"
     }
 }
 
@@ -93,6 +96,7 @@ run("🍁 inheritance with extra stuff") {
         var humidity = 69
 
         override init(temperature: Int) {
+            print("🛤", #function, "line:", #line)
             super.init(temperature: temperature + 10) // wywołanie init w superklasie (Weather)
         }
         
@@ -102,11 +106,14 @@ run("🍁 inheritance with extra stuff") {
             // 💥        rather than chaining to a superclass initializer (with 'super.init')
 //            super.init(temperature: 0)
             
+            print("🛤", #function, "line:", #line)
             self.init(temperature: 0) // wywołanie swojego nadpisanego init-a
             self.humidity = humidity
         }
 
         override func weatherReport() -> String {
+            print("🛤", #function, "line:", #line)
+            
             let reportFromSuper = super.weatherReport()
             let addedPart = "Wilgotność: \(humidity)"
 
