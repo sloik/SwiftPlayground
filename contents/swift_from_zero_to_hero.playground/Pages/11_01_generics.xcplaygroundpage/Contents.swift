@@ -4,98 +4,106 @@
 import Foundation
 
 /*:
-W Swift każda stała lub zmienna mają zadeklarowany typ. Dzięku temu zawsze (prawie zawsze) wiemy z jakiego _typu_ obiektem mamy do czynienia. Gdy potrzebujemy nieco rozluźnić "więzy" możemy zadeklarować zmienną jako _Any_ lub _AnyObject_. Dodatkowo mając protokoły znamy interfejs danego typu i możemy bezpiecznie wywoływać na nim metody. Jeżeli natomiast mamy potrzebę sprawdzenia z jakim konkretnie typem teraz pracujemy możemy skastować na odpowiedni typ (oczywiście wymaga to sprawdzenia czy instancja z którą teraz pracujemy jest tego typu). **Generyki** pozwalają nam zachować "gwarancje typu" i pozwalają nam pracować bezpośrednio z instancją bez wymogu kastowania.
+W Swift każda stała lub zmienna mają zadeklarowany typ. Dzięku temu zawsze (prawie zawsze) wiemy z jakiego _typu_ obiektem mamy do czynienia. Gdy potrzebujemy nieco rozluźnić "więzy" możemy zadeklarować zmienną jako _Any_ lub _AnyObject_. Dodatkowo mając protokoły znamy interfejs danego typu i możemy bezpiecznie wywoływać na nim metody. Jeżeli natomiast mamy potrzebę sprawdzenia z jakim konkretnie typem teraz pracujemy możemy zkastować na odpowiedni typ (oczywiście wymaga to sprawdzenia czy instancja z którą teraz pracujemy jest tego typu). **Generyki** pozwalają nam zachować "gwarancje typu" i pozwalają nam pracować bezpośrednio z instancją bez wymogu kastowania (ang. cast).
 
 Kilka przykładów:
 */
 
-let tablicaStringow: Array<String> = []
-type(of: tablicaStringow)
+let strings: Array<String> = []
+type(of: strings)
 
-let tablicaIntow: Array<Int> = []
-type(of: tablicaIntow)
+let ints: Array<Int> = []
+type(of: ints)
 
-struct 💩 { var id:Int  }
+struct 💩 { var id: Int  }
+
 //: 💡: Zobacz jak zadeklarowana jest tablica w standardowej bibliotece (cmd + double click)
-let tablica💩: Array<💩> = []
-type(of: tablica💩)
+
+let 💩s: Array<💩> = []
+type(of: 💩s)
 
 /*:
 Wygląda na to, że już zupełnie niechcący generyki były wykorzystywane na potęgę i nawet o tym nie wiedzieliśmy!
 */
 
-let slownikStringInt: Dictionary<String, Int> = [:] //💡: Więcej jak jeden typ genereyczny
-type(of: slownikStringInt)
+let dictionaryOfStringInt: Dictionary<String, Int> = [:] //💡: Więcej jak jeden typ (argument) generyczny
+type(of: dictionaryOfStringInt)
 
-let setStringowNiemieckich: Set<String> = []
-type(of: setStringowNiemieckich)
+let setOfStrings: Set<String> = []
+type(of: setOfStrings)
 
-var foo  = 4;    var bar  = 2
-var fFoo = 4.2;  var fBar = 6.9
+run("🤽‍♂️ swap"){
+    var foo      = 4  ;  var bar      = 2
+    var floatFoo = 4.2;  var floatBar = 6.9
+    
+    print("Przed", foo, bar, floatFoo, floatBar)
+    
+    swap(&foo , &bar )
+    swap(&floatFoo, &floatBar)
+    
+    print("   Po", foo, bar, floatFoo, floatBar)
+}
 
-swap(&foo , &bar )
-swap(&fFoo, &fBar)
+/*:
+ Optional to też generyk!
+ */
+ 
+let maybeQuote: Optional<String> = .none
 
-foo
-bar
-fFoo
-fBar
-
-//: Co i tu też!
-let bycMozeCytat: Optional<String> = nil
+/*:
+ ## Własne Generyki
+ 
+ Do definiowania własnych typów, które są generyczne wykorzystujemy składnię `<Token>` (tyczy się to typów i funkcji/metod). Gdzie `Token` jest dowolnym string-iem po którym się odwołujemy do konkretnego i zawsze tego samego typu. Array używa nazwy `Element`, Optional `Wrapped` etc. Często też można się spotkać z jedno literowymi oznaczeniami `T`, `U` itd.
+ */
 
 
-//: ## Własne Generyki
+run("🧩 custom") {
 
-xrun {
+    final class Wrapper< Wrapped > {
+        var wrap: [Wrapped]
 
-    class Sreberko <TypKtoryZawijam> {
+        init(wrap: [Wrapped]) { self.wrap = wrap }
 
-        var zawiniatko: [TypKtoryZawijam]
-
-        init(zawin: [TypKtoryZawijam]) {
-            zawiniatko = zawin
-        }
-
-        func niespodzianka() -> TypKtoryZawijam {
-            let index = Int(arc4random_uniform(UInt32(zawiniatko.count)))
-            return zawiniatko[index]
-        }
+        func random() -> Wrapped { wrap.randomElement()! }
     }
 
-    let liczby  = [4, 2, 6, 9]
-    let stringi = ["Można", "pić", "bez", "obawień"]
+    let numbers  = [4, 2, 6, 9]
+    let strings = ["Można", "pić", "bez", "obawień"]
 
-    let sreberko1 = Sreberko.init(zawin: liczby)
-    let sreberko2 = Sreberko.init(zawin: stringi)
+    let numberWrapper  = Wrapper(wrap: numbers)
+    let stringsWrapper = Wrapper(wrap: strings)
 
-    let niespodzianka1 = sreberko1.niespodzianka()
-    type(of: niespodzianka1)
+    let _: Int = numberWrapper.random()
     
-    let niespodzianka2 = sreberko2.niespodzianka()
-    type(of: niespodzianka2)
-    
+    let _: String = stringsWrapper.random()
 }
-//: ## Ograniczanie Generyków
-//: Istnieje składnia, która pozwala na nałożenie dodatkowych ograniczeń co do typu.
+
+/*:
+ 
+ Wrapper przechowuje _coś_ typu `Wrapped`. Nie wiemy co to jest. Nie można zawołać na tym żadnej metody czy sprawdzić property. Wiemy tylko tyle _że jest_.
+ 
+ Jeżeli byłoby więcej typów generycznych to by były zdefiniowane po przecinku np. `class Wrapper <X,Y,Z>`. W tym przykładzie są trzy typy generyczne. Każdy z nich pozwala wstawić inny konkretny typ np. `Wrapper<Int, String, Float>`. Nie musi tak być ta sama definicja (X,Y,Z) zadziała dla `Wrapper<Int, Int, Int>`. Jedyne co to mówi to, że jest taka możliwość a nie obowiązek.
+
+ ## Ograniczanie Generyków
+ 
+ Mając typ o którym nic nie wiemy i nic z nim nie możemy zrobić może być plusem a może czasem wiązać ręce. Czasem chcemy pracować z instancją czegoś co ma jakieś właściwości i/lub metody lub konformuje do protokołu.
+ 
+ Istnieje składnia, która pozwala na nałożenie dodatkowych ograniczeń co do typu.
+ 
+ */
+
 
 protocol Skaczacy   {}
 protocol Spiewajacy {}
 
 xrun {
 
-    class Sreberko<Typ> where Typ: Skaczacy, Typ: Spiewajacy { // 💡 też zadziała: <Typ: protocol<Skaczacy, Spiewajacy>>
+    final class Wrapper< Wrapped > where Wrapped: Skaczacy, Wrapped: Spiewajacy  {
+        var wrap: [Wrapped]
 
-        var zawiniatko: [Typ]
+        init(wrap: [Wrapped]) { self.wrap = wrap }
 
-        init(zawin: [Typ]) {
-            zawiniatko = zawin
-        }
-
-        func niespodzianka() -> Typ {
-            let index = Int(arc4random_uniform(UInt32(zawiniatko.count)))
-            return zawiniatko[index]
-        }
+        func random() -> Wrapped { wrap.randomElement()! }
     }
 
     struct GrajekSkaczacy      : Skaczacy             {}
@@ -106,10 +114,10 @@ xrun {
     let spiewajacyGrajkowie = [GrajekSpiewajacy(), GrajekSpiewajacy()]
     let artysci             = [MurarzPiekarzAkrobata(), MurarzPiekarzAkrobata()]
 
-//    let sreberko1 = Sreberko.init(zawin: skaczacyGrajkowie) // 💥
-//    let sreberko2 = Sreberko.init(zawin: spiewajacyGrajkowie) // 💥
-    let sreberko3 = Sreberko.init(zawin: artysci)
-    let coTuMamy = sreberko3.niespodzianka()
+//    let sreberko1 = Wrapper.init(wrap: skaczacyGrajkowie) // 💥
+//    let sreberko2 = Wrapper.init(wrap: spiewajacyGrajkowie) // 💥
+    let sreberko3 = Wrapper(wrap: artysci)
+    let coTuMamy = sreberko3.random()
     type(of: coTuMamy) // 💡: bardzo intrygujacy typ... może wyrostek?
 
 }
@@ -209,6 +217,8 @@ let tablica: Array<String> = []
 // 💡GeneratorType
     /// The type of element generated by `self`.
     //typealias Element
+
+print("🦄")
 
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
 
