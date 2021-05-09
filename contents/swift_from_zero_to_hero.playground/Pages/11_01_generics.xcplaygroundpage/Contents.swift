@@ -32,6 +32,12 @@ type(of: dictionaryOfStringInt)
 let setOfStrings: Set<String> = []
 type(of: setOfStrings)
 
+let maybeQuote: Optional<String> = .none
+
+/*:
+ Generyki można też definiować w funkcjach. Poniżej przykład z funkcją `swap` dostępną w bibliotece standardowej Swift.
+ */
+
 run("🤽‍♂️ swap"){
     var foo      = 4  ;  var bar      = 2
     var floatFoo = 4.2;  var floatBar = 6.9
@@ -45,13 +51,54 @@ run("🤽‍♂️ swap"){
 }
 
 /*:
- Optional to też generyk!
- */
  
-let maybeQuote: Optional<String> = .none
+ Funkcje generyczne to inny rodzaj polimorfizmu. Trudny i straszny wyraz. Może kilka przykładów aby _poczuć_ o co chodzi. **Chciałbym napisać funkcję, która zwróci mi przekazany argument**. Taka funkcja wydaje się mało użyteczna, co jest nie prawdą. Jest bardzo użyteczna i potrzebna!
+ 
+ */
+
+func identityInt   (_ a: Int   ) -> Int    { a }
+func identityString(_ a: String) -> String { a }
 
 /*:
- ## Własne Generyki
+
+ Łatwo sobie wyobrazić więcej takich funkcji. Jednak jest z tym kilka problemów. Po pierwsze duplikuje kod i muszę go pisać dla każdego typu jaki jest. Inaczej nie mogę zawołać tej funkcji z instancją tego typu. Kolejny problem to, że w implementacji nie wykorzystuję żadnej wiedzy o tym konkretnym typie. Na sam koniec widać gołym okiem, że ten kod jest identyczny! Różni się tylko typem na wejściu i wyjściu, który jest taki sam!
+ 
+ # Definiowanie Funkcji Generycznych
+ 
+ Jedyną różnicą między zwykłą funkcją a funkcją generyczną jest podanie listy generyków w nawiasach `<>` między nazwą a listą argumentów. Zobaczmy...
+ */
+
+func identity<A>(_ a: A) -> A { a }
+
+run("🆔 identity"){
+    print( identity(42), identity("wow") )
+}
+
+/*:
+ 
+ Funkcja `identity` ma jeden typ generyczny o nazwie `A`. Przyjmuje jako argument instancje typu `A`. Ta sama implementacja działa dla `Int` i dla `String`. Zadziała również i dla każdego innego typu, który powstanie w przyszłości. To wszystko bez potrzeby rekompilowania kodu!
+ 
+ Wisienką na torcie jest to, że ponieważ nic nie wiemy o typie `A` to nie możemy wywołać na nim żadnej metody. Sprawdzić żadnego property! Dzięki temu można pisać bardziej ogólne algorytmy. Napisać testy dla tych generycznych algorytmów i spokojnie reużuywć! Unikać niepotrzebnych powtórzeń w kodzie.
+ 
+ Parametrów generycznych może być więcej.
+
+ */
+
+func tupleSwap<A,B>(_ tuple: (A, B)) -> (B, A) { (tuple.1, tuple.0) }
+
+run("🐶 tupleSwap"){
+    print(
+        tupleSwap( (  42, "wow") )
+    )
+    print(
+        tupleSwap( ("🧩", "🎈" ) )
+    )
+}
+
+/*:
+ W pierwszym przykładzie typy `A` i `B` były różne. W drugim takie same! Wynika z tego, że **jeżeli jest więcej typów generycznych to mogą być one takie same**. Nie ma przymusu aby były inne!
+
+ ## Własne Typy Generyczne
  
  Do definiowania własnych typów, które są generyczne wykorzystujemy składnię `<Token>` (tyczy się to typów i funkcji/metod). Gdzie `Token` jest dowolnym string-iem po którym się odwołujemy do konkretnego i zawsze tego samego typu. Array używa nazwy `Element`, Optional `Wrapped` etc. Często też można się spotkać z jedno literowymi oznaczeniami `T`, `U` itd.
  */
@@ -64,7 +111,7 @@ run("🧩 custom") {
 
         init(wrap: [Wrapped]) { self.wrap = wrap }
 
-        func random() -> Wrapped { wrap.randomElement()! }
+        var random: Wrapped { wrap.randomElement()! }
     }
 
     let numbers  = [4, 2, 6, 9]
@@ -73,9 +120,9 @@ run("🧩 custom") {
     let numberWrapper  = Wrapper(wrap: numbers)
     let stringsWrapper = Wrapper(wrap: strings)
 
-    let _: Int = numberWrapper.random()
+    print( numberWrapper.random, type(of: numberWrapper.random) )
     
-    let _: String = stringsWrapper.random()
+    print( stringsWrapper.random, type(of: stringsWrapper.random) )
 }
 
 /*:
@@ -92,131 +139,178 @@ run("🧩 custom") {
  
  */
 
+protocol Jumpable {}
+protocol Singable {}
 
-protocol Skaczacy   {}
-protocol Spiewajacy {}
+/*:
+ Chcę stworzyć taką klasę, która będzie kontenerem ale tylko dla takich typów, które konformuje do `Jumpable` i `Singable`.
+ */
 
-xrun {
+run("👀 generic constraint") {
 
-    final class Wrapper< Wrapped > where Wrapped: Skaczacy, Wrapped: Spiewajacy  {
+    final class Wrapper< Wrapped > where Wrapped: Jumpable, Wrapped: Singable  {
         var wrap: [Wrapped]
 
         init(wrap: [Wrapped]) { self.wrap = wrap }
 
-        func random() -> Wrapped { wrap.randomElement()! }
+        var random: Wrapped { wrap.randomElement()! }
     }
 
-    struct GrajekSkaczacy      : Skaczacy             {}
-    struct GrajekSpiewajacy    : Spiewajacy           {}
-    struct MurarzPiekarzAkrobata: Skaczacy, Spiewajacy {} // 👍🏻
+    struct Jumper       : Jumpable           {}
+    struct Singer       : Singable           {}
+    struct JumpingSinger: Jumpable, Singable {} // 👍🏻
 
-    let skaczacyGrajkowie   = [GrajekSkaczacy(), GrajekSkaczacy()]
-    let spiewajacyGrajkowie = [GrajekSpiewajacy(), GrajekSpiewajacy()]
-    let artysci             = [MurarzPiekarzAkrobata(), MurarzPiekarzAkrobata()]
+    let jumpers = [Jumper(), Jumper()]
+    print(type(of: jumpers))
 
-//    let sreberko1 = Wrapper.init(wrap: skaczacyGrajkowie) // 💥
-//    let sreberko2 = Wrapper.init(wrap: spiewajacyGrajkowie) // 💥
-    let sreberko3 = Wrapper(wrap: artysci)
-    let coTuMamy = sreberko3.random()
-    type(of: coTuMamy) // 💡: bardzo intrygujacy typ... może wyrostek?
+    let singers = [Singer(), Singer()]
+    print(type(of: singers))
 
+    let artists = [JumpingSinger(), JumpingSinger()]
+
+//  💥 Generic class 'Wrapper' requires that 'Jumper' conform to 'Singable'
+//    Wrapper(wrap: jumpers)
+
+//  💥 Generic class 'Wrapper' requires that 'Singer' conform to 'Jumpable'
+//    Wrapper(wrap: singers)
+
+    let wrapper = Wrapper(wrap: artists)
+
+    let mysteryItem = wrapper.random
+
+    print(
+        "What is it:", type(of: mysteryItem)
+    )
 }
 
+/*:
+ 
+ Składnię ze słowem kluczowym `where` można zastąpić `Wrapper< Wrapped: Jumpable, Singable >`. Czasem czytelniej jest umieścić ograniczenia za a czesem wewnątrz.
+ 
+ # [Generyki w Protokołach / Associated Types](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Generics.html#//apple_ref/doc/uid/TP40014097-CH26-ID189)
+ 
+ Teraz połączymy świat protokołów i generyków.
+ */
 
+protocol Wrappable {
+    associatedtype WrappedType
 
-
-//: ## [Generyki w Protokołach / Associated Types](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Generics.html#//apple_ref/doc/uid/TP40014097-CH26-ID189)
-
-protocol Zawijacz {
-    associatedtype JakiTypZawijam
-
-    var ileJuzZawinieto: Int { get }
-    mutating func zawin(element: JakiTypZawijam)
+    var howManyWrapped: Int { get }
+    
+    mutating func wrap(element: WrappedType)
 }
 
+/*:
+ Słowo kluczowe `associatedtype` występujące w definicji protokołu jest placeholderem na typ. Czyli jest generykiem! Mówimy tym protokołem, że będziemy owijać jakiś konkretny typ `WrappedType`. W czasie definiowania protokołu jeszcze nie wiemy jaki. Ktoś jak będzie do niego konformować będzie musiał to powiedzieć.
+ 
+ Reszta jest dość standardowa. Jedno property i jedna metoda.
+ */
 
-class Swistak<ToZawijam>: Zawijacz {
-
-    typealias JakiTypZawijam = ToZawijam
-
-    var zawiniatka: [ToZawijam]
-
-    init(element: ToZawijam) {
-        zawiniatka = [element]
+class Wrapper< IWrapThisType > {
+    
+    typealias WrappedType = IWrapThisType
+    
+    var wraps: [IWrapThisType] = []
+    init(wraps: IWrapThisType...) {
+        self.wraps = wraps
     }
-
-    var ileJuzZawinieto: Int { return zawiniatka.count }
-    func zawin(element: JakiTypZawijam) {
-        zawiniatka.append(element)
-    }
-}
-
-let swistakIntow = Swistak.init(element: 4)
-type(of: swistakIntow)
-swistakIntow.zawin(element: 2)
-swistakIntow.ileJuzZawinieto
-swistakIntow.zawiniatka
-type(of: swistakIntow.zawiniatka.first!)
-
-let swistakStringow = Swistak.init(element: "Można")
-type(of: swistakStringow)
-swistakStringow.zawin(element: "pić")
-swistakStringow.zawin(element: "bez")
-swistakStringow.zawin(element: "obawień")
-swistakStringow.ileJuzZawinieto
-swistakStringow.zawiniatka
-type(of: swistakStringow.zawiniatka.first!)
-
-//: Okazuje się, że jeżeli kompilator jest w stanie wydedukować typ to to zrobi dzięki czemu nie musimy definiować tego aliasu.
-
-protocol Zaskakujacy {
-    associatedtype ElementZawijany
-
-    mutating func zapamietajCos(cos: ElementZawijany)
-    func dajCos() -> ElementZawijany?
-}
-
-struct CoZaGosc<GMO>: Zaskakujacy {
-    var coski: [GMO] = []
-
-    init(startowy: GMO) {
-        zapamietajCos(cos: startowy)
-    }
-
-    mutating func zapamietajCos(cos: GMO) {
-        coski.append(cos)
-    }
-
-    func dajCos() -> GMO? {
-            return coski.last
+    var howManyWrapped: Int { wraps.count }
+    
+    func wrap(element: IWrapThisType) {
+        wraps.append(element)
     }
 }
 
-var aleJaja = CoZaGosc(startowy: 4)
-type(of: aleJaja)
-aleJaja.zapamietajCos(cos: 4)
-aleJaja.zapamietajCos(cos: 2)
-aleJaja.coski
+/*:
+ 
+ Linijka `typealias WrappedType = IWrapThisType` mówi dla kompilatora, że typ typem który owijam jest mój generyk. Tu jest troszeczkę gęsto ponieważ sam wrapper posiada typ generyczny. Po prostu przekazujemy go dalej. Jeżeli by go nie miał to dla _zawijacza_ intów można by było napisać np. tak: `typealias WrappedType = Int`. Jednak nie chcemy pisać 500 różnych wersji i dlatego łączymy te dwa światy.
+ 
+ */
+
+run("🦆 associated type") {
+    let intsWrapper = Wrapper(wraps: 4)
+    print("intsWrapper jest typu:", type(of: intsWrapper) )
+
+    intsWrapper.wrap(element: 2)
+    intsWrapper.howManyWrapped
+    intsWrapper.wraps
+
+    let intsWrapperFirst = intsWrapper.wraps.first!
+    print("Owijany element to:", intsWrapperFirst, "typu", type(of: intsWrapperFirst) )
+
+    __
+    
+    let stringsWrapper = Wrapper(wraps: "Można")
+    print("stringsWrapper jest typu:", type(of: stringsWrapper) )
+    
+    stringsWrapper.wrap(element: "pić")
+    stringsWrapper.wrap(element: "bez")
+    stringsWrapper.wrap(element: "obawień")
+    stringsWrapper.howManyWrapped
+    stringsWrapper.wraps
+    
+    let stringsWrapperFirst = stringsWrapper.wraps.first!
+    print("Owijany element to:", stringsWrapperFirst, "typu", type(of: stringsWrapperFirst) )
+}
+
+/*:
+ 
+ Okazuje się, że jeżeli kompilator jest w stanie wydedukować typ to to zrobi. Dzięki czemu nie musimy definiować tego aliasu. Jednak z własnego doświadczenia polecam to zrobić. Nie zawsze to co dostaniemy może być tym czego chcemy (szczególnie gdy framework z którego korzystamy ma wiele generyków). Ewentualnie zawsze można dodać go potem ;)
+ 
+ */
+
+protocol Remeberable {
+    associatedtype RemeberedType
+
+    mutating func remember(something: RemeberedType)
+    var something: RemeberedType? { get }
+}
+
+struct Mnemo< GMO >: Remeberable {
+    var gmos: [GMO] = []
+
+    init(_ gmo: GMO) { remember(something: gmo) }
+
+    mutating func remember(something: GMO) { gmos.append(something) }
+
+    var something: GMO? { gmos.last }
+}
+
+/*:
+ 
+ Tym razem nie napisałem typealiasu aby wskazać jaki jest generyk. Kompilator jest w stanie to wyinferować na podstawie typu metody `remember(something:..)`.
+ 
+ Zobaczmy jak to działa...
+ 
+ */
 
 
-var jakiZdolny = CoZaGosc(startowy: "mozna")
-type(of: jakiZdolny)
-jakiZdolny.zapamietajCos(cos: "pic")
-jakiZdolny.zapamietajCos(cos: "bez")
-jakiZdolny.zapamietajCos(cos: "obawien")
-jakiZdolny.coski
-//: Ten mechanizm jest wykorzystywany bardzo często w standardowej bibliotece Swift-a.
+run("🐡 nemo") {
+    
+    var intsMnemo = Mnemo(4)
+    intsMnemo.remember(something: 4)
+    intsMnemo.remember(something: 2)
+    intsMnemo.gmos
+    
+    print("intsMnemo ma typ:", type(of: intsMnemo), "i zawiera", intsMnemo.gmos )
+    
+    __
+    
+    var stringsMnemo = Mnemo("mozna")
+    type(of: stringsMnemo)
+    stringsMnemo.remember(something: "pic")
+    stringsMnemo.remember(something: "bez")
+    stringsMnemo.remember(something: "obawien")
+    stringsMnemo.gmos
+    
+    print("stringsMnemo ma typ:", type(of: stringsMnemo), "i zawiera", stringsMnemo.gmos )
+}
 
-let tablica: Array<String> = []
-
-//: Ta cała magia pozwala na prace z tablicą bez wymuszania kastowania.
-// 💡Array
-//     Array<Element> : CollectionType, MutableCollectionType, _DestructorSafeContainer ...
-// 💡CollectionType
-    // typealias Generator : GeneratorType = IndexingGenerator<Self> // 😱
-// 💡GeneratorType
-    /// The type of element generated by `self`.
-    //typealias Element
+/*:
+ 
+ W tym momencie powiedzieliśmy sobie bardzo dużo ale nie wszystko o generykach. Najtrudniej jest zacząć, ale uważaj! Niech to nie będzie wielki młotek, który rozwiązuje każdy problem. Generyki występują często, łatwo je spotkać i są użyteczne. Zacznij powoli od unikania duplikacji w kodzie. Potem dorzuć jeszcze ograniczenia (generics constraints) aby w pełni wykorzystać ich moc.
+ 
+ */
 
 print("🦄")
 
