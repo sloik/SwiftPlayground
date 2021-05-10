@@ -4,7 +4,7 @@
 import Foundation
 
 /*:
-Swift (jak również Objective C) daje nam jeszcze jeden mechanizm __rozszerzania__ funkcjonalnosci danego typu. **Rozszerzenia** (objc: kategorie) pozwalają dodać funkcjonalność do już istniejącego typu (sklasa, struktura a nawet protokół) i to nawet gdy nie mamy dostępu do kodu źródłowego 😎.
+Swift (jak również Objective C) daje nam jeszcze jeden mechanizm __rozszerzania__ funkcjonalnosci danego typu. **Rozszerzenia** (objc: kategorie) pozwalają dodać funkcjonalność do już istniejącego typu (klasa, struktura a nawet protokół) i to nawet gdy nie mamy dostępu do kodu źródłowego 😎.
 
 Możemy:
 * dodawać wyliczeniowe właściwości
@@ -68,14 +68,14 @@ run("🎈weather extension") {
 /*:
 ## Implementacja protokołu
  
-Rozszerzenie świetnie nadaje się do wydzielenia grupy medod, które są wymagane przez protokół. Często chcemy daną instancję przedstawić jako String. Możemy zatem zakonformować do protokołu `CustomStringConvertible`. Możemy też użyć do tego rozszerzenia!
+Rozszerzenie świetnie nadaje się do wydzielenia grupy metod, które są wymagane przez protokół. Często chcemy daną instancję przedstawić jako String. Możemy zatem zakonformować do protokołu `CustomStringConvertible`. Możemy też użyć do tego rozszerzenia!
 */
 
 extension Weather: CustomStringConvertible {
     var description: String {
         switch self {
-        case .hot(let temperature) : return "Opisuje Temeraturę: \(temperature)"
-        case .wet(let amountOfRain): return "Opisuje Opday: \(amountOfRain)"
+        case .hot(let temperature) : return "Opisuje Temperaturę: \(temperature)"
+        case .wet(let amountOfRain): return "Opisuje Opady: \(amountOfRain)"
         }
     }
 }
