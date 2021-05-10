@@ -76,9 +76,9 @@ run("🆔 identity"){
 
 /*:
  
- Funkcja `identity` ma jeden typ generyczny o nazwie `A`. Przyjmuje jako argument instancje typu `A`. Ta sama implementacja działa dla `Int` i dla `String`. Zadziała również i dla każdego innego typu, który powstanie w przyszłości. To wszystko bez potrzeby rekompilowania kodu!
+ Funkcja `identity` ma jeden typ generyczny o nazwie `A`. Przyjmuje jako argument instancję typu `A`. Ta sama implementacja działa dla `Int` i dla `String`. Zadziała również i dla każdego innego typu, który powstanie w przyszłości. To wszystko bez potrzeby rekompilowania kodu!
  
- Wisienką na torcie jest to, że ponieważ nic nie wiemy o typie `A` to nie możemy wywołać na nim żadnej metody. Sprawdzić żadnego property! Dzięki temu można pisać bardziej ogólne algorytmy. Napisać testy dla tych generycznych algorytmów i spokojnie reużuywć! Unikać niepotrzebnych powtórzeń w kodzie.
+ Wisienką na torcie jest to, że ponieważ nic nie wiemy o typie `A` to nie możemy wywołać na nim żadnej metody. Sprawdzić żadnego property! Dzięki temu można pisać bardziej ogólne algorytmy. Napisać testy dla tych generycznych algorytmów i spokojnie reużywać! Unikać niepotrzebnych powtórzeń w kodzie.
  
  Parametrów generycznych może być więcej.
 
@@ -129,7 +129,7 @@ run("🧩 custom") {
  
  Wrapper przechowuje _coś_ typu `Wrapped`. Nie wiemy co to jest. Nie można zawołać na tym żadnej metody czy sprawdzić property. Wiemy tylko tyle _że jest_.
  
- Jeżeli byłoby więcej typów generycznych to by były zdefiniowane po przecinku np. `class Wrapper <X,Y,Z>`. W tym przykładzie są trzy typy generyczne. Każdy z nich pozwala wstawić inny konkretny typ np. `Wrapper<Int, String, Float>`. Nie musi tak być ta sama definicja (X,Y,Z) zadziała dla `Wrapper<Int, Int, Int>`. Jedyne co to mówi to, że jest taka możliwość a nie obowiązek.
+ Jeżeli byłoby więcej typów generycznych to by były zdefiniowane po przecinku np. `class Wrapper <X,Y,Z>`. W tym przykładzie są trzy typy generyczne. Każdy z nich pozwala wstawić inny konkretny typ np. `Wrapper<Int, String, Float>`. Nie musi tak być, ta sama definicja (X,Y,Z) zadziała dla `Wrapper<Int, Int, Int>`. Jedyne co to mówi to, że jest taka możliwość a nie obowiązek.
 
  ## Ograniczanie Generyków
  
@@ -143,7 +143,7 @@ protocol Jumpable {}
 protocol Singable {}
 
 /*:
- Chcę stworzyć taką klasę, która będzie kontenerem ale tylko dla takich typów, które konformuje do `Jumpable` i `Singable`.
+ Chcę stworzyć taką klasę, która będzie kontenerem ale tylko dla takich typów, które konformują do `Jumpable` i `Singable`.
  */
 
 run("👀 generic constraint") {
@@ -185,7 +185,7 @@ run("👀 generic constraint") {
 
 /*:
  
- Składnię ze słowem kluczowym `where` można zastąpić `Wrapper< Wrapped: Jumpable, Singable >`. Czasem czytelniej jest umieścić ograniczenia za a czesem wewnątrz.
+ Składnię ze słowem kluczowym `where` można zastąpić `Wrapper< Wrapped: Jumpable, Singable >`. Czasem czytelniej jest umieścić ograniczenia za a czasem wewnątrz.
  
  # [Generyki w Protokołach / Associated Types](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Generics.html#//apple_ref/doc/uid/TP40014097-CH26-ID189)
  
@@ -223,7 +223,7 @@ class Wrapper< IWrapThisType > {
 
 /*:
  
- Linijka `typealias WrappedType = IWrapThisType` mówi dla kompilatora, że typ typem który owijam jest mój generyk. Tu jest troszeczkę gęsto ponieważ sam wrapper posiada typ generyczny. Po prostu przekazujemy go dalej. Jeżeli by go nie miał to dla _zawijacza_ intów można by było napisać np. tak: `typealias WrappedType = Int`. Jednak nie chcemy pisać 500 różnych wersji i dlatego łączymy te dwa światy.
+ Linijka `typealias WrappedType = IWrapThisType` mówi dla kompilatora, że tym typem który owijam jest mój generyk. Tu jest troszeczkę gęsto ponieważ sam wrapper posiada typ generyczny. Po prostu przekazujemy go dalej. Jeżeli by go nie miał to dla _zawijacza_ intów można by było napisać np. tak: `typealias WrappedType = Int`. Jednak nie chcemy pisać 500 różnych wersji i dlatego łączymy te dwa światy.
  
  */
 
@@ -259,14 +259,14 @@ run("🦆 associated type") {
  
  */
 
-protocol Remeberable {
-    associatedtype RemeberedType
+protocol Rememberable {
+    associatedtype RememberedType
 
-    mutating func remember(something: RemeberedType)
-    var something: RemeberedType? { get }
+    mutating func remember(something: RememberedType)
+    var something: RememberedType? { get }
 }
 
-struct Mnemo< GMO >: Remeberable {
+struct Mnemo< GMO >: Rememberable {
     var gmos: [GMO] = []
 
     init(_ gmo: GMO) { remember(something: gmo) }
@@ -296,11 +296,11 @@ run("🐡 nemo") {
     
     __
     
-    var stringsMnemo = Mnemo("mozna")
+    var stringsMnemo = Mnemo("można")
     type(of: stringsMnemo)
-    stringsMnemo.remember(something: "pic")
+    stringsMnemo.remember(something: "pić")
     stringsMnemo.remember(something: "bez")
-    stringsMnemo.remember(something: "obawien")
+    stringsMnemo.remember(something: "obawień")
     stringsMnemo.gmos
     
     print("stringsMnemo ma typ:", type(of: stringsMnemo), "i zawiera", stringsMnemo.gmos )
