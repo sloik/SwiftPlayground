@@ -31,7 +31,7 @@ var bycMozeCalkowita:Int?
 type(of: bycMozeCalkowita)
 
 //: Teraz możemy "używać" bezpiecznie takich zmiennych bez 💥
-xrun("optional default value") {
+run("optional default value") {
     print(bycMozeCytat ?? "nie bylo wartosci")
     print(bycMozeCalkowita ?? "nie bylo wartosci")
 }
@@ -43,7 +43,7 @@ bycMozeCytat?.isEmpty
 bycMozeCytat == nil
 
 //: O `optionalach` można mysleć jak o pudełkach zawierających (lub nie) jakąś wartoś. Same w sobie nie są wartością (chociaż są bardzo użyteczne 😉) tylko "kontenerem" przechowującym tą wartość. Doskonale to widać gdy "wydrukujemy" zmienną która jest optionalem.
-xrun("optional with value") {
+run("optional with value") {
     bycMozeCytat = "Sorry będziesz to jeść?"
     print(bycMozeCytat ?? "zabraklo wartosci")
 }
@@ -61,4 +61,6 @@ bycMozeCytat = nil
 //: fatal error: unexpectedly found nil while unwrapping an Optional value
 //zPewnosciaCytat = bycMozeCytat! // 💥
 
+
+print("🤓")
 //:[ToC](00-00_toc) | [Tips and Tricks](900-00-tips_and_tricks) | [Previous](@previous) | [Next](@next)
