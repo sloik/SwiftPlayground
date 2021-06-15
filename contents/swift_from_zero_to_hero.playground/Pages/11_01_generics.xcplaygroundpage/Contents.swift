@@ -193,7 +193,7 @@ run("👀 generic constraint") {
  */
 
 protocol Wrappable {
-    associatedtype WrappedType
+    associatedtype WrappedType // aby ograniczyć typ używamy składni ``: Jumpable``
 
     var howManyWrapped: Int { get }
     
@@ -252,6 +252,7 @@ run("🦆 associated type") {
     let stringsWrapperFirst = stringsWrapper.wraps.first!
     print("Owijany element to:", stringsWrapperFirst, "typu", type(of: stringsWrapperFirst) )
 }
+
 
 /*:
  
