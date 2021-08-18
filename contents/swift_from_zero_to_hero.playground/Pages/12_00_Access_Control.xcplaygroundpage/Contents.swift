@@ -10,17 +10,15 @@ Wystepują trzy modyfikatory:
 * **private** -**Domyślny dla Placu Zabaw**. Symbole są dostępne tylko **w pliku** w którym są zdefiniowane.
 */
 
-private class KlasaSkryta {
-    fileprivate class KlasaJeszczeSkrytsza {
-
-    }
+private class PrivateClass {
+    fileprivate class InnerPrivateClass {}
 }
 
 /*:
 Jak widać poniżej możemy się _dobrać_ do klasy zdefiniowanej wewnątrz KlasySkrytej bez najmniejszego problemu! Nie jest to zachowanie, którego można by się było spodziewać dlatego powiem to jeszcze raz: **Modyfikatory Dostępu w Swift Działają Na Poziomie Pliku**
 */
-class PoProstuKlasa {
-    fileprivate var coTuSieWyrabia: KlasaSkryta.KlasaJeszczeSkrytsza? = nil
+class JustSomeClass {
+    fileprivate var propertyOf: PrivateClass.InnerPrivateClass? = .none
 }
 
 /*:

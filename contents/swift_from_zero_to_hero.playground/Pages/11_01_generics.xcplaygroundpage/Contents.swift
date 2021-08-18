@@ -206,7 +206,7 @@ protocol Wrappable {
  Reszta jest dość standardowa. Jedno property i jedna metoda.
  */
 
-class Wrapper< IWrapThisType > {
+class Wrapper< IWrapThisType >: Wrappable {
     
     typealias WrappedType = IWrapThisType
     
