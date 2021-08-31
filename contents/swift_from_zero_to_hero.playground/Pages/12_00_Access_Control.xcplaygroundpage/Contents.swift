@@ -5,9 +5,11 @@
 W Swift modyfikatory dostępu występują na dwóch poziomach: pliku oraz modułu (target lub framework).
 
 Wystepują trzy modyfikatory:
-* **public** - Najszerszy ze wszystkich świetnie się nadaje do definiowania API framework-ów. Wszystkie symbole w ten sposób oznaczone są dostępne w całym module jak również można je importować w innych modułach.
-* **internal** - **Domyślny dla Projektów Xcode**. Symbole są dostępne w całym projekcie natomiast nie mogą być zaimportowane w innym pliku.
-* **private** - **Domyślny dla Placu Zabaw**. Symbole są dostępne tylko **w pliku** w którym są zdefiniowane.
+ 
+ * **open** - Najszerszy ze wszystkich świetnie się nadaje do definiowania API framework-ów. To samo co **public** ORAZ można dziedziczyć po klasach i nadpisywać metody.
+ * **public** - Wszystkie symbole w ten sposób oznaczone są dostępne w całym module jak również można je importować w innych modułach.
+ * **internal** - **Domyślny dla Projektów Xcode**. Symbole są dostępne w całym projekcie natomiast nie mogą być zaimportowane w innym pliku.
+ * **private** - **Domyślny dla Placu Zabaw**. Symbole są dostępne tylko **w pliku** w którym są zdefiniowane.
 */
 
 private class PrivateClass {
