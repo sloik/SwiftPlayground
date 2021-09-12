@@ -30,10 +30,10 @@ Just download/clone the repository and open desired page. You can play around, a
 
 I personally use it as a *glosarry* of language *how to*-s.
 
-## Latest fully supported Swift version: **4.0**
+## Latest fully supported Swift version: **5.4**
 
-## Work in progress Swift version: **4.2**
+## Work in progress Swift version: **4.4**
 
-## Translation to English %: 0.1
+## Translation to English %: 90
 
 If you want to help (better examples, new info, fixing a typo, whatever) then just create a PR 😎
