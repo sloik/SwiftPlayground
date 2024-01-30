@@ -39,7 +39,7 @@ Rozdzielenie blokiem.
 
 //: [Swift blog](https://developer.apple.com/swift/)
 
-//: ![Swift logo](https://developer.apple.com/assets/elements/icons/128x128/swift.png "The Swift logo")
+//: ![Swift logo](https://developer.apple.com/assets/elements/icons/swift-playgrounds/swift-playgrounds-96x96_2x.png "Hover")
 
 //: ![Moje zdjecie](stocki.jpeg "Edward")
 
